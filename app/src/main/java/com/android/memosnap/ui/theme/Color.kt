@@ -2,10 +2,16 @@ package com.android.memosnap.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val PrimaryLight = Color(0xFF546E7A)
+val OnPrimaryLight = Color(0xFFFFFFFF)
+val SecondaryLight = Color(0xFF78909C)
+val OnSecondaryLight = Color(0xFF000000)
+val SurfaceLight = Color(0xFFE3F2FD)
+val OnSurfaceLight = Color(0xFF455A64)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val PrimaryDark = Color(0xFF29434E)
+val OnPrimaryDark = Color(0xFFFFFFFF)
+val SecondaryDark = Color(0xFF455A64)
+val OnSecondaryDark = Color(0xFFECEFF1)
+val SurfaceDark = Color(0xFF1C313A)
+val OnSurfaceDark = Color(0xFFCFD8DC)
