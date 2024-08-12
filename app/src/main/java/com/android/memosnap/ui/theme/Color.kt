@@ -1,4 +1,4 @@
-package com.android.clippy.ui.theme
+package com.android.memosnap.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

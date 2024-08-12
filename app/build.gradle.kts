@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.android.clippy"
+    namespace = "com.android.memosnap"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.android.clippy"
+        applicationId = "com.android.memosnap"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -66,4 +66,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation (libs.material3)
+    implementation (libs.androidx.navigation.compose)
+    implementation (libs.androidx.material.icons.extended)
 }

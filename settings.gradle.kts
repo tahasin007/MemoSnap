@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Clippy"
+rootProject.name = "MemoSnap"
 include(":app")
  

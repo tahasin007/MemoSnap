@@ -1,4 +1,4 @@
-package com.android.clippy
+package com.android.memosnap
 
 import org.junit.Test
 
