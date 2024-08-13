@@ -53,13 +53,13 @@ fun FluidBottomNavigationBar(
         tabs.forEach { tab ->
             val selected = currentRoute == tab.route
             val iconScale by animateFloatAsState(
-                targetValue = if (selected) 1.2f else 1f,
+                targetValue = if (selected) 1.5f else 1f,
                 animationSpec = tween(durationMillis = 500), label = ""
             )
             val iconColor by animateColorAsState(
                 targetValue = if (selected) MaterialTheme.colorScheme.onSecondary
                 else MaterialTheme.colorScheme.onSurface,
-                animationSpec = tween(durationMillis = 500), label = ""
+                animationSpec = tween(durationMillis = 750), label = ""
             )
 
             NavigationBarItem(
