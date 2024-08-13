@@ -33,7 +33,7 @@ fun NoteCard(note: Note) {
                 brush = Brush.verticalGradient(
                     colors = listOf(
                         MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                        MaterialTheme.colorScheme.surface
+                        MaterialTheme.colorScheme.onSecondary
                     )
                 )
             ),
@@ -52,22 +52,26 @@ fun NoteCard(note: Note) {
             Text(
                 text = note.title,
                 style = MaterialTheme.typography.titleMedium.copy(
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onSecondary,
                     fontWeight = FontWeight.Bold
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 text = note.content,
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f)
                 ),
                 maxLines = 4,
                 overflow = TextOverflow.Ellipsis
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -76,7 +80,7 @@ fun NoteCard(note: Note) {
                 Text(
                     text = "Date: ${note.id}",
                     style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.5f)
                     )
                 )
             }

@@ -57,7 +57,7 @@ fun FluidBottomNavigationBar(
                 animationSpec = tween(durationMillis = 500), label = ""
             )
             val iconColor by animateColorAsState(
-                targetValue = if (selected) MaterialTheme.colorScheme.onSecondary
+                targetValue = if (selected) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.onSurface,
                 animationSpec = tween(durationMillis = 750), label = ""
             )
