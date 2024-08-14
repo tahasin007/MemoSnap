@@ -7,16 +7,23 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.android.memosnap.ui.component.DrawerMenuContent
 import com.android.memosnap.ui.component.FluidBottomNavigationBar
 import com.android.memosnap.ui.navigation.MyAppNavHost
+import com.android.memosnap.ui.screens.Screen
 
 @Composable
 fun MemoSnapApp() {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+    // Get current route
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -28,10 +35,14 @@ fun MemoSnapApp() {
         content = {
             Scaffold(
                 bottomBar = {
-                    FluidBottomNavigationBar(
-                        navController = navController,
-                        drawerState = drawerState
-                    )
+                    if (currentRoute == null ||
+                        currentRoute.contains(Screen.EditNote.route).not()
+                    ) {
+                        FluidBottomNavigationBar(
+                            navController = navController,
+                            drawerState = drawerState
+                        )
+                    }
                 }
             ) { innerPadding ->
                 Box(modifier = Modifier.padding(innerPadding)) {

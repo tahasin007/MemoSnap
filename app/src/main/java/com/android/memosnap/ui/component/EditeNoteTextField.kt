@@ -25,7 +25,7 @@ fun EditeNoteTextField(
     maxLines: Int = Int.MAX_VALUE
 ) {
     Box(
-        modifier = modifier.padding(horizontal = 24.dp, vertical = 5.dp)
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 5.dp)
     ) {
         BasicTextField(
             value = text,
