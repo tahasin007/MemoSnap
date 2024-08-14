@@ -6,10 +6,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.android.memosnap.feature.note.presentation.addeditnote.AddEditNoteScreen
+import com.android.memosnap.feature.note.presentation.notes.HomeScreen
 import com.android.memosnap.ui.screens.DailyTaskScreen
-import com.android.memosnap.ui.screens.EditNoteScreen
 import com.android.memosnap.ui.screens.FavouriteScreen
-import com.android.memosnap.ui.screens.HomeScreen
 import com.android.memosnap.ui.screens.Screen
 import com.android.memosnap.ui.screens.SearchScreen
 
@@ -23,13 +23,12 @@ fun MyAppNavHost(navController: NavHostController) {
         composable(Screen.DailyTask.route) { DailyTaskScreen() }
 
         composable(
-            route = Screen.EditNote.route + "?noteId={noteId}",
-            arguments = listOf(navArgument("noteId") { type = NavType.IntType; defaultValue = -1 })
-        ) { backStackEntry ->
-//            val noteId = backStackEntry.arguments?.getInt("noteId") ?: -1
-            EditNoteScreen(
-                onBack = { navController.popBackStack() }
-            )
+            route = Screen.AddEditNote.route + "?noteId={noteId}",
+            arguments = listOf(navArgument("noteId") {
+                type = NavType.IntType; defaultValue = -1
+            })
+        ) {
+            AddEditNoteScreen(navController = navController)
         }
     }
 }

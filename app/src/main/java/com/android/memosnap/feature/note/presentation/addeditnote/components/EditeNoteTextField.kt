@@ -1,4 +1,4 @@
-package com.android.memosnap.ui.component
+package com.android.memosnap.feature.note.presentation.addeditnote.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

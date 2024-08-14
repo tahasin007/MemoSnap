@@ -1,4 +1,6 @@
-package com.android.memosnap.ui.screens
+@file:JvmName("AddEditNoteEventKt")
+
+package com.android.memosnap.feature.note.presentation.addeditnote
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,18 +27,22 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.memosnap.ui.component.BottomSheetContainer
-import com.android.memosnap.ui.component.EditeNoteTextField
-import com.android.memosnap.utils.NoteUtils
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.android.memosnap.feature.note.presentation.addeditnote.components.BottomSheetContainer
+import com.android.memosnap.feature.note.presentation.addeditnote.components.EditeNoteTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditNoteScreen(onBack: () -> Unit) {
-    val viewModel = EditTextViewModel()
+fun AddEditNoteScreen(
+    navController: NavHostController,
+    viewModel: AddEditNoteViewModel = hiltViewModel()
+) {
     val noteState = viewModel.noteState
     val uiState = viewModel.uiState
 
@@ -47,37 +54,51 @@ fun EditNoteScreen(onBack: () -> Unit) {
                     containerColor = Color(noteState.value.color)
                 ),
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.Close, contentDescription = "Back")
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        viewModel.onEvent(EditNoteEvent.SaveNote)
-                        onBack.invoke()
-                    }) {
+                    IconButton(
+                        onClick = {
+                            viewModel.onEvent(AddEditNoteEvent.SaveNoteAdd)
+                            navController.popBackStack()
+                        },
+                        enabled = viewModel.noteState.value.title.isNotBlank() &&
+                                viewModel.noteState.value.content.isNotBlank(),
+                        modifier = Modifier.alpha(
+                            if (viewModel.noteState.value.title.isNotBlank() &&
+                                viewModel.noteState.value.content.isNotBlank()
+                            ) 1f else 0.5f
+                        )
+                    ) {
                         Icon(
-                            Icons.Default.Done,
+                            imageVector = Icons.Default.Done,
                             contentDescription = "Done",
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     IconButton(onClick = {
                         viewModel.onEvent(
-                            EditNoteEvent.ChangeBottomSheetVisibility(
+                            AddEditNoteEvent.ChangeBottomSheetVisibility(
                                 uiState.value.isBottomSheetOpen.not()
                             )
                         )
                     }) {
                         Icon(
-                            Icons.Outlined.Palette,
+                            imageVector = Icons.Outlined.Palette,
                             contentDescription = "Palette",
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {
+                        viewModel.onEvent(
+                            AddEditNoteEvent.ChangePinnedStatus(noteState.value.isPinned.not())
+                        )
+                    }) {
                         Icon(
-                            Icons.Outlined.PushPin,
+                            imageVector = if (noteState.value.isPinned) Icons.Filled.PushPin
+                            else Icons.Outlined.PushPin,
                             contentDescription = "PushPin",
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -96,7 +117,7 @@ fun EditNoteScreen(onBack: () -> Unit) {
                 text = noteState.value.title,
                 hint = "Title",
                 onValueChange = {
-                    viewModel.onEvent(EditNoteEvent.EnteredTitle(it))
+                    viewModel.onEvent(AddEditNoteEvent.EnteredTitle(it))
                 },
                 maxLines = 2,
                 textSize = 24.sp
@@ -105,7 +126,7 @@ fun EditNoteScreen(onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(
-                text = noteState.value.date.ifEmpty { NoteUtils.getCurrentFormattedDate() },
+                text = noteState.value.dateCreated,
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                 fontSize = 14.sp,
                 modifier = Modifier
@@ -125,10 +146,10 @@ fun EditNoteScreen(onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(5.dp))
 
             EditeNoteTextField(
-                text = noteState.value.body,
+                text = noteState.value.content,
                 hint = "Add Note",
                 onValueChange = {
-                    viewModel.onEvent(EditNoteEvent.EnteredBody(it))
+                    viewModel.onEvent(AddEditNoteEvent.EnteredBody(it))
                 },
                 modifier = Modifier.fillMaxHeight(),
                 textSize = 16.sp
@@ -138,10 +159,10 @@ fun EditNoteScreen(onBack: () -> Unit) {
                 isBottomSheetOpen = uiState.value.isBottomSheetOpen,
                 noteColor = Color(noteState.value.color),
                 onDismiss = {
-                    viewModel.onEvent(EditNoteEvent.ChangeBottomSheetVisibility(it))
+                    viewModel.onEvent(AddEditNoteEvent.ChangeBottomSheetVisibility(it))
                 },
                 onColorChange = {
-                    viewModel.onEvent(EditNoteEvent.ChangeColor(it))
+                    viewModel.onEvent(AddEditNoteEvent.ChangeColor(it))
                 }
             )
         }

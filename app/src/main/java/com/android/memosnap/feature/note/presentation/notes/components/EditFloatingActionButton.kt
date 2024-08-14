@@ -1,4 +1,4 @@
-package com.android.memosnap.ui.component
+package com.android.memosnap.feature.note.presentation.notes.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween

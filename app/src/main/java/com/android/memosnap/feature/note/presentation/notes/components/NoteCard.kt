@@ -1,4 +1,4 @@
-package com.android.memosnap.ui.component
+package com.android.memosnap.feature.note.presentation.notes.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,15 +17,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.android.memosnap.Note
+import androidx.compose.ui.unit.sp
+import com.android.memosnap.feature.note.domain.model.Note
 
 @Composable
-fun NoteCard(note: Note) {
+fun NoteCard(
+    note: Note,
+    modifier: Modifier
+) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 2.dp)
             .clip(MaterialTheme.shapes.large)
@@ -40,13 +45,11 @@ fun NoteCard(note: Note) {
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp
         ),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+        colors = CardDefaults.cardColors(containerColor = Color(note.color))
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(12.dp)
                 .fillMaxWidth()
         ) {
             Text(
@@ -78,10 +81,9 @@ fun NoteCard(note: Note) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Date: ${note.id}",
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.5f)
-                    )
+                    text = note.dateCreated,
+                    color = Color.White,
+                    fontSize = 10.sp
                 )
             }
         }

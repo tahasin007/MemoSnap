@@ -1,4 +1,4 @@
-package com.android.memosnap.ui.screens
+package com.android.memosnap.feature.note.presentation.addeditnote.components
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween

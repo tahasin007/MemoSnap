@@ -1,4 +1,4 @@
-package com.android.memosnap.ui.component
+package com.android.memosnap.feature.note.presentation.addeditnote.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.memosnap.ui.screens.ColorBox
 import com.android.memosnap.ui.theme.CrimsonRed
 import com.android.memosnap.ui.theme.DodgerBlue
 import com.android.memosnap.ui.theme.Lavender
@@ -107,6 +106,7 @@ fun BottomSheetContainer(
                                 color = color,
                                 isSelected = color == noteColor,
                                 onClick = {
+                                    onDismiss(false)
                                     onColorChange.invoke(color.toArgb())
                                 }
                             )
@@ -125,6 +125,7 @@ fun BottomSheetContainer(
                                 color = color,
                                 isSelected = color == noteColor,
                                 onClick = {
+                                    onDismiss(false)
                                     onColorChange.invoke(color.toArgb())
                                 }
                             )
