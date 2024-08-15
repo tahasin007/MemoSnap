@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.presentation.notes
+package com.android.memosnap.feature.note.presentation
 
 import com.android.memosnap.feature.note.domain.model.Note
 

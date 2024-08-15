@@ -12,6 +12,7 @@ import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.android.memosnap.ui.screens.Screen
 
 sealed class BottomBarTab(
     val route: String,
@@ -27,15 +28,15 @@ sealed class BottomBarTab(
     )
 
     data object Archived : BottomBarTab(
-        route = "archived",
-        label = "Archived",
+        route = Screen.ArchivedNotes.route,
+        label = Screen.ArchivedNotes.label,
         activeIcon = Icons.Filled.Archive,
         inactiveIcon = Icons.Outlined.Archive
     )
 
     data object Home : BottomBarTab(
-        route = "home",
-        label = "Home",
+        route = Screen.Home.route,
+        label = Screen.Home.label,
         activeIcon = Icons.Filled.Home,
         inactiveIcon = Icons.Outlined.Home
     )
@@ -48,8 +49,8 @@ sealed class BottomBarTab(
     )
 
     data object DailyTask : BottomBarTab(
-        route = "dailyTask",
-        label = "DailyTask",
+        route = Screen.DailyTask.route,
+        label = Screen.Home.label,
         activeIcon = Icons.Filled.TaskAlt,
         inactiveIcon = Icons.Outlined.TaskAlt
     )

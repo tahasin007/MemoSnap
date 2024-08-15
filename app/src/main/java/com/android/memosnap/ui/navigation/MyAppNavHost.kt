@@ -7,8 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.android.memosnap.feature.note.presentation.addeditnote.AddEditNoteScreen
+import com.android.memosnap.feature.note.presentation.archivednotes.ArchivedNotesScreen
 import com.android.memosnap.feature.note.presentation.notes.HomeScreen
-import com.android.memosnap.ui.screens.ArchivedScreen
 import com.android.memosnap.ui.screens.DailyTaskScreen
 import com.android.memosnap.ui.screens.Screen
 import com.android.memosnap.ui.screens.SearchScreen
@@ -17,7 +17,7 @@ import com.android.memosnap.ui.screens.SearchScreen
 fun MyAppNavHost(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = Screen.Home.route) {
-        composable(Screen.Archived.route) { ArchivedScreen() }
+        composable(Screen.ArchivedNotes.route) { ArchivedNotesScreen(navController) }
         composable(Screen.Home.route) { HomeScreen(navController) }
         composable(Screen.Search.route) { SearchScreen() }
         composable(Screen.DailyTask.route) { DailyTaskScreen() }

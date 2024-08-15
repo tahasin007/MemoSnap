@@ -71,7 +71,8 @@ class AddEditNoteViewModel @Inject constructor(
             it.title != _noteState.value.title ||
                     it.content != _noteState.value.content ||
                     it.color != _noteState.value.color ||
-                    it.isPinned != _noteState.value.isPinned
+                    it.isPinned != _noteState.value.isPinned ||
+                    it.isArchived != _noteState.value.isArchived
         } ?: _noteState.value.title.isNotBlank() && _noteState.value.content.isNotBlank()
     }
 
