@@ -27,8 +27,9 @@ class NotesViewModel @Inject constructor(
     private fun getNotes() {
         getNotesJob?.cancel()
         getNotesJob = noteUseCases.getNotes().onEach { notes ->
+            val nonArchivedNotes = notes.filter { !it.isArchived }
             _state.value = state.value.copy(
-                notes = notes
+                notes = nonArchivedNotes
             )
         }.launchIn(viewModelScope)
     }

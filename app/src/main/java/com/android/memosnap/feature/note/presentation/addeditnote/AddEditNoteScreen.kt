@@ -38,9 +38,7 @@ fun AddEditNoteScreen(
     val noteState = viewModel.noteState
     val uiState = viewModel.uiState
 
-    val isSaveEnabled = viewModel.isNoteEdited() &&
-            viewModel.noteState.value.title.isNotBlank() &&
-            viewModel.noteState.value.content.isNotBlank()
+    val isSaveEnabled = viewModel.isNoteEdited()
 
     val backgroundColor by animateColorAsState(
         targetValue = Color(noteState.value.color),
@@ -56,7 +54,7 @@ fun AddEditNoteScreen(
             backgroundColor = backgroundColor,
             onBackClick = { navController.popBackStack() },
             onSaveClick = {
-                viewModel.onEvent(AddEditNoteEvent.SaveNoteAdd)
+                viewModel.onEvent(AddEditNoteEvent.SaveNote)
                 navController.popBackStack()
             },
             onPaletteClick = {
@@ -69,7 +67,15 @@ fun AddEditNoteScreen(
             onPinClick = {
                 viewModel.onEvent(AddEditNoteEvent.ChangePinnedStatus(noteState.value.isPinned.not()))
             },
+            onArchiveClick = {
+                viewModel.onEvent(AddEditNoteEvent.ChangeArchiveStatus(noteState.value.isArchived.not()))
+            },
+            onDeleteClick = {
+                viewModel.onEvent(AddEditNoteEvent.DeleteNote)
+                navController.popBackStack()
+            },
             isPinned = noteState.value.isPinned,
+            isArchived = noteState.value.isArchived,
             isSaveEnabled = isSaveEnabled
         )
 

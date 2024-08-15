@@ -55,19 +55,24 @@ class AddEditNoteViewModel @Inject constructor(
             is AddEditNoteEvent.ChangeColor -> changeColor(event.color)
             is AddEditNoteEvent.EnteredBody -> enterBody(event.body)
             is AddEditNoteEvent.EnteredTitle -> enterTitle(event.title)
-            is AddEditNoteEvent.SaveNoteAdd -> saveNote()
+            is AddEditNoteEvent.SaveNote -> saveNote()
             is AddEditNoteEvent.ChangeBottomSheetVisibility -> {
                 changeBottomSheetVisibility(event.isVisible)
             }
 
             is AddEditNoteEvent.ChangePinnedStatus -> changePinnedStatus(event.isPinned)
+            is AddEditNoteEvent.ChangeArchiveStatus -> changeArchiveStatus(event.isArchived)
+            is AddEditNoteEvent.DeleteNote -> deleteNote()
         }
     }
 
-    private fun changePinnedStatus(pinned: Boolean) {
-        if (pinned != _noteState.value.isPinned) {
-            _noteState.value = _noteState.value.copy(isPinned = pinned)
-        }
+    fun isNoteEdited(): Boolean {
+        return originalNote?.let {
+            it.title != _noteState.value.title ||
+                    it.content != _noteState.value.content ||
+                    it.color != _noteState.value.color ||
+                    it.isPinned != _noteState.value.isPinned
+        } ?: _noteState.value.title.isNotBlank() && _noteState.value.content.isNotBlank()
     }
 
     private fun changeColor(color: Int) {
@@ -85,6 +90,7 @@ class AddEditNoteViewModel @Inject constructor(
                     dateCreated = _noteState.value.dateCreated,
                     color = _noteState.value.color,
                     isPinned = _noteState.value.isPinned,
+                    isArchived = _noteState.value.isArchived,
                     id = _noteState.value.id
                 )
             )
@@ -109,12 +115,33 @@ class AddEditNoteViewModel @Inject constructor(
         }
     }
 
-    fun isNoteEdited(): Boolean {
-        return originalNote?.let {
-            it.title != _noteState.value.title ||
-                    it.content != _noteState.value.content ||
-                    it.color != _noteState.value.color ||
-                    it.isPinned != _noteState.value.isPinned
-        } ?: false
+    private fun changePinnedStatus(pinned: Boolean) {
+        if (pinned != _noteState.value.isPinned) {
+            _noteState.value = _noteState.value.copy(isPinned = pinned)
+        }
+    }
+
+    private fun changeArchiveStatus(archived: Boolean) {
+        if (archived != _noteState.value.isArchived) {
+            _noteState.value = _noteState.value.copy(isArchived = archived)
+        }
+    }
+
+    private fun deleteNote() {
+        if (_noteState.value.id != null) {
+            viewModelScope.launch {
+                noteUseCases.deleteNote(
+                    Note(
+                        title = _noteState.value.title,
+                        content = _noteState.value.content,
+                        dateCreated = _noteState.value.dateCreated,
+                        color = _noteState.value.color,
+                        isPinned = _noteState.value.isPinned,
+                        isArchived = _noteState.value.isArchived,
+                        id = _noteState.value.id
+                    )
+                )
+            }
+        }
     }
 }

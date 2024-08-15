@@ -35,7 +35,10 @@ fun AddEditNoteAppBar(
     onSaveClick: () -> Unit,
     onPaletteClick: () -> Unit,
     onPinClick: () -> Unit,
+    onArchiveClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     isPinned: Boolean,
+    isArchived: Boolean,
     isSaveEnabled: Boolean
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -103,10 +106,11 @@ fun AddEditNoteAppBar(
                 }
 
                 MoreOptionsMenu(
-                    onArchiveClick = { },
-                    onDeleteClick = { },
+                    onArchiveClick = onArchiveClick,
+                    onDeleteClick = onDeleteClick,
                     onDismissed = { expanded = false },
-                    expanded = expanded
+                    expanded = expanded,
+                    isArchived = isArchived
                 )
             }
         }

@@ -9,5 +9,6 @@ data class AddEditNoteState(
     val dateCreated: String = "",
     val color: Int = DodgerBlue.toArgb(),
     val isPinned: Boolean = false,
+    val isArchived: Boolean = false,
     val id: Int? = null
 )

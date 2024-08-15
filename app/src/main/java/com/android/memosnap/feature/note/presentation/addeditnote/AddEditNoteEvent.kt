@@ -6,5 +6,7 @@ sealed class AddEditNoteEvent {
     data class ChangeColor(val color: Int) : AddEditNoteEvent()
     data class ChangeBottomSheetVisibility(val isVisible: Boolean) : AddEditNoteEvent()
     data class ChangePinnedStatus(val isPinned: Boolean) : AddEditNoteEvent()
-    data object SaveNoteAdd : AddEditNoteEvent()
+    data class ChangeArchiveStatus(val isArchived: Boolean) : AddEditNoteEvent()
+    data object DeleteNote : AddEditNoteEvent()
+    data object SaveNote : AddEditNoteEvent()
 }

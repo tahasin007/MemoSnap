@@ -8,7 +8,8 @@ data class Note(
     val title: String,
     val content: String,
     val dateCreated: String,
-    val isPinned: Boolean,
     val color: Int,
+    val isPinned: Boolean,
+    val isArchived: Boolean,
     @PrimaryKey val id: Int? = null
 )

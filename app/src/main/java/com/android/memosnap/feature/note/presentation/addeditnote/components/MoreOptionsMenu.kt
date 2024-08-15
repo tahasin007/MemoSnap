@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Unarchive
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,7 +19,8 @@ fun MoreOptionsMenu(
     onDeleteClick: () -> Unit,
     onDismissed: () -> Unit,
     menuWidth: Dp = 150.dp,
-    expanded: Boolean = false
+    expanded: Boolean = false,
+    isArchived: Boolean
 ) {
 
     DropdownMenu(
@@ -30,11 +32,11 @@ fun MoreOptionsMenu(
         properties = PopupProperties(focusable = true)
     ) {
         AddEditDropdownMenuItem(
-            icon = Icons.Outlined.Archive,
-            text = "Archive",
+            icon = if (isArchived) Icons.Outlined.Unarchive else Icons.Outlined.Archive,
+            text = if (isArchived) "Unarchive" else "Archive",
             onClick = {
-                onArchiveClick()
                 onDismissed()
+                onArchiveClick()
             }
         )
 
@@ -42,8 +44,8 @@ fun MoreOptionsMenu(
             icon = Icons.Outlined.Delete,
             text = "Delete",
             onClick = {
-                onDeleteClick()
                 onDismissed()
+                onDeleteClick()
             }
         )
     }
