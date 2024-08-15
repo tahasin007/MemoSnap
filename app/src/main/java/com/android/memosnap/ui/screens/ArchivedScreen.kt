@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun FavouriteScreen(screenLabel: String = Screen.Favourite.label) {
+fun ArchivedScreen(screenLabel: String = Screen.Archived.label) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()

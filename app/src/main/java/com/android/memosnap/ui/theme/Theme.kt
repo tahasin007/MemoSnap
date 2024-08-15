@@ -15,7 +15,7 @@ private val DarkColorScheme = darkColorScheme(
     primary = PrimaryDark,
     onPrimary = OnPrimaryDark,
     secondary = SecondaryDark,
-    onSecondary = OnSecondaryDark,
+//    onSecondary = OnSecondaryDark,
     surface = SurfaceDark,
     onSurface = OnSurfaceDark
 )
@@ -24,7 +24,7 @@ private val LightColorScheme = lightColorScheme(
     primary = PrimaryLight,
     onPrimary = OnPrimaryLight,
     secondary = SecondaryLight,
-    onSecondary = OnSecondaryLight,
+//    onSecondary = OnSecondaryLight,
     surface = SurfaceLight,
     onSurface = OnSurfaceLight
 )
@@ -43,7 +43,7 @@ fun MemoSnapTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.onPrimary.toArgb()
+            window.statusBarColor = colorScheme.surface.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }

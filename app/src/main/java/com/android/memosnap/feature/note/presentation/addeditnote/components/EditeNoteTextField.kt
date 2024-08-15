@@ -35,14 +35,14 @@ fun EditeNoteTextField(
             modifier = Modifier.fillMaxWidth(),
             textStyle = TextStyle.Default.copy(
                 fontSize = textSize,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.surface
             ),
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.surface)
         )
         if (text.isEmpty()) {
             Text(
                 text = hint,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
                 fontSize = textSize
             )
         }

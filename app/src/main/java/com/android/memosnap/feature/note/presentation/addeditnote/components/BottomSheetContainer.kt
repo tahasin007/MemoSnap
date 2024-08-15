@@ -24,15 +24,15 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.memosnap.ui.theme.BurntOrange
 import com.android.memosnap.ui.theme.CrimsonRed
+import com.android.memosnap.ui.theme.DeepBlue
 import com.android.memosnap.ui.theme.DodgerBlue
+import com.android.memosnap.ui.theme.ForestGreen
+import com.android.memosnap.ui.theme.GoldenYellow
 import com.android.memosnap.ui.theme.Lavender
-import com.android.memosnap.ui.theme.PaleBlue
-import com.android.memosnap.ui.theme.PastelGreen
-import com.android.memosnap.ui.theme.Peach
 import com.android.memosnap.ui.theme.Scarlet
 import com.android.memosnap.ui.theme.SoftPink
-import com.android.memosnap.ui.theme.SoftYellow
 import com.android.memosnap.ui.theme.Teal
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,10 +50,10 @@ fun BottomSheetContainer(
         CrimsonRed,
         Scarlet,
         DodgerBlue,
-        PaleBlue,
-        SoftYellow,
-        PastelGreen,
-        Peach,
+        DeepBlue,
+        GoldenYellow,
+        ForestGreen,
+        BurntOrange,
         Lavender,
         Teal
     )
@@ -62,7 +62,7 @@ fun BottomSheetContainer(
         ModalBottomSheet(
             onDismissRequest = { onDismiss(false) },
             sheetState = bottomSheetState,
-            containerColor = Color.White,
+            containerColor = MaterialTheme.colorScheme.surface,
             dragHandle = {
                 Spacer(modifier = Modifier)
             }
@@ -81,14 +81,14 @@ fun BottomSheetContainer(
                         text = "Change Color",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     IconButton(onClick = { onDismiss(false) }) {
                         Icon(
                             Icons.Default.Close,
                             contentDescription = "Close",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }

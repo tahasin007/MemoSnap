@@ -32,7 +32,7 @@ fun EditFloatingActionButton(
     FloatingActionButton(
         onClick = onClick,
         containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
+        contentColor = MaterialTheme.colorScheme.surface,
         elevation = FloatingActionButtonDefaults.elevation(
             defaultElevation = 5.dp,
             pressedElevation = 10.dp

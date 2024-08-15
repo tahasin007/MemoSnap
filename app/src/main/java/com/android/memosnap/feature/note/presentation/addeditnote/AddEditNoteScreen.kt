@@ -1,5 +1,3 @@
-@file:JvmName("AddEditNoteEventKt")
-
 package com.android.memosnap.feature.note.presentation.addeditnote
 
 import androidx.compose.foundation.background
@@ -55,7 +53,11 @@ fun AddEditNoteScreen(
                 ),
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.Close, contentDescription = "Back")
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.surface
+                        )
                     }
                 },
                 actions = {
@@ -75,7 +77,7 @@ fun AddEditNoteScreen(
                         Icon(
                             imageVector = Icons.Default.Done,
                             contentDescription = "Done",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.surface
                         )
                     }
                     IconButton(onClick = {
@@ -88,7 +90,7 @@ fun AddEditNoteScreen(
                         Icon(
                             imageVector = Icons.Outlined.Palette,
                             contentDescription = "Palette",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.surface
                         )
                     }
                     IconButton(onClick = {
@@ -100,7 +102,7 @@ fun AddEditNoteScreen(
                             imageVector = if (noteState.value.isPinned) Icons.Filled.PushPin
                             else Icons.Outlined.PushPin,
                             contentDescription = "PushPin",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.surface
                         )
                     }
                 }
@@ -127,7 +129,7 @@ fun AddEditNoteScreen(
 
             Text(
                 text = noteState.value.dateCreated,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
                 fontSize = 14.sp,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -138,9 +140,14 @@ fun AddEditNoteScreen(
             Spacer(modifier = Modifier.height(5.dp))
 
             HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 1.dp),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+            )
+            HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 10.dp),
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
             )
 
             Spacer(modifier = Modifier.height(5.dp))

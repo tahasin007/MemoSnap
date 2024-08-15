@@ -1,6 +1,5 @@
 package com.android.memosnap.ui.component
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -13,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,7 +31,7 @@ fun FluidBottomNavigationBar(
 ) {
     val tabs = listOf(
         BottomBarTab.Drawer,
-        BottomBarTab.Favourite,
+        BottomBarTab.Archived,
         BottomBarTab.Home,
         BottomBarTab.Search,
         BottomBarTab.DailyTask
@@ -47,8 +47,7 @@ fun FluidBottomNavigationBar(
             .height(70.dp)
             .background(MaterialTheme.colorScheme.surface)
             .animateContentSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface
+        containerColor = MaterialTheme.colorScheme.primary,
     ) {
         tabs.forEach { tab ->
             val selected = currentRoute == tab.route
@@ -56,18 +55,12 @@ fun FluidBottomNavigationBar(
                 targetValue = if (selected) 1.5f else 1f,
                 animationSpec = tween(durationMillis = 500), label = ""
             )
-            val iconColor by animateColorAsState(
-                targetValue = if (selected) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.onSurface,
-                animationSpec = tween(durationMillis = 750), label = ""
-            )
 
             NavigationBarItem(
                 icon = {
                     Icon(
                         imageVector = if (selected) tab.activeIcon else tab.inactiveIcon,
                         contentDescription = tab.label,
-                        tint = iconColor,
                         modifier = Modifier
                             .scale(iconScale)
                             .padding(vertical = 8.dp)
@@ -91,7 +84,16 @@ fun FluidBottomNavigationBar(
                 },
                 alwaysShowLabel = true,
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
+                    .padding(horizontal = 10.dp),
+                colors = NavigationBarItemColors(
+                    selectedIconColor = MaterialTheme.colorScheme.surface,
+                    selectedTextColor = MaterialTheme.colorScheme.surface,
+                    selectedIndicatorColor = MaterialTheme.colorScheme.secondary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                    disabledTextColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
+                )
             )
         }
     }

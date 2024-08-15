@@ -1,12 +1,12 @@
 package com.android.memosnap.ui.component
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.TaskAlt
-import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
@@ -26,11 +26,11 @@ sealed class BottomBarTab(
         inactiveIcon = Icons.Outlined.Menu
     )
 
-    data object Favourite : BottomBarTab(
-        route = "favourite",
-        label = "Favourite",
-        activeIcon = Icons.Filled.Favorite,
-        inactiveIcon = Icons.Outlined.FavoriteBorder
+    data object Archived : BottomBarTab(
+        route = "archived",
+        label = "Archived",
+        activeIcon = Icons.Filled.Archive,
+        inactiveIcon = Icons.Outlined.Archive
     )
 
     data object Home : BottomBarTab(

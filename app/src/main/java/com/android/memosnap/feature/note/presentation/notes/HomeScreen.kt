@@ -41,7 +41,7 @@ fun HomeScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.onPrimary)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(2),
