@@ -3,7 +3,9 @@ package com.android.memosnap.feature.note.presentation.addeditnote
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
@@ -25,6 +28,7 @@ import androidx.navigation.NavHostController
 import com.android.memosnap.feature.note.presentation.addeditnote.components.AddEditNoteAppBar
 import com.android.memosnap.feature.note.presentation.addeditnote.components.BottomSheetContainer
 import com.android.memosnap.feature.note.presentation.addeditnote.components.EditeNoteTextField
+import com.android.memosnap.utils.NoteUtils
 
 @Composable
 fun AddEditNoteScreen(
@@ -33,6 +37,10 @@ fun AddEditNoteScreen(
 ) {
     val noteState = viewModel.noteState
     val uiState = viewModel.uiState
+
+    val isSaveEnabled = viewModel.isNoteEdited() &&
+            viewModel.noteState.value.title.isNotBlank() &&
+            viewModel.noteState.value.content.isNotBlank()
 
     val backgroundColor by animateColorAsState(
         targetValue = Color(noteState.value.color),
@@ -62,8 +70,7 @@ fun AddEditNoteScreen(
                 viewModel.onEvent(AddEditNoteEvent.ChangePinnedStatus(noteState.value.isPinned.not()))
             },
             isPinned = noteState.value.isPinned,
-            isSaveEnabled = viewModel.noteState.value.title.isNotBlank() &&
-                    viewModel.noteState.value.content.isNotBlank()
+            isSaveEnabled = isSaveEnabled
         )
 
         Column(
@@ -84,15 +91,26 @@ fun AddEditNoteScreen(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            Text(
-                text = noteState.value.dateCreated,
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-                fontSize = 14.sp,
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                fontStyle = FontStyle.Italic,
-            )
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(
+                    text = noteState.value.dateCreated,
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                    fontSize = 14.sp,
+                    fontStyle = FontStyle.Italic,
+                )
+
+                Text(
+                    text = "  |  ${NoteUtils.getTotalCharacters(noteState.value.content)} characters",
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                    fontSize = 14.sp
+                )
+            }
 
             Spacer(modifier = Modifier.height(5.dp))
 

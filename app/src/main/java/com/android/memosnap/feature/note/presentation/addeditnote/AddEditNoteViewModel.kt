@@ -20,6 +20,8 @@ class AddEditNoteViewModel @Inject constructor(
     private val _noteState = mutableStateOf(AddEditNoteState())
     val noteState: State<AddEditNoteState> = _noteState
 
+    private var originalNote: Note? = null
+
     private val _uiState = mutableStateOf(AddEditNoteUIState())
     val uiState: State<AddEditNoteUIState> = _uiState
 
@@ -28,6 +30,7 @@ class AddEditNoteViewModel @Inject constructor(
             if (noteId != -1) {
                 viewModelScope.launch {
                     noteUseCases.getNote(noteId)?.also { note ->
+                        originalNote = note
                         _noteState.value = _noteState.value.copy(
                             title = note.title,
                             content = note.content,
@@ -104,5 +107,14 @@ class AddEditNoteViewModel @Inject constructor(
         if (content != _noteState.value.content) {
             _noteState.value = _noteState.value.copy(content = content)
         }
+    }
+
+    fun isNoteEdited(): Boolean {
+        return originalNote?.let {
+            it.title != _noteState.value.title ||
+                    it.content != _noteState.value.content ||
+                    it.color != _noteState.value.color ||
+                    it.isPinned != _noteState.value.isPinned
+        } ?: false
     }
 }
