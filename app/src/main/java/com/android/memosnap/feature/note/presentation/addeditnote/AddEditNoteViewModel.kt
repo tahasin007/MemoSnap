@@ -41,7 +41,7 @@ class AddEditNoteViewModel @Inject constructor(
             }
         }
 
-        if (noteState.value.dateCreated.isEmpty()) {
+        if (_noteState.value.dateCreated.isEmpty()) {
             _noteState.value =
                 _noteState.value.copy(dateCreated = NoteUtils.getCurrentFormattedDate())
         }
@@ -62,11 +62,15 @@ class AddEditNoteViewModel @Inject constructor(
     }
 
     private fun changePinnedStatus(pinned: Boolean) {
-        _noteState.value = _noteState.value.copy(isPinned = pinned)
+        if (pinned != _noteState.value.isPinned) {
+            _noteState.value = _noteState.value.copy(isPinned = pinned)
+        }
     }
 
     private fun changeColor(color: Int) {
-        _noteState.value = _noteState.value.copy(color = color)
+        if (color != _noteState.value.color) {
+            _noteState.value = _noteState.value.copy(color = color)
+        }
     }
 
     private fun saveNote() {
@@ -85,14 +89,20 @@ class AddEditNoteViewModel @Inject constructor(
     }
 
     private fun changeBottomSheetVisibility(isVisible: Boolean) {
-        _uiState.value = _uiState.value.copy(isBottomSheetOpen = isVisible)
+        if (isVisible != _uiState.value.isBottomSheetOpen) {
+            _uiState.value = _uiState.value.copy(isBottomSheetOpen = isVisible)
+        }
     }
 
     private fun enterTitle(title: String) {
-        _noteState.value = _noteState.value.copy(title = title)
+        if (title != _noteState.value.title) {
+            _noteState.value = _noteState.value.copy(title = title)
+        }
     }
 
-    private fun enterBody(body: String) {
-        _noteState.value = _noteState.value.copy(content = body)
+    private fun enterBody(content: String) {
+        if (content != _noteState.value.content) {
+            _noteState.value = _noteState.value.copy(content = content)
+        }
     }
 }

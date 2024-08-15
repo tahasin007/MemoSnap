@@ -42,7 +42,7 @@ fun EditeNoteTextField(
         if (text.isEmpty()) {
             Text(
                 text = hint,
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.75f),
                 fontSize = textSize
             )
         }
