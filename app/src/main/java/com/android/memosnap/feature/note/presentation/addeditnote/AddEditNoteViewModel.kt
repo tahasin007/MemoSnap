@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.memosnap.feature.note.domain.model.Note
-import com.android.memosnap.feature.note.domain.usecase.NoteUseCases
+import com.android.memosnap.feature.note.domain.usecase.note.NoteUseCases
 import com.android.memosnap.utils.NoteUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

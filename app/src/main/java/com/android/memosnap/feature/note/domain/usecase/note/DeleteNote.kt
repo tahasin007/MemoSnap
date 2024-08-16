@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.domain.usecase
+package com.android.memosnap.feature.note.domain.usecase.note
 
 import com.android.memosnap.feature.note.domain.model.Note
 import com.android.memosnap.feature.note.domain.repository.NoteRepository

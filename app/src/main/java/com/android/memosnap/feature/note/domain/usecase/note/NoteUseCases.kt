@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.domain.usecase
+package com.android.memosnap.feature.note.domain.usecase.note
 
 data class NoteUseCases(
     val getNotes: GetNotes,

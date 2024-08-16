@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.memosnap.feature.note.domain.usecase.NoteUseCases
+import com.android.memosnap.feature.note.domain.usecase.note.NoteUseCases
 import com.android.memosnap.feature.note.presentation.NotesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job

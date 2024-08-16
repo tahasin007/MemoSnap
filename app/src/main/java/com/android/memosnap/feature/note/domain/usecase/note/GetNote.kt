@@ -1,12 +1,12 @@
-package com.android.memosnap.feature.note.domain.usecase
+package com.android.memosnap.feature.note.domain.usecase.note
 
 import com.android.memosnap.feature.note.domain.model.Note
 import com.android.memosnap.feature.note.domain.repository.NoteRepository
 
-class AddNote(
+class GetNote(
     private val repository: NoteRepository
 ) {
-    suspend operator fun invoke(note: Note) {
-        repository.insertNote(note)
+    suspend operator fun invoke(id: Int): Note? {
+        return repository.getNoteById(id)
     }
 }
