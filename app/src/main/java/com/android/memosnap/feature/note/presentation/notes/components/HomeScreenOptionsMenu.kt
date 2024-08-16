@@ -15,6 +15,8 @@ import androidx.compose.ui.window.PopupProperties
 @Composable
 fun HomeScreenOptionsMenu(
     onDismissed: () -> Unit,
+    onTagsClick: () -> Unit,
+    onArchiveClick: () -> Unit,
     menuWidth: Dp = 150.dp,
     expanded: Boolean = false,
 ) {
@@ -30,6 +32,7 @@ fun HomeScreenOptionsMenu(
             icon = Icons.Outlined.Tag,
             text = "Tags",
             onClick = {
+                onTagsClick()
                 onDismissed()
             }
         )
@@ -38,6 +41,7 @@ fun HomeScreenOptionsMenu(
             icon = Icons.Outlined.Archive,
             text = "Archived",
             onClick = {
+                onArchiveClick()
                 onDismissed()
             }
         )

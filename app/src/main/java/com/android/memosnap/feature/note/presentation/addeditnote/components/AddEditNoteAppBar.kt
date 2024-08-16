@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -27,6 +28,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.android.memosnap.feature.note.domain.model.NoteTag
 
 @Composable
 fun AddEditNoteAppBar(
@@ -39,15 +41,18 @@ fun AddEditNoteAppBar(
     onDeleteClick: () -> Unit,
     isPinned: Boolean,
     isArchived: Boolean,
-    isSaveEnabled: Boolean
+    isSaveEnabled: Boolean,
+    tagList: List<NoteTag>,
+    onClickAddTag: (List<Int>) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(75.dp)
             .background(backgroundColor)
-            .padding(12.dp),
+            .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -110,7 +115,9 @@ fun AddEditNoteAppBar(
                     onDeleteClick = onDeleteClick,
                     onDismissed = { expanded = false },
                     expanded = expanded,
-                    isArchived = isArchived
+                    isArchived = isArchived,
+                    tagList = tagList,
+                    onClickAddTag = onClickAddTag
                 )
             }
         }

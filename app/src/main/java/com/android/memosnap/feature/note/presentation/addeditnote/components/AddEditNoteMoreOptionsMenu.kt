@@ -1,6 +1,5 @@
 package com.android.memosnap.feature.note.presentation.addeditnote.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -18,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
+import com.android.memosnap.feature.note.domain.model.NoteTag
 
 @Composable
 fun AddEditNoteMoreOptionsMenu(
@@ -26,7 +26,9 @@ fun AddEditNoteMoreOptionsMenu(
     onDismissed: () -> Unit,
     menuWidth: Dp = 150.dp,
     expanded: Boolean = false,
-    isArchived: Boolean
+    isArchived: Boolean,
+    tagList: List<NoteTag>,
+    onClickAddTag: (List<Int>) -> Unit
 ) {
     var showTagPopup by remember { mutableStateOf(false) }
 
@@ -67,9 +69,10 @@ fun AddEditNoteMoreOptionsMenu(
     }
 
     if (showTagPopup) {
-        TagListPopup(onDismiss = {
-            Log.i("MoreOptionsMenu", "$showTagPopup")
-            showTagPopup = false
-        })
+        TagListPopup(
+            onDismiss = { showTagPopup = false },
+            tagList = tagList,
+            onClickAddTag = onClickAddTag
+        )
     }
 }

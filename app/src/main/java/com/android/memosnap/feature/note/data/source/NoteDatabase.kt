@@ -4,9 +4,10 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.android.memosnap.feature.note.domain.model.Note
 import com.android.memosnap.feature.note.domain.model.NoteTag
+import com.android.memosnap.feature.note.domain.model.NoteTagCrossRef
 
 @Database(
-    entities = [Note::class, NoteTag::class],
+    entities = [Note::class, NoteTag::class, NoteTagCrossRef::class],
     version = 1,
     exportSchema = false
 )

@@ -7,47 +7,46 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.memosnap.feature.note.domain.model.Note
 import com.android.memosnap.feature.note.domain.usecase.note.NoteUseCases
+import com.android.memosnap.feature.note.domain.usecase.notetag.NoteTagUseCases
+import com.android.memosnap.feature.note.presentation.NoteTagsState
 import com.android.memosnap.utils.NoteUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditNoteViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases,
+    private val noteTageUseCases: NoteTagUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _noteState = mutableStateOf(AddEditNoteState())
     val noteState: State<AddEditNoteState> = _noteState
 
-    private var originalNote: Note? = null
+    private val _tagsState = mutableStateOf(NoteTagsState())
+    val tagsState: State<NoteTagsState> = _tagsState
+
+    private val _tagsByNoteId = mutableStateOf(NoteTagsState())
+    val tagsByNoteId: State<NoteTagsState> = _tagsByNoteId
 
     private val _uiState = mutableStateOf(AddEditNoteUIState())
     val uiState: State<AddEditNoteUIState> = _uiState
 
+    private var originalNote: Note? = null
+    private var getNoteTagsJob: Job? = null
+
     init {
-        savedStateHandle.get<Int>("noteId")?.let { noteId ->
-            if (noteId != -1) {
-                viewModelScope.launch {
-                    noteUseCases.getNote(noteId)?.also { note ->
-                        originalNote = note
-                        _noteState.value = _noteState.value.copy(
-                            title = note.title,
-                            content = note.content,
-                            dateCreated = note.dateCreated,
-                            color = note.color,
-                            isPinned = note.isPinned,
-                            id = noteId
-                        )
-                    }
-                }
-            }
-        }
+        getNote(savedStateHandle.get<Int>("noteId"))
 
         if (_noteState.value.dateCreated.isEmpty()) {
             _noteState.value =
                 _noteState.value.copy(dateCreated = NoteUtils.getCurrentFormattedDate())
         }
+        getNoteTags()
+        getTagsByNoteId(savedStateHandle.get<Int>("noteId"))
     }
 
     fun onEvent(event: AddEditNoteEvent) {
@@ -63,6 +62,7 @@ class AddEditNoteViewModel @Inject constructor(
             is AddEditNoteEvent.ChangePinnedStatus -> changePinnedStatus(event.isPinned)
             is AddEditNoteEvent.ChangeArchiveStatus -> changeArchiveStatus(event.isArchived)
             is AddEditNoteEvent.DeleteNote -> deleteNote()
+            is AddEditNoteEvent.AddTagToNote -> addTagToNote(event.noteId, event.tagIds)
         }
     }
 
@@ -74,6 +74,16 @@ class AddEditNoteViewModel @Inject constructor(
                     it.isPinned != _noteState.value.isPinned ||
                     it.isArchived != _noteState.value.isArchived
         } ?: _noteState.value.title.isNotBlank() && _noteState.value.content.isNotBlank()
+    }
+
+    private fun addTagToNote(noteId: Int?, tagIds: List<Int>) {
+        viewModelScope.launch {
+            if (noteId != null) {
+                tagIds.forEach { tagId ->
+                    noteUseCases.addTagToNote(noteId, tagId)
+                }
+            }
+        }
     }
 
     private fun changeColor(color: Int) {
@@ -141,6 +151,44 @@ class AddEditNoteViewModel @Inject constructor(
                         isArchived = _noteState.value.isArchived,
                         id = _noteState.value.id
                     )
+                )
+            }
+        }
+    }
+
+    private fun getNote(noteId: Int?) {
+        if (noteId != null && noteId != -1) {
+            viewModelScope.launch {
+                noteUseCases.getNote(noteId)?.also { note ->
+                    originalNote = note
+                    _noteState.value = _noteState.value.copy(
+                        title = note.title,
+                        content = note.content,
+                        dateCreated = note.dateCreated,
+                        color = note.color,
+                        isPinned = note.isPinned,
+                        id = noteId
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getNoteTags() {
+        getNoteTagsJob?.cancel()
+        getNoteTagsJob = noteTageUseCases.getNoteTags().onEach { noteTags ->
+            _tagsState.value = _tagsState.value.copy(
+                tags = noteTags
+            )
+        }.launchIn(viewModelScope)
+    }
+
+    private fun getTagsByNoteId(noteId: Int?) {
+        if (noteId == null) return
+        viewModelScope.launch {
+            noteUseCases.getTagsByNoteId(noteId).collect { noteTags ->
+                _tagsByNoteId.value = _tagsByNoteId.value.copy(
+                    tags = noteTags
                 )
             }
         }

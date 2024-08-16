@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -35,11 +34,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
-import com.android.memosnap.data.sample.tags
+import com.android.memosnap.feature.note.domain.model.NoteTag
 
 @Composable
-fun TagListPopup(onDismiss: () -> Unit) {
-    val selectedTags = remember { mutableStateListOf<String>() }
+fun TagListPopup(
+    onDismiss: () -> Unit,
+    tagList: List<NoteTag>,
+    onClickAddTag: (List<Int>) -> Unit
+) {
+    val selectedTags = remember { mutableStateListOf<Int>() }
 
     Popup(onDismissRequest = onDismiss) {
         Box(
@@ -102,7 +105,7 @@ fun TagListPopup(onDismiss: () -> Unit) {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            items(tags) { tag ->
+                            items(tagList.size) { index ->
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -110,17 +113,17 @@ fun TagListPopup(onDismiss: () -> Unit) {
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Checkbox(
-                                        checked = selectedTags.contains(tag),
+                                        checked = selectedTags.contains(tagList[index].id),
                                         onCheckedChange = { isChecked ->
                                             if (isChecked) {
-                                                selectedTags.add(tag)
+                                                tagList[index].id?.let { selectedTags.add(it) }
                                             } else {
-                                                selectedTags.remove(tag)
+                                                selectedTags.remove(tagList[index].id)
                                             }
                                         }
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text(text = tag, fontSize = 12.sp)
+                                    Text(text = tagList[index].name, fontSize = 12.sp)
                                 }
                             }
                         }
@@ -137,7 +140,7 @@ fun TagListPopup(onDismiss: () -> Unit) {
                         }
 
                         TextButton(onClick = {
-                            // Handle OK click
+                            onClickAddTag(selectedTags.toList())
                         }) {
                             Text(text = "OK")
                         }

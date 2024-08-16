@@ -43,7 +43,10 @@ fun HomeScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
         ) {
-            HomeScreenAppBar()
+            HomeScreenAppBar(
+                onArchiveClick = {},
+                onTagsClick = { navController.navigate(Screen.NoteTags.route) }
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()

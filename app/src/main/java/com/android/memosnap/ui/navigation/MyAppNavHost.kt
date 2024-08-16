@@ -9,6 +9,8 @@ import androidx.navigation.navArgument
 import com.android.memosnap.feature.note.presentation.addeditnote.AddEditNoteScreen
 import com.android.memosnap.feature.note.presentation.archivednotes.ArchivedNotesScreen
 import com.android.memosnap.feature.note.presentation.notes.HomeScreen
+import com.android.memosnap.feature.note.presentation.notesbytag.NotesByTagScreen
+import com.android.memosnap.feature.note.presentation.notetags.NoteTagScreen
 import com.android.memosnap.ui.screens.DailyTaskScreen
 import com.android.memosnap.ui.screens.Screen
 import com.android.memosnap.ui.screens.SearchScreen
@@ -21,6 +23,16 @@ fun MyAppNavHost(navController: NavHostController) {
         composable(Screen.Home.route) { HomeScreen(navController) }
         composable(Screen.Search.route) { SearchScreen() }
         composable(Screen.DailyTask.route) { DailyTaskScreen() }
+        composable(Screen.NoteTags.route) { NoteTagScreen(navController) }
+
+        composable(
+            route = Screen.NotesByTags.route + "?tagId={tagId}",
+            arguments = listOf(navArgument("tagId") {
+                type = NavType.IntType; defaultValue = -1
+            })
+        ) {
+            NotesByTagScreen(navController = navController)
+        }
 
         composable(
             route = Screen.AddEditNote.route + "?noteId={noteId}",

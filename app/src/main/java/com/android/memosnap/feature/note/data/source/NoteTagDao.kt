@@ -5,6 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import com.android.memosnap.feature.note.domain.model.Note
 import com.android.memosnap.feature.note.domain.model.NoteTag
 import kotlinx.coroutines.flow.Flow
 
@@ -18,4 +20,16 @@ interface NoteTagDao {
 
     @Delete
     suspend fun deleteNoteTag(noteTag: NoteTag)
+
+    // Get notes by tagId
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM note 
+        INNER JOIN NoteTagCrossRef 
+        ON note.id = NoteTagCrossRef.noteId
+        WHERE NoteTagCrossRef.tagId = :tagId
+    """
+    )
+    fun getNotesByTag(tagId: Int): Flow<List<Note>>
 }

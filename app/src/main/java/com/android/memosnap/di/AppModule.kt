@@ -8,13 +8,16 @@ import com.android.memosnap.feature.note.data.source.NoteDatabase
 import com.android.memosnap.feature.note.domain.repository.NoteRepository
 import com.android.memosnap.feature.note.domain.repository.NoteTagRepository
 import com.android.memosnap.feature.note.domain.usecase.note.AddNote
+import com.android.memosnap.feature.note.domain.usecase.note.AddTagToNote
 import com.android.memosnap.feature.note.domain.usecase.note.DeleteNote
 import com.android.memosnap.feature.note.domain.usecase.note.GetNote
 import com.android.memosnap.feature.note.domain.usecase.note.GetNotes
+import com.android.memosnap.feature.note.domain.usecase.note.GetTagsByNoteId
 import com.android.memosnap.feature.note.domain.usecase.note.NoteUseCases
 import com.android.memosnap.feature.note.domain.usecase.notetag.AddNoteTag
 import com.android.memosnap.feature.note.domain.usecase.notetag.DeleteNoteTag
 import com.android.memosnap.feature.note.domain.usecase.notetag.GetNoteTags
+import com.android.memosnap.feature.note.domain.usecase.notetag.GetNotesByTagId
 import com.android.memosnap.feature.note.domain.usecase.notetag.NoteTagUseCases
 import dagger.Module
 import dagger.Provides
@@ -49,7 +52,9 @@ object AppModule {
             getNotes = GetNotes(repository),
             deleteNote = DeleteNote(repository),
             addNote = AddNote(repository),
-            getNote = GetNote(repository)
+            getNote = GetNote(repository),
+            getTagsByNoteId = GetTagsByNoteId(repository),
+            addTagToNote = AddTagToNote(repository)
         )
     }
 
@@ -65,7 +70,8 @@ object AppModule {
         return NoteTagUseCases(
             getNoteTags = GetNoteTags(repository),
             deleteNoteTag = DeleteNoteTag(repository),
-            addNoteTag = AddNoteTag(repository)
+            addNoteTag = AddNoteTag(repository),
+            getNotesByTag = GetNotesByTagId(repository)
         )
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -25,12 +26,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomeScreenAppBar() {
+fun HomeScreenAppBar(
+    onTagsClick: () -> Unit,
+    onArchiveClick: () -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(75.dp)
             .background(MaterialTheme.colorScheme.surface)
             .padding(top = 16.dp, bottom = 16.dp, start = 24.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -65,6 +70,8 @@ fun HomeScreenAppBar() {
 
                 HomeScreenOptionsMenu(
                     onDismissed = { expanded = false },
+                    onArchiveClick = onArchiveClick,
+                    onTagsClick = onTagsClick,
                     expanded = expanded
                 )
             }

@@ -36,6 +36,7 @@ fun AddEditNoteScreen(
     viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
     val noteState = viewModel.noteState
+    val noteTagsState = viewModel.tagsState
     val uiState = viewModel.uiState
 
     val isSaveEnabled = viewModel.isNoteEdited()
@@ -76,7 +77,11 @@ fun AddEditNoteScreen(
             },
             isPinned = noteState.value.isPinned,
             isArchived = noteState.value.isArchived,
-            isSaveEnabled = isSaveEnabled
+            isSaveEnabled = isSaveEnabled,
+            tagList = noteTagsState.value.tags,
+            onClickAddTag = {
+                viewModel.onEvent(AddEditNoteEvent.AddTagToNote(noteState.value.id, it))
+            }
         )
 
         Column(
