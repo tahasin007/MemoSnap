@@ -105,7 +105,7 @@ fun AddEditNoteAppBar(
                     )
                 }
 
-                MoreOptionsMenu(
+                AddEditNoteMoreOptionsMenu(
                     onArchiveClick = onArchiveClick,
                     onDeleteClick = onDeleteClick,
                     onDismissed = { expanded = false },

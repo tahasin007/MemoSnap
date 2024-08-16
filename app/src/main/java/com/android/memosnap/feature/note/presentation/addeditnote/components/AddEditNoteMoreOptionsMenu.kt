@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 
 @Composable
-fun MoreOptionsMenu(
+fun AddEditNoteMoreOptionsMenu(
     onArchiveClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onDismissed: () -> Unit,
@@ -40,7 +40,7 @@ fun MoreOptionsMenu(
     ) {
         AddEditDropdownMenuItem(
             icon = Icons.Outlined.Tag,
-            text = "Tag",
+            text = "Add Tag",
             onClick = {
                 onDismissed()
                 showTagPopup = true
