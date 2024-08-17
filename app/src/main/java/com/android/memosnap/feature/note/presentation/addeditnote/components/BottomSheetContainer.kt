@@ -38,10 +38,10 @@ import com.android.memosnap.ui.theme.Teal
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetContainer(
-    isBottomSheetOpen: Boolean = false,
     onDismiss: (Boolean) -> Unit,
     noteColor: Color,
-    onColorChange: (Int) -> Unit
+    onColorChange: (Int) -> Unit,
+    isBottomSheetOpen: Boolean = false
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
 

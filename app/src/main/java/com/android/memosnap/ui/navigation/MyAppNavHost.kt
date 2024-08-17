@@ -10,7 +10,7 @@ import com.android.memosnap.feature.note.presentation.addeditnote.AddEditNoteScr
 import com.android.memosnap.feature.note.presentation.archivednotes.ArchivedNotesScreen
 import com.android.memosnap.feature.note.presentation.notes.HomeScreen
 import com.android.memosnap.feature.note.presentation.notesbytag.NotesByTagScreen
-import com.android.memosnap.feature.note.presentation.notetags.NoteTagScreen
+import com.android.memosnap.feature.note.presentation.tags.NoteTagScreen
 import com.android.memosnap.ui.screens.DailyTaskScreen
 import com.android.memosnap.ui.screens.Screen
 import com.android.memosnap.ui.screens.SearchScreen

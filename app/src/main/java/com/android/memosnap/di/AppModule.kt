@@ -14,6 +14,7 @@ import com.android.memosnap.feature.note.domain.usecase.note.GetNote
 import com.android.memosnap.feature.note.domain.usecase.note.GetNotes
 import com.android.memosnap.feature.note.domain.usecase.note.GetTagsByNoteId
 import com.android.memosnap.feature.note.domain.usecase.note.NoteUseCases
+import com.android.memosnap.feature.note.domain.usecase.note.RemoveTagFromNote
 import com.android.memosnap.feature.note.domain.usecase.notetag.AddNoteTag
 import com.android.memosnap.feature.note.domain.usecase.notetag.DeleteNoteTag
 import com.android.memosnap.feature.note.domain.usecase.notetag.GetNoteTags
@@ -54,7 +55,8 @@ object AppModule {
             addNote = AddNote(repository),
             getNote = GetNote(repository),
             getTagsByNoteId = GetTagsByNoteId(repository),
-            addTagToNote = AddTagToNote(repository)
+            addTagToNote = AddTagToNote(repository),
+            removeTagFromNote = RemoveTagFromNote(repository)
         )
     }
 

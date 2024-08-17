@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.presentation.notetags
+package com.android.memosnap.feature.note.presentation.tags
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +20,9 @@ class NoteTagsViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = mutableStateOf(NoteTagsState())
     val state: State<NoteTagsState> = _state
+
+    private val _uiState = mutableStateOf(NoteTagsUIState())
+    val uiState: State<NoteTagsUIState> = _uiState
 
     private var getNotesJob: Job? = null
 

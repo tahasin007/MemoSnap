@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.presentation.notetags.components
+package com.android.memosnap.feature.note.presentation.tags.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,11 +32,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.android.memosnap.feature.note.domain.model.NoteTag
 
 @Composable
 fun AddNoteTagPopup(
     onDismiss: () -> Unit,
-    addTag: (String) -> Unit
+    addTag: (String) -> Unit,
+    noteTags: List<NoteTag>
 ) {
     var tagName by remember { mutableStateOf("") }
     var isError by remember { mutableStateOf(false) }
@@ -73,9 +75,10 @@ fun AddNoteTagPopup(
 
                     TextField(
                         value = tagName,
-                        onValueChange = {
-                            tagName = it
-                            isError = tagName.isEmpty()
+                        onValueChange = { tag ->
+                            tagName = tag
+                            isError =
+                                tagName.isEmpty() && noteTags.count { it.name == tagName } == 0
                         },
                         label = { Text(text = "Tag Name") },
                         modifier = Modifier.fillMaxWidth(),
@@ -89,7 +92,9 @@ fun AddNoteTagPopup(
                     )
 
                     Text(
-                        text = "Tag can't be empty",
+                        text = if (tagName.isEmpty()) "Tag can't be empty"
+                        else if (noteTags.count { it.name == tagName } > 0) "Tag already exists"
+                        else "",
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.alpha(if (isError) 1f else 0f)
@@ -107,8 +112,11 @@ fun AddNoteTagPopup(
                         }
 
                         TextButton(
-                            onClick = { addTag(tagName) },
-                            enabled = tagName.isNotEmpty()
+                            onClick = {
+                                onDismiss()
+                                addTag(tagName)
+                            },
+                            enabled = tagName.isNotEmpty() && noteTags.count { it.name == tagName } == 0
                         ) {
                             Text(text = "Add")
                         }

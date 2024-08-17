@@ -39,10 +39,14 @@ import com.android.memosnap.feature.note.domain.model.NoteTag
 @Composable
 fun TagListPopup(
     onDismiss: () -> Unit,
+    addNewTag: () -> Unit,
     tagList: List<NoteTag>,
-    onClickAddTag: (List<Int>) -> Unit
+    initiallySelectedTags: List<NoteTag>, // Pass the previously selected tags
+    onClickAddTag: (List<NoteTag>) -> Unit // Return the entire list of selected tags
 ) {
-    val selectedTags = remember { mutableStateListOf<Int>() }
+    // Pre-populate the selectedTags with the initially selected tags
+    val selectedTags =
+        remember { mutableStateListOf<NoteTag>().apply { addAll(initiallySelectedTags) } }
 
     Popup(onDismissRequest = onDismiss) {
         Box(
@@ -59,7 +63,7 @@ fun TagListPopup(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
-                        // Do nothing, to prevent dismissing when clicking on the Card
+                        // Prevent dismissing when clicking on the Card
                     },
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
@@ -87,7 +91,8 @@ fun TagListPopup(
                         )
 
                         IconButton(onClick = {
-                            // Handle "Add" action for new tag
+                            onDismiss()
+                            addNewTag()
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Add,
@@ -106,6 +111,7 @@ fun TagListPopup(
                             modifier = Modifier.fillMaxSize()
                         ) {
                             items(tagList.size) { index ->
+                                val tag = tagList[index]
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -113,17 +119,17 @@ fun TagListPopup(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Checkbox(
-                                        checked = selectedTags.contains(tagList[index].id),
+                                        checked = selectedTags.contains(tag), // Check if tag is selected
                                         onCheckedChange = { isChecked ->
                                             if (isChecked) {
-                                                tagList[index].id?.let { selectedTags.add(it) }
+                                                selectedTags.add(tag)
                                             } else {
-                                                selectedTags.remove(tagList[index].id)
+                                                selectedTags.remove(tag)
                                             }
                                         }
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text(text = tagList[index].name, fontSize = 12.sp)
+                                    Text(text = tag.name, fontSize = 12.sp)
                                 }
                             }
                         }
@@ -140,7 +146,8 @@ fun TagListPopup(
                         }
 
                         TextButton(onClick = {
-                            onClickAddTag(selectedTags.toList())
+                            onDismiss()
+                            onClickAddTag(selectedTags.toList()) // Pass selected tags to the callback
                         }) {
                             Text(text = "OK")
                         }

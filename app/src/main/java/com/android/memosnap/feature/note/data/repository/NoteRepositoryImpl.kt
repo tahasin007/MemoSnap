@@ -19,8 +19,8 @@ class NoteRepositoryImpl(
         return dao.getNoteById(noteId)
     }
 
-    override suspend fun insertNote(note: Note) {
-        dao.insertNote(note)
+    override suspend fun insertNote(note: Note): Long {
+        return dao.insertNote(note)
     }
 
     override suspend fun deleteNote(note: Note) {
@@ -34,5 +34,9 @@ class NoteRepositoryImpl(
     override suspend fun addTagToNote(noteId: Int, tagId: Int) {
         val crossRef = NoteTagCrossRef(noteId = noteId, tagId = tagId)
         dao.insertNoteTagCrossRef(crossRef)
+    }
+
+    override suspend fun removeTagFromNote(noteId: Int, tagId: Int) {
+        dao.removeTagFromNote(noteId, tagId)
     }
 }

@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.presentation.notetags.components
+package com.android.memosnap.feature.note.presentation.tags.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,13 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.memosnap.feature.note.domain.model.NoteTag
 
 @Composable
 fun NoteTagsAppBar(
     onClickBack: () -> Unit,
     onClickAdd: () -> Unit,
     addTag: (String) -> Unit,
-    deleteTag: (String) -> Unit
+    deleteTag: (String) -> Unit,
+    noteTags: List<NoteTag>
 ) {
     var showAddTagPopup by remember { mutableStateOf(false) }
 
@@ -81,7 +83,8 @@ fun NoteTagsAppBar(
             addTag = {
                 showAddTagPopup = true
                 addTag(it)
-            }
+            },
+            noteTags = noteTags
         )
     }
 }

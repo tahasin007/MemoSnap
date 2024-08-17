@@ -24,11 +24,13 @@ fun AddEditNoteMoreOptionsMenu(
     onArchiveClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onDismissed: () -> Unit,
-    menuWidth: Dp = 150.dp,
-    expanded: Boolean = false,
+    addNewTag: () -> Unit,
     isArchived: Boolean,
     tagList: List<NoteTag>,
-    onClickAddTag: (List<Int>) -> Unit
+    initiallySelectedTags: List<NoteTag>,
+    onClickAddTag: (List<NoteTag>) -> Unit,
+    menuWidth: Dp = 150.dp,
+    expanded: Boolean = false
 ) {
     var showTagPopup by remember { mutableStateOf(false) }
 
@@ -71,7 +73,9 @@ fun AddEditNoteMoreOptionsMenu(
     if (showTagPopup) {
         TagListPopup(
             onDismiss = { showTagPopup = false },
+            addNewTag = addNewTag,
             tagList = tagList,
+            initiallySelectedTags = initiallySelectedTags,
             onClickAddTag = onClickAddTag
         )
     }

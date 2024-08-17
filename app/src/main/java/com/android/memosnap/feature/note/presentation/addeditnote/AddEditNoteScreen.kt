@@ -4,10 +4,10 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +28,8 @@ import androidx.navigation.NavHostController
 import com.android.memosnap.feature.note.presentation.addeditnote.components.AddEditNoteAppBar
 import com.android.memosnap.feature.note.presentation.addeditnote.components.BottomSheetContainer
 import com.android.memosnap.feature.note.presentation.addeditnote.components.EditeNoteTextField
+import com.android.memosnap.feature.note.presentation.addeditnote.components.TagListView
+import com.android.memosnap.ui.screens.Screen
 import com.android.memosnap.utils.NoteUtils
 
 @Composable
@@ -35,14 +37,15 @@ fun AddEditNoteScreen(
     navController: NavHostController,
     viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
-    val noteState = viewModel.noteState
-    val noteTagsState = viewModel.tagsState
-    val uiState = viewModel.uiState
+    val note = viewModel.noteState.value
+    val tags = viewModel.tagsState.value
+    val tagsByNoteId = viewModel.tagsByNoteId.value
+    val uiState = viewModel.uiState.value
 
     val isSaveEnabled = viewModel.isNoteEdited()
 
     val backgroundColor by animateColorAsState(
-        targetValue = Color(noteState.value.color),
+        targetValue = Color(note.color),
         animationSpec = tween(durationMillis = 500), label = ""
     )
 
@@ -54,95 +57,106 @@ fun AddEditNoteScreen(
         AddEditNoteAppBar(
             backgroundColor = backgroundColor,
             onBackClick = { navController.popBackStack() },
-            onSaveClick = {
+            onSaveNoteClick = {
                 viewModel.onEvent(AddEditNoteEvent.SaveNote)
                 navController.popBackStack()
             },
             onPaletteClick = {
                 viewModel.onEvent(
                     AddEditNoteEvent.ChangeBottomSheetVisibility(
-                        uiState.value.isBottomSheetOpen.not()
+                        uiState.isBottomSheetOpen.not()
                     )
                 )
             },
-            onPinClick = {
-                viewModel.onEvent(AddEditNoteEvent.ChangePinnedStatus(noteState.value.isPinned.not()))
+            onPinNoteClick = {
+                viewModel.onEvent(AddEditNoteEvent.ChangePinnedStatus(note.isPinned.not()))
             },
             onArchiveClick = {
-                viewModel.onEvent(AddEditNoteEvent.ChangeArchiveStatus(noteState.value.isArchived.not()))
+                viewModel.onEvent(AddEditNoteEvent.ChangeArchiveStatus(note.isArchived.not()))
             },
-            onDeleteClick = {
+            onDeleteNoteClick = {
                 viewModel.onEvent(AddEditNoteEvent.DeleteNote)
                 navController.popBackStack()
             },
-            isPinned = noteState.value.isPinned,
-            isArchived = noteState.value.isArchived,
+            addNewTag = {
+                navController.navigate(Screen.NoteTags.route + "?showAddTagPopup=true")
+            },
+            isPinned = note.isPinned,
+            isArchived = note.isArchived,
             isSaveEnabled = isSaveEnabled,
-            tagList = noteTagsState.value.tags,
+            tagList = tags.tags,
+            initiallySelectedTags = tagsByNoteId.tags,
             onClickAddTag = {
-                viewModel.onEvent(AddEditNoteEvent.AddTagToNote(noteState.value.id, it))
+                viewModel.onEvent(AddEditNoteEvent.AddTagToNote(it))
             }
         )
 
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(backgroundColor)
                 .padding(16.dp)
         ) {
-            EditeNoteTextField(
-                text = noteState.value.title,
-                hint = "Title",
-                onValueChange = {
-                    viewModel.onEvent(AddEditNoteEvent.EnteredTitle(it))
-                },
-                maxLines = 2,
-                textSize = 24.sp
-            )
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
+            // Wrap TextField and TagList in Column so they adjust relative to each other
+            Column(
+                modifier = Modifier.fillMaxSize()
             ) {
-                Text(
-                    text = noteState.value.dateCreated,
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-                    fontSize = 14.sp,
-                    fontStyle = FontStyle.Italic,
+                EditeNoteTextField(
+                    text = note.title,
+                    hint = "Title",
+                    onValueChange = {
+                        viewModel.onEvent(AddEditNoteEvent.EnteredTitle(it))
+                    },
+                    maxLines = 2,
+                    textSize = 24.sp
                 )
 
-                Text(
-                    text = "  |  ${NoteUtils.getTotalCharacters(noteState.value.content)} characters",
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-                    fontSize = 14.sp
+                Spacer(modifier = Modifier.height(5.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Text(
+                        text = note.dateCreated,
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                        fontSize = 14.sp,
+                        fontStyle = FontStyle.Italic,
+                    )
+
+                    Text(
+                        text = "  |  ${NoteUtils.getTotalCharacters(note.content)} characters",
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                        fontSize = 14.sp
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(5.dp))
+
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 1.dp),
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.75f)
                 )
+
+                EditeNoteTextField(
+                    text = note.content,
+                    hint = "Add Note",
+                    onValueChange = {
+                        viewModel.onEvent(AddEditNoteEvent.EnteredBody(it))
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    textSize = 16.sp
+                )
+
+                TagListView(tags = tagsByNoteId.tags)
             }
 
-            Spacer(modifier = Modifier.height(5.dp))
-
-            HorizontalDivider(
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 1.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.75f)
-            )
-
-            EditeNoteTextField(
-                text = noteState.value.content,
-                hint = "Add Note",
-                onValueChange = {
-                    viewModel.onEvent(AddEditNoteEvent.EnteredBody(it))
-                },
-                modifier = Modifier.fillMaxHeight(),
-                textSize = 16.sp
-            )
-
             BottomSheetContainer(
-                isBottomSheetOpen = uiState.value.isBottomSheetOpen,
+                isBottomSheetOpen = uiState.isBottomSheetOpen,
                 noteColor = backgroundColor,
                 onDismiss = {
                     viewModel.onEvent(AddEditNoteEvent.ChangeBottomSheetVisibility(it))

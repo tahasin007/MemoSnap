@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.presentation.notetags
+package com.android.memosnap.feature.note.presentation.tags
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.android.memosnap.feature.note.presentation.notetags.components.NoteTagsAppBar
+import com.android.memosnap.feature.note.presentation.tags.components.NoteTagsAppBar
 import com.android.memosnap.ui.screens.Screen
 
 @Composable
@@ -32,21 +32,25 @@ fun NoteTagScreen(
     navController: NavController,
     viewModel: NoteTagsViewModel = hiltViewModel()
 ) {
-    val noteTagsState = viewModel.state.value
+    val noteTags = viewModel.state.value
+    val uiScreen = viewModel.state.value
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-        NoteTagsAppBar(onClickBack = { navController.popBackStack() },
+        NoteTagsAppBar(
+            onClickBack = { navController.popBackStack() },
             onClickAdd = {},
             addTag = {
                 viewModel.onEvent(NoteTagsEvent.AddNewTag(it))
             },
             deleteTag = {
                 viewModel.onEvent(NoteTagsEvent.DeleteTag(it))
-            })
+            },
+            noteTags = noteTags.tags
+        )
 
         Column(
             modifier = Modifier
@@ -55,7 +59,7 @@ fun NoteTagScreen(
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(noteTagsState.tags.size) { index ->
+                items(noteTags.tags.size) { index ->
                     Card(
                         modifier = Modifier
                             .padding(horizontal = 32.dp)
@@ -63,7 +67,7 @@ fun NoteTagScreen(
                             .clickable {
                                 navController.navigate(
                                     Screen.NotesByTags.route +
-                                            "?tagId=${noteTagsState.tags[index].id}"
+                                            "?tagId=${noteTags.tags[index].id}"
                                 )
                             },
                         shape = RoundedCornerShape(12.dp),
@@ -78,7 +82,7 @@ fun NoteTagScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = noteTagsState.tags[index].name,
+                                text = noteTags.tags[index].name,
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface

@@ -34,16 +34,18 @@ import com.android.memosnap.feature.note.domain.model.NoteTag
 fun AddEditNoteAppBar(
     backgroundColor: Color,
     onBackClick: () -> Unit,
-    onSaveClick: () -> Unit,
+    onSaveNoteClick: () -> Unit,
     onPaletteClick: () -> Unit,
-    onPinClick: () -> Unit,
+    onPinNoteClick: () -> Unit,
     onArchiveClick: () -> Unit,
-    onDeleteClick: () -> Unit,
+    onDeleteNoteClick: () -> Unit,
+    addNewTag: () -> Unit,
     isPinned: Boolean,
     isArchived: Boolean,
     isSaveEnabled: Boolean,
     tagList: List<NoteTag>,
-    onClickAddTag: (List<Int>) -> Unit
+    initiallySelectedTags: List<NoteTag>,
+    onClickAddTag: (List<NoteTag>) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -68,7 +70,7 @@ fun AddEditNoteAppBar(
         Row(verticalAlignment = Alignment.CenterVertically) {
             // Save Button
             IconButton(
-                onClick = onSaveClick,
+                onClick = onSaveNoteClick,
                 enabled = isSaveEnabled,
                 modifier = Modifier.alpha(if (isSaveEnabled) 1f else 0.5f)
             ) {
@@ -89,7 +91,7 @@ fun AddEditNoteAppBar(
             }
 
             // Pin Button
-            IconButton(onClick = onPinClick) {
+            IconButton(onClick = onPinNoteClick) {
                 Icon(
                     imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
                     contentDescription = "Pin",
@@ -112,11 +114,13 @@ fun AddEditNoteAppBar(
 
                 AddEditNoteMoreOptionsMenu(
                     onArchiveClick = onArchiveClick,
-                    onDeleteClick = onDeleteClick,
+                    onDeleteClick = onDeleteNoteClick,
                     onDismissed = { expanded = false },
+                    addNewTag = addNewTag,
                     expanded = expanded,
                     isArchived = isArchived,
                     tagList = tagList,
+                    initiallySelectedTags = initiallySelectedTags,
                     onClickAddTag = onClickAddTag
                 )
             }

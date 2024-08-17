@@ -6,5 +6,6 @@ data class NoteUseCases(
     val addNote: AddNote,
     val getNote: GetNote,
     val getTagsByNoteId: GetTagsByNoteId,
-    val addTagToNote: AddTagToNote
+    val addTagToNote: AddTagToNote,
+    val removeTagFromNote: RemoveTagFromNote
 )

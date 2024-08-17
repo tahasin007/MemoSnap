@@ -10,11 +10,13 @@ interface NoteRepository {
 
     suspend fun getNoteById(noteId: Int): Note?
 
-    suspend fun insertNote(note: Note)
+    suspend fun insertNote(note: Note): Long
 
     suspend fun deleteNote(note: Note)
 
     fun getTagsByNoteId(noteId: Int): Flow<List<NoteTag>>
 
     suspend fun addTagToNote(noteId: Int, tagId: Int)
+
+    suspend fun removeTagFromNote(noteId: Int, tagId: Int)
 }
