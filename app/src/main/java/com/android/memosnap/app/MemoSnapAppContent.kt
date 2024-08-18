@@ -36,9 +36,8 @@ fun MemoSnapAppContent() {
             Scaffold(
                 bottomBar = {
                     if (currentRoute == null ||
-                        (currentRoute.contains(Screen.AddEditNote.route).not() &&
-                                currentRoute.contains(Screen.NotesByTags.route).not() &&
-                                currentRoute.contains(Screen.NoteTags.route).not())
+                        (currentRoute.contains(Screen.Home.route) ||
+                                currentRoute.contains(Screen.DailyTask.route))
                     ) {
                         FluidBottomNavigationBar(
                             navController = navController,

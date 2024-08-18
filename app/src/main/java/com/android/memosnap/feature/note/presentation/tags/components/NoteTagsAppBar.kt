@@ -61,7 +61,7 @@ fun NoteTagsAppBar(
             Text(
                 text = "Tags",
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = 16.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge
             )

@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.presentation.notesbytag.component
+package com.android.memosnap.feature.note.presentation.archivednotes.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,10 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun NotesByTagAppBar(
-    onClickBack: () -> Unit,
-    tag: String
-) {
+fun ArchivedNotesAppBar(onClickBack: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,7 +43,7 @@ fun NotesByTagAppBar(
         }
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = tag,
+            text = "Archived Notes",
             color = MaterialTheme.colorScheme.primary,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
