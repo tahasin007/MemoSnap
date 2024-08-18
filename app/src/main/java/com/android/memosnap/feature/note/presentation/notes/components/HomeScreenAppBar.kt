@@ -21,7 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.W900
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -44,8 +44,8 @@ fun HomeScreenAppBar(
         Text(
             text = "MemoSnap",
             color = MaterialTheme.colorScheme.primary,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.ExtraBold,
+            fontSize = 32.sp,
+            fontWeight = W900,
             style = MaterialTheme.typography.titleLarge
         )
 

@@ -33,7 +33,7 @@ fun FluidBottomNavigationBar(
         BottomBarTab.Drawer,
 //        BottomBarTab.Archived,
         BottomBarTab.Home,
-        BottomBarTab.Search,
+//        BottomBarTab.Search,
         BottomBarTab.DailyTask
     )
 
@@ -47,7 +47,7 @@ fun FluidBottomNavigationBar(
             .height(70.dp)
             .background(MaterialTheme.colorScheme.surface)
             .animateContentSize(),
-        containerColor = MaterialTheme.colorScheme.primary,
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         tabs.forEach { tab ->
             val selected = currentRoute == tab.route
@@ -89,7 +89,7 @@ fun FluidBottomNavigationBar(
                     selectedIconColor = MaterialTheme.colorScheme.surface,
                     selectedTextColor = MaterialTheme.colorScheme.surface,
                     selectedIndicatorColor = MaterialTheme.colorScheme.secondary,
-                    unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedIconColor = MaterialTheme.colorScheme.primary,
                     unselectedTextColor = MaterialTheme.colorScheme.onSurface,
                     disabledIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                     disabledTextColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),

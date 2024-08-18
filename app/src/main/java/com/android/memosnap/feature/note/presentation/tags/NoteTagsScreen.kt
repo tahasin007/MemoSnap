@@ -63,7 +63,7 @@ fun NoteTagScreen(
                 items(noteTags.tags.size) { index ->
                     Card(
                         modifier = Modifier
-                            .padding(horizontal = 32.dp)
+                            .padding(horizontal = 24.dp, vertical = 2.dp)
                             .fillMaxWidth()
                             .clickable {
                                 navController.navigate(
