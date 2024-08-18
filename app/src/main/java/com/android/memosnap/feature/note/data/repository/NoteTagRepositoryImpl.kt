@@ -24,4 +24,8 @@ class NoteTagRepositoryImpl(
     override fun getNotesByTagId(tagId: Int): Flow<List<Note>> {
         return dao.getNotesByTag(tagId)
     }
+
+    override suspend fun getTagById(tagId: Int): NoteTag {
+        return dao.getTagById(tagId)
+    }
 }

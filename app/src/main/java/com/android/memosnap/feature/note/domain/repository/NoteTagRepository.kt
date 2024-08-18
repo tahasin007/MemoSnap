@@ -12,4 +12,6 @@ interface NoteTagRepository {
     suspend fun deleteNoteTag(noteTag: NoteTag)
 
     fun getNotesByTagId(tagId: Int): Flow<List<Note>>
+
+    suspend fun getTagById(tagId: Int): NoteTag
 }

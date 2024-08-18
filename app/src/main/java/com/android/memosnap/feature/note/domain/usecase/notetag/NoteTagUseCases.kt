@@ -4,5 +4,6 @@ data class NoteTagUseCases(
     val getNoteTags: GetNoteTags,
     val deleteNoteTag: DeleteNoteTag,
     val addNoteTag: AddNoteTag,
-    val getNotesByTag: GetNotesByTagId
+    val getNotesByTag: GetNotesByTagId,
+    val getTagById: GetNoteTag
 )

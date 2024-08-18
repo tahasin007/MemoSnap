@@ -31,7 +31,7 @@ fun FluidBottomNavigationBar(
 ) {
     val tabs = listOf(
         BottomBarTab.Drawer,
-        BottomBarTab.Archived,
+//        BottomBarTab.Archived,
         BottomBarTab.Home,
         BottomBarTab.Search,
         BottomBarTab.DailyTask

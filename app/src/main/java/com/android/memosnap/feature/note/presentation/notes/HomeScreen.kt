@@ -44,7 +44,7 @@ fun HomeScreen(
                 .background(MaterialTheme.colorScheme.surface)
         ) {
             HomeScreenAppBar(
-                onArchiveClick = {},
+                onArchiveClick = { navController.navigate(Screen.ArchivedNotes.route) },
                 onTagsClick = { navController.navigate(Screen.NoteTags.route) }
             )
             Column(

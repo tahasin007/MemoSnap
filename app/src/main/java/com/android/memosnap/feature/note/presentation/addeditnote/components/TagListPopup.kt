@@ -33,7 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.Dialog
 import com.android.memosnap.feature.note.domain.model.NoteTag
 
 @Composable
@@ -48,7 +48,7 @@ fun TagListPopup(
     val selectedTags =
         remember { mutableStateListOf<NoteTag>().apply { addAll(initiallySelectedTags) } }
 
-    Popup(onDismissRequest = onDismiss) {
+    Dialog(onDismissRequest = onDismiss) {
         Box(
             modifier = Modifier
                 .fillMaxSize()

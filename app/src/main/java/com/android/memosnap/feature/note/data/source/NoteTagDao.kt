@@ -32,4 +32,7 @@ interface NoteTagDao {
     """
     )
     fun getNotesByTag(tagId: Int): Flow<List<Note>>
+
+    @Query("SELECT * FROM notetag WHERE id = :tagId")
+    suspend fun getTagById(tagId: Int): NoteTag
 }
