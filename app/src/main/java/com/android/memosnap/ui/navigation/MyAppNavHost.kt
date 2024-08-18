@@ -23,7 +23,13 @@ fun MyAppNavHost(navController: NavHostController) {
         composable(Screen.Home.route) { HomeScreen(navController) }
         composable(Screen.Search.route) { SearchScreen() }
         composable(Screen.DailyTask.route) { DailyTaskScreen() }
-        composable(Screen.NoteTags.route) { NoteTagScreen(navController) }
+
+        composable(
+            route = Screen.NoteTags.route + "?showAddTagPopup={showAddTagPopup}",
+            arguments = listOf(navArgument("showAddTagPopup") {
+                type = NavType.BoolType; defaultValue = false
+            })
+        ) { NoteTagScreen(navController) }
 
         composable(
             route = Screen.NotesByTags.route + "?tagId={tagId}",
@@ -35,10 +41,15 @@ fun MyAppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddEditNote.route + "?noteId={noteId}",
-            arguments = listOf(navArgument("noteId") {
-                type = NavType.IntType; defaultValue = -1
-            })
+            route = Screen.AddEditNote.route + "?noteId={noteId}&showTagListPopup={showTagListPopup}",
+            arguments = listOf(
+                navArgument("noteId") {
+                    type = NavType.IntType; defaultValue = -1
+                },
+                navArgument("showTagListPopup") {
+                    type = NavType.BoolType; defaultValue = false
+                }
+            )
         ) {
             AddEditNoteScreen(navController = navController)
         }

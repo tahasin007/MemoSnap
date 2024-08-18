@@ -24,6 +24,7 @@ class AddEditNoteViewModel @Inject constructor(
     private val noteTagUseCases: NoteTagUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
     private val _noteState = mutableStateOf(AddEditNoteState())
     val noteState: State<AddEditNoteState> = _noteState
 
@@ -43,7 +44,9 @@ class AddEditNoteViewModel @Inject constructor(
     private var getTagsByNoteIdJob: Job? = null
 
     init {
-        val noteId = savedStateHandle.get<Int>("noteId")
+        val noteId = savedStateHandle.get<Int>("noteId") ?: -1
+
+        // Initialize the note state based on the noteId
         setNoteState(noteId)
         getNoteTags()
         getTagsByNoteId(noteId)

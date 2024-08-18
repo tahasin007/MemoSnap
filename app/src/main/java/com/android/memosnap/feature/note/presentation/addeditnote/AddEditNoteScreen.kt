@@ -55,7 +55,6 @@ fun AddEditNoteScreen(
             .background(backgroundColor)
     ) {
         AddEditNoteAppBar(
-            backgroundColor = backgroundColor,
             onBackClick = { navController.popBackStack() },
             onSaveNoteClick = {
                 viewModel.onEvent(AddEditNoteEvent.SaveNote)
@@ -81,14 +80,16 @@ fun AddEditNoteScreen(
             addNewTag = {
                 navController.navigate(Screen.NoteTags.route + "?showAddTagPopup=true")
             },
+            onClickAddTag = {
+                viewModel.onEvent(AddEditNoteEvent.AddTagToNote(it))
+            },
+            backgroundColor = backgroundColor,
             isPinned = note.isPinned,
             isArchived = note.isArchived,
             isSaveEnabled = isSaveEnabled,
+            isTagListVisible = uiState.isTagListVisible,
             tagList = tags.tags,
-            initiallySelectedTags = tagsByNoteId.tags,
-            onClickAddTag = {
-                viewModel.onEvent(AddEditNoteEvent.AddTagToNote(it))
-            }
+            initiallySelectedTags = tagsByNoteId.tags
         )
 
         Box(

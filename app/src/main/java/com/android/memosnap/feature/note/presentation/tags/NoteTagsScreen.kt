@@ -33,7 +33,7 @@ fun NoteTagScreen(
     viewModel: NoteTagsViewModel = hiltViewModel()
 ) {
     val noteTags = viewModel.state.value
-    val uiScreen = viewModel.state.value
+    val uiState = viewModel.uiState.value
 
     Column(
         modifier = Modifier
@@ -49,7 +49,8 @@ fun NoteTagScreen(
             deleteTag = {
                 viewModel.onEvent(NoteTagsEvent.DeleteTag(it))
             },
-            noteTags = noteTags.tags
+            noteTags = noteTags.tags,
+            isAddTagPopupVisible = uiState.isAddTagPopupVisible
         )
 
         Column(

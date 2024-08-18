@@ -34,9 +34,10 @@ fun NoteTagsAppBar(
     onClickAdd: () -> Unit,
     addTag: (String) -> Unit,
     deleteTag: (String) -> Unit,
-    noteTags: List<NoteTag>
+    noteTags: List<NoteTag>,
+    isAddTagPopupVisible: Boolean = false
 ) {
-    var showAddTagPopup by remember { mutableStateOf(false) }
+    var showAddTagPopup by remember { mutableStateOf(isAddTagPopupVisible) }
 
     Row(
         modifier = Modifier
@@ -80,10 +81,7 @@ fun NoteTagsAppBar(
     if (showAddTagPopup) {
         AddNoteTagPopup(
             onDismiss = { showAddTagPopup = false },
-            addTag = {
-                showAddTagPopup = true
-                addTag(it)
-            },
+            addTag = { addTag(it) },
             noteTags = noteTags
         )
     }

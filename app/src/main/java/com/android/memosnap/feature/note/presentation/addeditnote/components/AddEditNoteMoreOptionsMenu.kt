@@ -29,10 +29,11 @@ fun AddEditNoteMoreOptionsMenu(
     tagList: List<NoteTag>,
     initiallySelectedTags: List<NoteTag>,
     onClickAddTag: (List<NoteTag>) -> Unit,
+    isTagListVisible: Boolean = false,
     menuWidth: Dp = 150.dp,
     expanded: Boolean = false
 ) {
-    var showTagPopup by remember { mutableStateOf(false) }
+    var showTagPopup by remember { mutableStateOf(isTagListVisible) }
 
     DropdownMenu(
         expanded = expanded,

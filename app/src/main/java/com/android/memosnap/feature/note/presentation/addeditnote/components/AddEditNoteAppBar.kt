@@ -32,7 +32,6 @@ import com.android.memosnap.feature.note.domain.model.NoteTag
 
 @Composable
 fun AddEditNoteAppBar(
-    backgroundColor: Color,
     onBackClick: () -> Unit,
     onSaveNoteClick: () -> Unit,
     onPaletteClick: () -> Unit,
@@ -40,12 +39,14 @@ fun AddEditNoteAppBar(
     onArchiveClick: () -> Unit,
     onDeleteNoteClick: () -> Unit,
     addNewTag: () -> Unit,
+    onClickAddTag: (List<NoteTag>) -> Unit,
+    backgroundColor: Color,
     isPinned: Boolean,
     isArchived: Boolean,
     isSaveEnabled: Boolean,
     tagList: List<NoteTag>,
     initiallySelectedTags: List<NoteTag>,
-    onClickAddTag: (List<NoteTag>) -> Unit
+    isTagListVisible: Boolean
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -117,11 +118,12 @@ fun AddEditNoteAppBar(
                     onDeleteClick = onDeleteNoteClick,
                     onDismissed = { expanded = false },
                     addNewTag = addNewTag,
-                    expanded = expanded,
                     isArchived = isArchived,
                     tagList = tagList,
                     initiallySelectedTags = initiallySelectedTags,
-                    onClickAddTag = onClickAddTag
+                    onClickAddTag = onClickAddTag,
+                    isTagListVisible = isTagListVisible,
+                    expanded = expanded,
                 )
             }
         }

@@ -2,6 +2,7 @@ package com.android.memosnap.feature.note.presentation.tags
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.memosnap.feature.note.domain.model.NoteTag
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteTagsViewModel @Inject constructor(
-    private val noteUseCases: NoteTagUseCases
+    private val noteUseCases: NoteTagUseCases,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = mutableStateOf(NoteTagsState())
     val state: State<NoteTagsState> = _state
@@ -27,6 +29,13 @@ class NoteTagsViewModel @Inject constructor(
     private var getNotesJob: Job? = null
 
     init {
+        val showAddTagPopup = savedStateHandle.get<Boolean>("showAddTagPopup")
+        if (showAddTagPopup == true) {
+            _uiState.value = _uiState.value.copy(
+                isAddTagPopupVisible = true,
+                shouldShowTagListInEditNoteScreen = true
+            )
+        }
         getNoteTags()
     }
 
