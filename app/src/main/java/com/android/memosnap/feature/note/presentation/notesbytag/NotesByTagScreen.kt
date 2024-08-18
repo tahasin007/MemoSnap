@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.android.memosnap.feature.note.presentation.notes.components.NoteCard
 import com.android.memosnap.feature.note.presentation.notesbytag.component.NotesByTagAppBar
+import com.android.memosnap.ui.component.EmptyNoteView
 
 @Composable
 fun NotesByTagScreen(
@@ -43,23 +44,30 @@ fun NotesByTagScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalItemSpacing = 8.dp
-            ) {
-                items(notes.notes.size) { index ->
-                    NoteCard(
-                        note = notes.notes[index],
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() }) {
-                            }
-                    )
+            if (notes.notes.isEmpty()) {
+                EmptyNoteView(
+                    title = "No Notes Found",
+                    description = "No notes found with this tag!",
+                )
+            } else {
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalItemSpacing = 8.dp
+                ) {
+                    items(notes.notes.size) { index ->
+                        NoteCard(
+                            note = notes.notes[index],
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = remember { MutableInteractionSource() }) {
+                                }
+                        )
+                    }
                 }
             }
         }

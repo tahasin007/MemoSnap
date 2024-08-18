@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.android.memosnap.feature.note.presentation.notes.components.NoteCard
+import com.android.memosnap.ui.component.EmptyNoteView
 import com.android.memosnap.ui.screens.Screen
 
 @Composable
@@ -34,27 +35,34 @@ fun ArchivedNotesScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalItemSpacing = 8.dp
-        ) {
-            items(noteState.notes.size) { index ->
-                NoteCard(
-                    note = noteState.notes[index],
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }) {
-                            navController.navigate(
-                                Screen.AddEditNote.route +
-                                        "?noteId=${noteState.notes[index].id}"
-                            )
-                        }
-                )
+        if (noteState.notes.isEmpty()) {
+            EmptyNoteView(
+                title = "No Notes Found",
+                description = "No archived notes found!"
+            )
+        } else {
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalItemSpacing = 8.dp
+            ) {
+                items(noteState.notes.size) { index ->
+                    NoteCard(
+                        note = noteState.notes[index],
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }) {
+                                navController.navigate(
+                                    Screen.AddEditNote.route +
+                                            "?noteId=${noteState.notes[index].id}"
+                                )
+                            }
+                    )
+                }
             }
         }
     }
