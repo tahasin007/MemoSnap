@@ -20,12 +20,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.android.memosnap.feature.dailytask.presentation.DailyTaskScreen
 import com.android.memosnap.feature.note.presentation.addeditnote.AddEditNoteScreen
 import com.android.memosnap.feature.note.presentation.archivednotes.ArchivedNotesScreen
 import com.android.memosnap.feature.note.presentation.notes.HomeScreen
 import com.android.memosnap.feature.note.presentation.notesbytag.NotesByTagScreen
 import com.android.memosnap.feature.note.presentation.tags.NoteTagScreen
-import com.android.memosnap.ui.screens.DailyTaskScreen
 import com.android.memosnap.ui.screens.Screen
 import com.android.memosnap.ui.screens.SearchScreen
 

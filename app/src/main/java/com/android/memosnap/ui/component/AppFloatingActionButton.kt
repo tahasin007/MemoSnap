@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.presentation.notes.components
+package com.android.memosnap.ui.component
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.FloatingActionButton
@@ -20,7 +21,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun EditFloatingActionButton(
+fun AppFloatingActionButton(
     onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -37,7 +38,7 @@ fun EditFloatingActionButton(
             defaultElevation = 5.dp,
             pressedElevation = 10.dp
         ),
-        shape = MaterialTheme.shapes.small,
+        shape = CircleShape,
         interactionSource = interactionSource,
         modifier = Modifier
             .scale(scale)

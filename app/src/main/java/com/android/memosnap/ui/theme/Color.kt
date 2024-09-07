@@ -26,3 +26,8 @@ val ForestGreen = Color(0xFF388E3C)
 val BurntOrange = Color(0xFFEF6C00)
 val Lavender = Color(0xFFE1BEE7)
 val Teal = Color(0xFF4DB6AC)
+
+val RedColor = Color(0xFFFF0000)
+val BlueColor = Color(0xFF0288D1)
+val GreenColor = Color(0xFF00796B)
+val GrayColor = Color(0xFF808080)
