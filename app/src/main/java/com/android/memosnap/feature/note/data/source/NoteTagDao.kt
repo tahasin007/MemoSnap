@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.RewriteQueriesToDropUnusedColumns
 import androidx.room.Transaction
 import com.android.memosnap.feature.note.domain.model.Note
 import com.android.memosnap.feature.note.domain.model.NoteTag
@@ -23,6 +24,7 @@ interface NoteTagDao {
 
     // Get notes by tagId
     @Transaction
+    @RewriteQueriesToDropUnusedColumns
     @Query(
         """
         SELECT * FROM note 

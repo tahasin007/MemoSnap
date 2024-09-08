@@ -53,10 +53,10 @@ fun TaskListItem(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween // Ensure spacing between task name and flag
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                modifier = Modifier.weight(1f), // Apply weight to this Row to allow spacing
+                modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CustomRoundedCheckbox(
@@ -72,7 +72,6 @@ fun TaskListItem(
                         fontSize = 16.sp,
                     )
 
-                    // Subtask icon
                     if (hasSubTasks) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
@@ -88,7 +87,6 @@ fun TaskListItem(
                 }
             }
 
-            // The flag icon should be at the end, using the existing space
             Icon(
                 modifier = Modifier
                     .size(20.dp)

@@ -29,9 +29,8 @@ fun CustomRoundedCheckbox(
             .background(if (checked) MaterialTheme.colorScheme.primary else Color.Transparent)
             .border(
                 width = 2.dp,
-                color = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(
-                    alpha = 0.5f
-                ),
+                color = if (checked) MaterialTheme.colorScheme.primary else
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                 shape = RoundedCornerShape(12.dp)
             )
             .clickable { onCheckedChange(!checked) },

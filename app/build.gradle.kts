@@ -88,4 +88,7 @@ dependencies {
 
     // Fontawesome
     implementation(libs.font.awesome)
+
+    // Gso
+    implementation(libs.gson)
 }

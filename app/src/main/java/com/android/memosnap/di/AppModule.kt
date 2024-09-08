@@ -2,9 +2,16 @@ package com.android.memosnap.di
 
 import android.app.Application
 import androidx.room.Room
+import com.android.memosnap.feature.dailytask.data.repository.TaskRepositoryImpl
+import com.android.memosnap.feature.dailytask.domain.repository.TaskRepository
+import com.android.memosnap.feature.dailytask.domain.usecase.DeleteTaskUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.GetAllTasksUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.GetTaskUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.InsertTaskUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.TaskUseCases
+import com.android.memosnap.feature.data.source.AppDatabase
 import com.android.memosnap.feature.note.data.repository.NoteRepositoryImpl
 import com.android.memosnap.feature.note.data.repository.NoteTagRepositoryImpl
-import com.android.memosnap.feature.note.data.source.NoteDatabase
 import com.android.memosnap.feature.note.domain.repository.NoteRepository
 import com.android.memosnap.feature.note.domain.repository.NoteTagRepository
 import com.android.memosnap.feature.note.domain.usecase.note.AddNote
@@ -33,17 +40,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNoteDatabase(app: Application): NoteDatabase {
+    fun provideNoteDatabase(app: Application): AppDatabase {
         return Room.databaseBuilder(
             app,
-            NoteDatabase::class.java,
-            NoteDatabase.DATABASE_NAME
+            AppDatabase::class.java,
+            AppDatabase.DATABASE_NAME
         ).build()
     }
 
     @Provides
     @Singleton
-    fun provideNoteRepository(db: NoteDatabase): NoteRepository {
+    fun provideNoteRepository(db: AppDatabase): NoteRepository {
         return NoteRepositoryImpl(db.noteDao)
     }
 
@@ -63,7 +70,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNoteTagRepository(db: NoteDatabase): NoteTagRepository {
+    fun provideNoteTagRepository(db: AppDatabase): NoteTagRepository {
         return NoteTagRepositoryImpl(db.noteTagDao)
     }
 
@@ -76,6 +83,23 @@ object AppModule {
             addNoteTag = AddNoteTag(repository),
             getNotesByTag = GetNotesByTagId(repository),
             getTagById = GetNoteTag(repository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideTaskRepository(db: AppDatabase): TaskRepository {
+        return TaskRepositoryImpl(db.taskDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTaskUseCases(repository: TaskRepository): TaskUseCases {
+        return TaskUseCases(
+            getAllTasks = GetAllTasksUseCase(repository),
+            getTask = GetTaskUseCase(repository),
+            insertTask = InsertTaskUseCase(repository),
+            deleteTask = DeleteTaskUseCase(repository),
         )
     }
 }

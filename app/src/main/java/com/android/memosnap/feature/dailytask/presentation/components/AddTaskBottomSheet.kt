@@ -31,8 +31,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.memosnap.feature.dailytask.domain.model.SubTask
 import com.android.memosnap.feature.dailytask.presentation.NewTaskState
-import com.android.memosnap.feature.dailytask.presentation.SubTask
 import com.android.memosnap.feature.dailytask.presentation.TaskPriority
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -49,6 +49,7 @@ fun AddTaskBottomSheet(
     onAddSubTask: () -> Unit,
     onSubTaskChange: (Int, SubTask) -> Unit,
     onRemoveSubTask: (Int) -> Unit,
+    onAddTask: () -> Unit,
     isBottomSheetOpen: Boolean = false,
     textSize: TextUnit = 16.sp,
     singleLine: Boolean = false,
@@ -145,7 +146,7 @@ fun AddTaskBottomSheet(
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = onAddTask) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
                             contentDescription = "Done",

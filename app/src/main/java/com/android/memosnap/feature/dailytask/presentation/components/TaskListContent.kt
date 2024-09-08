@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.android.memosnap.feature.dailytask.presentation.Task
+import com.android.memosnap.feature.dailytask.domain.model.Task
 
 @Composable
 fun TaskListContent(
@@ -22,7 +22,7 @@ fun TaskListContent(
             TaskListItem(
                 taskName = task.name,
                 isTaskCompleted = task.isCompleted,
-                hasSubTasks = task.hasSubTasks,
+                hasSubTasks = task.subTasks.isNotEmpty(),
                 onTaskCheckedChange = { checked -> onTaskCheckedChange(index, checked) },
                 taskPriority = task.priority
             )

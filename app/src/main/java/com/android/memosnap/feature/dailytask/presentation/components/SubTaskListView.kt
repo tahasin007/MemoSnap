@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.memosnap.feature.dailytask.presentation.SubTask
+import com.android.memosnap.feature.dailytask.domain.model.SubTask
 
 @Composable
 fun SubTaskListView(
@@ -44,7 +44,7 @@ fun SubTaskListView(
                     checked = subTask.isCompleted,
                     onCheckedChange = {
                         onSubTaskChange(
-                            index, SubTask(subTask.subTaskName, !subTask.isCompleted)
+                            index, subTask.copy(isCompleted = !subTask.isCompleted)
                         )
                     }
                 )
@@ -59,7 +59,7 @@ fun SubTaskListView(
                         value = subTask.subTaskName,
                         onValueChange = {
                             onSubTaskChange(
-                                index, SubTask(it, subTask.isCompleted)
+                                index, subTask.copy(subTaskName = it)
                             )
                         },
                         singleLine = true,

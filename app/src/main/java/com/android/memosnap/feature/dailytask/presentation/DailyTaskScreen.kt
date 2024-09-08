@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.android.memosnap.data.sample.dummyTasks
 import com.android.memosnap.feature.dailytask.presentation.components.AddTaskBottomSheet
 import com.android.memosnap.feature.dailytask.presentation.components.CategoryButton
 import com.android.memosnap.feature.dailytask.presentation.components.TaskListContent
@@ -23,6 +22,7 @@ import com.android.memosnap.ui.component.AppFloatingActionButton
 fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState.value
     val newTaskState = viewModel.newTaskState.value
+    val tasksState = viewModel.tasksState.value
 
     Scaffold(
         floatingActionButton = {
@@ -58,7 +58,7 @@ fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
                     .padding(top = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
-                TaskListContent(tasks = dummyTasks) { _, _ ->
+                TaskListContent(tasks = tasksState.tasks) { _, _ ->
 
                 }
             }
@@ -86,6 +86,9 @@ fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
                 },
                 onRemoveSubTask = {
                     viewModel.onEvent(DailyTaskEvent.RemoveSubTask(it))
+                },
+                onAddTask = {
+                    viewModel.onEvent(DailyTaskEvent.SaveTask)
                 },
                 newTask = newTaskState
             )

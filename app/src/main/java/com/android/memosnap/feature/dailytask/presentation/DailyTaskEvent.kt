@@ -1,5 +1,7 @@
 package com.android.memosnap.feature.dailytask.presentation
 
+import com.android.memosnap.feature.dailytask.domain.model.SubTask
+
 sealed class DailyTaskEvent {
     class ChangeBottomSheetVisibility(val isVisible: Boolean) : DailyTaskEvent()
     class EnteredTaskName(val name: String) : DailyTaskEvent()
@@ -8,4 +10,5 @@ sealed class DailyTaskEvent {
     data object AddSubTask : DailyTaskEvent()
     class SelectedCategory(val category: String) : DailyTaskEvent()
     class SelectedPriority(val priority: TaskPriority) : DailyTaskEvent()
+    data object SaveTask : DailyTaskEvent()
 }
