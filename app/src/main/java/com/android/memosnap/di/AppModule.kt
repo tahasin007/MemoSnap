@@ -2,13 +2,21 @@ package com.android.memosnap.di
 
 import android.app.Application
 import androidx.room.Room
+import com.android.memosnap.feature.dailytask.data.repository.CategoryRepositoryImpl
 import com.android.memosnap.feature.dailytask.data.repository.TaskRepositoryImpl
+import com.android.memosnap.feature.dailytask.domain.repository.CategoryRepository
 import com.android.memosnap.feature.dailytask.domain.repository.TaskRepository
-import com.android.memosnap.feature.dailytask.domain.usecase.DeleteTaskUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.GetAllTasksUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.GetTaskUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.InsertTaskUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.TaskUseCases
+import com.android.memosnap.feature.dailytask.domain.usecase.category.DeleteTaskUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.category.GetAllTasksUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.category.GetTaskUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.category.InsertTaskUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.category.TaskUseCases
+import com.android.memosnap.feature.dailytask.domain.usecase.task.CategoryUseCases
+import com.android.memosnap.feature.dailytask.domain.usecase.task.DeleteCategoryUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.task.GetCategoriesUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.task.GetCategoryByIdUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.task.GetCategoryByNameUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.task.InsertCategoryUseCase
 import com.android.memosnap.feature.data.source.AppDatabase
 import com.android.memosnap.feature.note.data.repository.NoteRepositoryImpl
 import com.android.memosnap.feature.note.data.repository.NoteTagRepositoryImpl
@@ -45,7 +53,7 @@ object AppModule {
             app,
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME
-        ).build()
+        ).addCallback(AppDatabase.getCallback(app)).build()
     }
 
     @Provides
@@ -100,6 +108,24 @@ object AppModule {
             getTask = GetTaskUseCase(repository),
             insertTask = InsertTaskUseCase(repository),
             deleteTask = DeleteTaskUseCase(repository),
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoryRepository(db: AppDatabase): CategoryRepository {
+        return CategoryRepositoryImpl(db.categoryDao, db.taskDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoryUseCases(repository: CategoryRepository): CategoryUseCases {
+        return CategoryUseCases(
+            getAllCategories = GetCategoriesUseCase(repository),
+            insertCategory = InsertCategoryUseCase(repository),
+            deleteCategory = DeleteCategoryUseCase(repository),
+            getCategoryByName = GetCategoryByNameUseCase(repository),
+            getCategoryById = GetCategoryByIdUseCase(repository)
         )
     }
 }

@@ -23,6 +23,7 @@ fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState.value
     val newTaskState = viewModel.newTaskState.value
     val tasksState = viewModel.tasksState.value
+    val categoriesState = viewModel.categoriesState.value
 
     Scaffold(
         floatingActionButton = {
@@ -43,8 +44,8 @@ fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
                     .padding(horizontal = 4.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                items(newTaskState.categories.size) { index ->
-                    CategoryButton(text = newTaskState.categories[index]) {
+                items(categoriesState.categories.size) { index ->
+                    CategoryButton(text = categoriesState.categories[index].name) {
 
                     }
                 }
@@ -90,7 +91,8 @@ fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
                 onAddTask = {
                     viewModel.onEvent(DailyTaskEvent.SaveTask)
                 },
-                newTask = newTaskState
+                newTask = newTaskState,
+                categories = categoriesState.categories.map { it.name }
             )
         }
     }

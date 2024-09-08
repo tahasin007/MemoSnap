@@ -42,6 +42,7 @@ import compose.icons.fontawesomeicons.solid.CodeBranch
 @Composable
 fun AddTaskBottomSheet(
     newTask: NewTaskState,
+    categories: List<String>,
     onDismissBottomSheet: () -> Unit,
     onTaskNameChange: (String) -> Unit,
     onCategoryChange: (String) -> Unit,
@@ -125,7 +126,7 @@ fun AddTaskBottomSheet(
                     TaskCategoryDropdown(
                         selectedCategory = newTask.selectedCategory,
                         onCategoryChange = onCategoryChange,
-                        categories = newTask.categories
+                        categories = categories
                     )
 
                     IconButton(onClick = onAddSubTask) {

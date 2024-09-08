@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.domain.usecase
+package com.android.memosnap.feature.dailytask.domain.usecase.category
 
 import com.android.memosnap.feature.dailytask.domain.repository.TaskRepository
 
