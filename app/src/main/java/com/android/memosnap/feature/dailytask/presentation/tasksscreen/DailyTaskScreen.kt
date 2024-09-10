@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation
+package com.android.memosnap.feature.dailytask.presentation.tasksscreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,13 +9,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.android.memosnap.feature.dailytask.presentation.components.AddTaskBottomSheet
-import com.android.memosnap.feature.dailytask.presentation.components.CategoryButton
-import com.android.memosnap.feature.dailytask.presentation.components.TaskListContent
+import com.android.memosnap.feature.dailytask.presentation.tasksscreen.components.AddTaskBottomSheet
+import com.android.memosnap.feature.dailytask.presentation.tasksscreen.components.CategoryButton
+import com.android.memosnap.feature.dailytask.presentation.tasksscreen.components.TaskListContent
 import com.android.memosnap.ui.component.AppFloatingActionButton
 
 @Composable
@@ -24,6 +29,12 @@ fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
     val newTaskState = viewModel.newTaskState.value
     val tasksState = viewModel.tasksState.value
     val categoriesState = viewModel.categoriesState.value
+
+    var selectedCategory by remember { mutableStateOf("All") }
+
+    LaunchedEffect(selectedCategory) {
+        viewModel.onEvent(DailyTaskEvent.LoadTasksByCategory(selectedCategory))
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -44,9 +55,18 @@ fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
                     .padding(horizontal = 4.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                items(categoriesState.categories.size) { index ->
-                    CategoryButton(text = categoriesState.categories[index].name) {
+                // "All" button to show all tasks
+                item {
+                    CategoryButton(text = "All") {
+                        selectedCategory = "All"
+                    }
+                }
 
+                // Display categories
+                items(categoriesState.categories.size) { index ->
+                    val category = categoriesState.categories[index]
+                    CategoryButton(text = category.name) {
+                        selectedCategory = category.name
                     }
                 }
             }
@@ -91,8 +111,15 @@ fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
                 onAddTask = {
                     viewModel.onEvent(DailyTaskEvent.SaveTask)
                 },
+                changeCategoryPopupVisibility = {
+                    viewModel.onEvent(DailyTaskEvent.ChangeAddCategoryPopupVisibility(it))
+                },
+                addNewCategory = {
+                    viewModel.onEvent(DailyTaskEvent.AddCategory(it))
+                },
                 newTask = newTaskState,
-                categories = categoriesState.categories.map { it.name }
+                categories = categoriesState.categories.map { it.name },
+                isAddCategoryPopupVisible = uiState.isAddCategoryPopupVisible
             )
         }
     }

@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation
+package com.android.memosnap.feature.dailytask.presentation.tasksscreen
 
 enum class TaskPriority(val priority: String) {
     HIGH("High Priority"),

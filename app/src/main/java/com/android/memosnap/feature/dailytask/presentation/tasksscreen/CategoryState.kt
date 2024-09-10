@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation.components
+package com.android.memosnap.feature.dailytask.presentation.tasksscreen
 
 import com.android.memosnap.feature.dailytask.domain.model.Category
 

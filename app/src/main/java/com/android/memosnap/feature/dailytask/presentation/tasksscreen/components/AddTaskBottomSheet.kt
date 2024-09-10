@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation.components
+package com.android.memosnap.feature.dailytask.presentation.tasksscreen.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.memosnap.feature.dailytask.domain.model.SubTask
-import com.android.memosnap.feature.dailytask.presentation.NewTaskState
-import com.android.memosnap.feature.dailytask.presentation.TaskPriority
+import com.android.memosnap.feature.dailytask.presentation.tasksscreen.NewTaskState
+import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TaskPriority
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.CodeBranch
@@ -51,10 +51,13 @@ fun AddTaskBottomSheet(
     onSubTaskChange: (Int, SubTask) -> Unit,
     onRemoveSubTask: (Int) -> Unit,
     onAddTask: () -> Unit,
+    changeCategoryPopupVisibility: (Boolean) -> Unit,
     isBottomSheetOpen: Boolean = false,
+    addNewCategory: (String) -> Unit,
     textSize: TextUnit = 16.sp,
     singleLine: Boolean = false,
-    maxLines: Int = 5
+    maxLines: Int = 5,
+    isAddCategoryPopupVisible: Boolean
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
 
@@ -118,15 +121,19 @@ fun AddTaskBottomSheet(
 
                 Spacer(modifier = Modifier.height(4.dp))
 
+                // Action Row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TaskCategoryDropdown(
+                        categories = categories,
                         selectedCategory = newTask.selectedCategory,
                         onCategoryChange = onCategoryChange,
-                        categories = categories
+                        onClickAddNewCategory = {
+                            changeCategoryPopupVisibility(true)
+                        }
                     )
 
                     IconButton(onClick = onAddSubTask) {
@@ -140,6 +147,7 @@ fun AddTaskBottomSheet(
                         )
                     }
 
+                    // Priority dropdown
                     TaskPriorityDropdown(
                         selectedPriority = newTask.priority,
                         onPriorityChange = onPriorityChange
@@ -160,5 +168,13 @@ fun AddTaskBottomSheet(
                 }
             }
         }
+    }
+
+    if (isAddCategoryPopupVisible) {
+        AddCategoryPopup(
+            categories = categories,
+            onDismiss = { changeCategoryPopupVisibility(false) },
+            addNewCategory = addNewCategory
+        )
     }
 }

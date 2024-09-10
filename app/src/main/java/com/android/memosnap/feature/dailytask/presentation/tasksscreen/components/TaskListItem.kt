@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation.components
+package com.android.memosnap.feature.dailytask.presentation.tasksscreen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.memosnap.feature.dailytask.presentation.TaskPriority
+import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TaskPriority
 import com.android.memosnap.ui.theme.BlueColor
 import com.android.memosnap.ui.theme.GrayColor
 import com.android.memosnap.ui.theme.GreenColor

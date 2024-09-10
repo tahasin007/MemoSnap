@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation.components
+package com.android.memosnap.feature.dailytask.presentation.tasksscreen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,9 +28,10 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun TaskCategoryDropdown(
+    categories: List<String>,
     selectedCategory: String,
     onCategoryChange: (String) -> Unit,
-    categories: List<String>
+    onClickAddNewCategory: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -80,7 +81,7 @@ fun TaskCategoryDropdown(
                     }
                 },
                 onClick = {
-                    onCategoryChange("Add new category")
+                    onClickAddNewCategory()
                     expanded = false
                 },
                 modifier = Modifier.fillMaxWidth()

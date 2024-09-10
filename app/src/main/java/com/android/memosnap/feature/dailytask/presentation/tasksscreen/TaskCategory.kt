@@ -1,7 +1,6 @@
-package com.android.memosnap.feature.dailytask.presentation
+package com.android.memosnap.feature.dailytask.presentation.tasksscreen
 
 enum class TaskCategory(val category: String) {
-    NO_CATEGORY("No Category"),
     WORK("Work"),
     PERSONAL("Personal"),
     HOME("Home"),

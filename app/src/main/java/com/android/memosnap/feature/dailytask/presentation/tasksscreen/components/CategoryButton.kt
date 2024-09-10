@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation.components
+package com.android.memosnap.feature.dailytask.presentation.tasksscreen.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

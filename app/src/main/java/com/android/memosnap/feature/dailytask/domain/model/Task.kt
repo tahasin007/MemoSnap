@@ -3,7 +3,7 @@ package com.android.memosnap.feature.dailytask.domain.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.android.memosnap.feature.dailytask.presentation.TaskPriority
+import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TaskPriority
 
 @Entity
 data class Task(

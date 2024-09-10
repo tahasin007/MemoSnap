@@ -11,7 +11,7 @@ import com.android.memosnap.feature.dailytask.data.source.CategoryDao
 import com.android.memosnap.feature.dailytask.data.source.TaskDao
 import com.android.memosnap.feature.dailytask.domain.model.Category
 import com.android.memosnap.feature.dailytask.domain.model.Task
-import com.android.memosnap.feature.dailytask.presentation.TaskCategory
+import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TaskCategory
 import com.android.memosnap.feature.note.data.source.NoteDao
 import com.android.memosnap.feature.note.data.source.NoteTagDao
 import com.android.memosnap.feature.note.domain.model.Note

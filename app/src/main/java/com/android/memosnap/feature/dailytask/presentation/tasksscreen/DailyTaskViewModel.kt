@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation
+package com.android.memosnap.feature.dailytask.presentation.tasksscreen
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -9,9 +9,9 @@ import com.android.memosnap.feature.dailytask.domain.model.SubTask
 import com.android.memosnap.feature.dailytask.domain.model.Task
 import com.android.memosnap.feature.dailytask.domain.usecase.category.TaskUseCases
 import com.android.memosnap.feature.dailytask.domain.usecase.task.CategoryUseCases
-import com.android.memosnap.feature.dailytask.presentation.components.CategoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -87,7 +87,21 @@ class DailyTaskViewModel @Inject constructor(
                 }
             }
 
-            DailyTaskEvent.SaveTask -> saveTask()
+            is DailyTaskEvent.SaveTask -> saveTask()
+            is DailyTaskEvent.ChangeAddCategoryPopupVisibility -> {
+                if (event.isVisible != _uiState.value.isAddCategoryPopupVisible) {
+                    _uiState.value =
+                        _uiState.value.copy(isAddCategoryPopupVisible = event.isVisible)
+                }
+            }
+
+            is DailyTaskEvent.AddCategory -> {
+                viewModelScope.launch {
+                    categoryUseCases.insertCategory(Category(name = event.category))
+                }
+            }
+
+            is DailyTaskEvent.LoadTasksByCategory -> loadTasksByCategory(event.category)
         }
     }
 
@@ -121,24 +135,54 @@ class DailyTaskViewModel @Inject constructor(
                 subTasks = _newTaskState.value.subTasks
             )
             taskUseCases.insertTask(newTask)
+            _newTaskState.value = _newTaskState.value.copy(
+                taskName = "",
+                selectedCategory = "No Category",
+                priority = TaskPriority.LOW,
+                isCompleted = false,
+                subTasks = mutableListOf()
+            )
         }
     }
 
     private fun getTasks() {
         getTasksJob?.cancel()
         getTasksJob = taskUseCases.getAllTasks().onEach { tasks ->
-            _tasksState.value = _tasksState.value.copy(
-                tasks = tasks
-            )
+            _tasksState.value = _tasksState.value.copy(tasks = tasks)
         }.launchIn(viewModelScope)
     }
 
     private fun getCategories() {
         getCategoriesJob?.cancel()
         getCategoriesJob = categoryUseCases.getAllCategories().onEach { categories ->
-            _categoriesState.value = _categoriesState.value.copy(
-                categories = categories
-            )
+            _categoriesState.value = _categoriesState.value.copy(categories = categories)
         }.launchIn(viewModelScope)
+    }
+
+    private fun loadTasksByCategory(categoryName: String?) {
+        viewModelScope.launch {
+            // Ensure categories are loaded before filtering tasks
+            val categories = categoriesState.value.categories
+
+            // Fetch tasks from the flow if tasksState is empty
+            val tasks = taskUseCases.getAllTasks().first()
+
+            // Filter tasks based on the selected category
+            val filteredTasks = if (categoryName == null || categoryName == "All") {
+                tasks
+            } else {
+                val category = categories.find { it.name == categoryName }
+                if (category == null) {
+                    emptyList() // Return empty if category not found
+                } else {
+                    tasks.filter { task ->
+                        task.categoryId == category.id
+                    }
+                }
+            }
+
+            // Update the UI state with the filtered tasks
+            _tasksState.value = _tasksState.value.copy(tasks = filteredTasks)
+        }
     }
 }
