@@ -26,8 +26,8 @@ import androidx.navigation.NavHostController
 import com.android.memosnap.feature.note.presentation.notes.components.HomeScreenAppBar
 import com.android.memosnap.feature.note.presentation.notes.components.NoteCard
 import com.android.memosnap.feature.note.presentation.notes.components.PulsarIconButton
-import com.android.memosnap.ui.component.AppFloatingActionButton
-import com.android.memosnap.ui.screens.Screen
+import com.android.memosnap.core.component.AppFloatingActionButton
+import com.android.memosnap.core.screens.Screen
 
 @Composable
 fun HomeScreen(

@@ -11,10 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.android.memosnap.ui.component.DrawerMenuContent
-import com.android.memosnap.ui.component.FluidBottomNavigationBar
-import com.android.memosnap.ui.navigation.MyAppNavHost
-import com.android.memosnap.ui.screens.Screen
+import com.android.memosnap.core.component.DrawerMenuContent
+import com.android.memosnap.core.component.FluidBottomNavigationBar
+import com.android.memosnap.core.navigation.MyAppNavHost
+import com.android.memosnap.core.screens.Screen
 
 @Composable
 fun MemoSnapAppContent() {

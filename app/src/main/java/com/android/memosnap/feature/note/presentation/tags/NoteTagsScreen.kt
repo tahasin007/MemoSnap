@@ -28,8 +28,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.android.memosnap.R
 import com.android.memosnap.feature.note.presentation.tags.components.NoteTagsAppBar
-import com.android.memosnap.ui.component.EmptyNoteView
-import com.android.memosnap.ui.screens.Screen
+import com.android.memosnap.core.component.EmptyNoteView
+import com.android.memosnap.core.screens.Screen
 
 @Composable
 fun NoteTagScreen(

@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.android.memosnap.app.MemoSnapAppContent
-import com.android.memosnap.ui.theme.MemoSnapTheme
+import com.android.memosnap.core.theme.MemoSnapTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

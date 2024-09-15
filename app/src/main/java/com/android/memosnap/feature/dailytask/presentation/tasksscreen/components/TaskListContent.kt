@@ -12,7 +12,8 @@ import com.android.memosnap.feature.dailytask.domain.model.Task
 @Composable
 fun TaskListContent(
     tasks: List<Task>,
-    onTaskCheckedChange: (Int, Boolean) -> Unit
+    onTaskCheckedChange: (Int, Boolean) -> Unit,
+    onTaskClick: (Int) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -24,7 +25,10 @@ fun TaskListContent(
                 isTaskCompleted = task.isCompleted,
                 hasSubTasks = task.subTasks.isNotEmpty(),
                 onTaskCheckedChange = { checked -> onTaskCheckedChange(index, checked) },
-                taskPriority = task.priority
+                taskPriority = task.priority,
+                onItemClicked = {
+                    onTaskClick(index)
+                }
             )
         }
     }

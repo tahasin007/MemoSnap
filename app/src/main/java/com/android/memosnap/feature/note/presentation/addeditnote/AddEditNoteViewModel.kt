@@ -10,7 +10,7 @@ import com.android.memosnap.feature.note.domain.model.NoteTag
 import com.android.memosnap.feature.note.domain.usecase.note.NoteUseCases
 import com.android.memosnap.feature.note.domain.usecase.notetag.NoteTagUseCases
 import com.android.memosnap.feature.note.presentation.NoteTagsState
-import com.android.memosnap.utils.NoteUtils
+import com.android.memosnap.feature.note.util.NoteUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn

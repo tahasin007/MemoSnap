@@ -1,7 +1,7 @@
 package com.android.memosnap.feature.note.presentation.addeditnote
 
 import androidx.compose.ui.graphics.toArgb
-import com.android.memosnap.ui.theme.DodgerBlue
+import com.android.memosnap.core.theme.DodgerBlue
 
 data class AddEditNoteState(
     val title: String = "",

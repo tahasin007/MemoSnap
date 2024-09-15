@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.android.memosnap.feature.dailytask.domain.model.Category
 import com.android.memosnap.feature.dailytask.domain.model.SubTask
 import com.android.memosnap.feature.dailytask.domain.model.Task
-import com.android.memosnap.feature.dailytask.domain.usecase.category.TaskUseCases
-import com.android.memosnap.feature.dailytask.domain.usecase.task.CategoryUseCases
+import com.android.memosnap.feature.dailytask.domain.usecase.task.TaskUseCases
+import com.android.memosnap.feature.dailytask.domain.usecase.category.CategoryUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
@@ -75,9 +75,9 @@ class DailyTaskViewModel @Inject constructor(
             }
 
             is DailyTaskEvent.SelectedCategory -> {
-                if (event.category != _newTaskState.value.selectedCategory) {
+                if (event.category != _newTaskState.value.category) {
                     _newTaskState.value =
-                        _newTaskState.value.copy(selectedCategory = event.category)
+                        _newTaskState.value.copy(category = event.category)
                 }
             }
 
@@ -123,9 +123,8 @@ class DailyTaskViewModel @Inject constructor(
 
         viewModelScope.launch {
             val selectedCategory =
-                categoryUseCases.getCategoryByName(_newTaskState.value.selectedCategory)
+                categoryUseCases.getCategoryByName(_newTaskState.value.category)
             val categoryId = selectedCategory?.id
-                ?: categoryUseCases.insertCategory(Category(name = "No Category")).toInt()
 
             val newTask = Task(
                 name = _newTaskState.value.taskName,
@@ -137,7 +136,7 @@ class DailyTaskViewModel @Inject constructor(
             taskUseCases.insertTask(newTask)
             _newTaskState.value = _newTaskState.value.copy(
                 taskName = "",
-                selectedCategory = "No Category",
+                category = "No Category",
                 priority = TaskPriority.LOW,
                 isCompleted = false,
                 subTasks = mutableListOf()

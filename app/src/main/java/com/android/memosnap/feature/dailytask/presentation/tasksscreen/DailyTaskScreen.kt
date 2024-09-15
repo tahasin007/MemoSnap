@@ -18,13 +18,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.components.AddTaskBottomSheet
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.components.CategoryButton
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.components.TaskListContent
-import com.android.memosnap.ui.component.AppFloatingActionButton
+import com.android.memosnap.core.component.AppFloatingActionButton
+import com.android.memosnap.core.screens.Screen
 
 @Composable
-fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
+fun DailyTaskScreen(
+    navController: NavController,
+    viewModel: DailyTaskViewModel = hiltViewModel()
+) {
     val uiState = viewModel.uiState.value
     val newTaskState = viewModel.newTaskState.value
     val tasksState = viewModel.tasksState.value
@@ -79,9 +84,11 @@ fun DailyTaskScreen(viewModel: DailyTaskViewModel = hiltViewModel()) {
                     .padding(top = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
-                TaskListContent(tasks = tasksState.tasks) { _, _ ->
-
-                }
+                TaskListContent(tasks = tasksState.tasks,
+                    onTaskCheckedChange = { _, _ -> },
+                    onTaskClick = {
+                        navController.navigate(Screen.EditTask.route + "?taskId=$it")
+                    })
             }
 
             // Add task bottom sheet

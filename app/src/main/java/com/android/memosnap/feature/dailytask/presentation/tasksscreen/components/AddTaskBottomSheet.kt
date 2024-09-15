@@ -32,6 +32,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.memosnap.feature.dailytask.domain.model.SubTask
+import com.android.memosnap.feature.dailytask.presentation.shared.AddCategoryPopup
+import com.android.memosnap.feature.dailytask.presentation.shared.SubTaskListView
+import com.android.memosnap.feature.dailytask.presentation.shared.TaskCategoryDropdown
+import com.android.memosnap.feature.dailytask.presentation.shared.TaskPriorityDropdown
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.NewTaskState
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TaskPriority
 import compose.icons.FontAwesomeIcons
@@ -129,7 +133,7 @@ fun AddTaskBottomSheet(
                 ) {
                     TaskCategoryDropdown(
                         categories = categories,
-                        selectedCategory = newTask.selectedCategory,
+                        selectedCategory = newTask.category,
                         onCategoryChange = onCategoryChange,
                         onClickAddNewCategory = {
                             changeCategoryPopupVisibility(true)

@@ -29,8 +29,8 @@ import com.android.memosnap.feature.note.presentation.addeditnote.components.Add
 import com.android.memosnap.feature.note.presentation.addeditnote.components.BottomSheetContainer
 import com.android.memosnap.feature.note.presentation.addeditnote.components.EditeNoteTextField
 import com.android.memosnap.feature.note.presentation.addeditnote.components.TagListView
-import com.android.memosnap.ui.screens.Screen
-import com.android.memosnap.utils.NoteUtils
+import com.android.memosnap.core.screens.Screen
+import com.android.memosnap.feature.note.util.NoteUtils
 
 @Composable
 fun AddEditNoteScreen(

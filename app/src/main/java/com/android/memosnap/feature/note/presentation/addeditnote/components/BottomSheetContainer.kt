@@ -24,16 +24,16 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.memosnap.ui.theme.BurntOrange
-import com.android.memosnap.ui.theme.CrimsonRed
-import com.android.memosnap.ui.theme.DeepBlue
-import com.android.memosnap.ui.theme.DodgerBlue
-import com.android.memosnap.ui.theme.ForestGreen
-import com.android.memosnap.ui.theme.GoldenYellow
-import com.android.memosnap.ui.theme.Lavender
-import com.android.memosnap.ui.theme.Scarlet
-import com.android.memosnap.ui.theme.SoftPink
-import com.android.memosnap.ui.theme.Teal
+import com.android.memosnap.core.theme.BurntOrange
+import com.android.memosnap.core.theme.CrimsonRed
+import com.android.memosnap.core.theme.DeepBlue
+import com.android.memosnap.core.theme.DodgerBlue
+import com.android.memosnap.core.theme.ForestGreen
+import com.android.memosnap.core.theme.GoldenYellow
+import com.android.memosnap.core.theme.Lavender
+import com.android.memosnap.core.theme.Scarlet
+import com.android.memosnap.core.theme.SoftPink
+import com.android.memosnap.core.theme.Teal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

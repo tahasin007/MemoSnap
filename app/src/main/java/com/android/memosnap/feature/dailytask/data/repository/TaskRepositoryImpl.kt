@@ -13,7 +13,7 @@ class TaskRepositoryImpl(
         return taskDao.getAllTasks()
     }
 
-    override fun getTask(taskId: Int): Flow<Task> {
+    override suspend fun getTask(taskId: Int): Task? {
         return taskDao.getTask(taskId)
     }
 

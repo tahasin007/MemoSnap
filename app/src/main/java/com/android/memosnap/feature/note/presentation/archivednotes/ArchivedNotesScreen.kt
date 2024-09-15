@@ -19,8 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.android.memosnap.feature.note.presentation.archivednotes.components.ArchivedNotesAppBar
 import com.android.memosnap.feature.note.presentation.notes.components.NoteCard
-import com.android.memosnap.ui.component.EmptyNoteView
-import com.android.memosnap.ui.screens.Screen
+import com.android.memosnap.core.component.EmptyNoteView
+import com.android.memosnap.core.screens.Screen
 
 @Composable
 fun ArchivedNotesScreen(
