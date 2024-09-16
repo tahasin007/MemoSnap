@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -26,9 +27,9 @@ import androidx.navigation.NavController
 import com.android.memosnap.core.screens.Screen
 import com.android.memosnap.feature.dailytask.presentation.edittask.component.AddNotesToTaskRow
 import com.android.memosnap.feature.dailytask.presentation.edittask.component.EditTaskAppBar
-import com.android.memosnap.feature.dailytask.presentation.shared.SubTaskListView
-import com.android.memosnap.feature.dailytask.presentation.shared.TaskCategoryDropdown
-import com.android.memosnap.feature.dailytask.presentation.shared.TaskPriorityDropdown
+import com.android.memosnap.feature.dailytask.presentation.shared.component.SubTaskListView
+import com.android.memosnap.feature.dailytask.presentation.shared.component.TaskCategoryDropdown
+import com.android.memosnap.feature.dailytask.presentation.shared.component.TaskPriorityDropdown
 
 @Composable
 fun EditTaskScreen(
@@ -36,9 +37,12 @@ fun EditTaskScreen(
     viewModel: EditTaskViewModel,
     taskId: Int?
 ) {
-    viewModel.loadTask(taskId)
     val categoriesState = viewModel.categoriesState.value
     val editTask = viewModel.editTaskState.value
+
+    LaunchedEffect(taskId) {
+        viewModel.loadTask(taskId)
+    }
 
     Column(
         modifier = Modifier
@@ -49,7 +53,10 @@ fun EditTaskScreen(
             onClickBack = {
                 navController.popBackStack()
             },
-            label = Screen.EditTask.label
+            onClickSave = {
+                navController.popBackStack()
+                viewModel.onEvent(EditTaskEvent.SaveTask)
+            }
         )
 
         Column(
@@ -66,14 +73,18 @@ fun EditTaskScreen(
                 TaskCategoryDropdown(
                     categories = categoriesState.categories.map { it.name },
                     selectedCategory = editTask.category,
-                    onCategoryChange = {},
-                    onClickAddNewCategory = {}
+                    onCategoryChange = {
+                        viewModel.onEvent(EditTaskEvent.AddCategory(it))
+                    },
+                    onClickAddNewCategory = {
+
+                    }
                 )
 
                 TaskPriorityDropdown(
                     selectedPriority = editTask.priority,
                     onPriorityChange = {
-
+                        viewModel.onEvent(EditTaskEvent.ChangePriority(it))
                     }
                 )
             }
@@ -81,7 +92,7 @@ fun EditTaskScreen(
             BasicTextField(
                 value = editTask.taskName,
                 onValueChange = {
-
+                    viewModel.onEvent(EditTaskEvent.ChangeTaskName(it))
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -97,10 +108,12 @@ fun EditTaskScreen(
 
             SubTaskListView(
                 subTasks = editTask.subTasks,
-                onSubTaskChange = { _, _ ->
-
+                onSubTaskChange = { index, subTask ->
+                    viewModel.onEvent(EditTaskEvent.EditSubTask(index, subTask))
                 },
-                onRemoveSubTask = {},
+                onRemoveSubTask = {
+                    viewModel.onEvent(EditTaskEvent.RemoveSubTask(it))
+                },
                 minHeight = 200.dp
             )
 
@@ -124,7 +137,8 @@ fun EditTaskScreen(
             AddNotesToTaskRow(
                 onClickAddNotes = {
                     navController.navigate(Screen.AddNotesToTask.route + "?taskId=${editTask.taskId}")
-                }
+                },
+                taskNote = editTask.taskNote ?: ""
             )
         }
     }

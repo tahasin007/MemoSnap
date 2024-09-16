@@ -87,7 +87,8 @@ fun DailyTaskScreen(
                 TaskListContent(tasks = tasksState.tasks,
                     onTaskCheckedChange = { _, _ -> },
                     onTaskClick = {
-                        navController.navigate(Screen.EditTask.route + "?taskId=$it")
+                        val taskId = tasksState.tasks[it].id
+                        navController.navigate(Screen.EditTask.route + "?taskId=$taskId")
                     })
             }
 
@@ -110,7 +111,7 @@ fun DailyTaskScreen(
                     viewModel.onEvent(DailyTaskEvent.AddSubTask)
                 },
                 onSubTaskChange = { index, subTask ->
-                    viewModel.onEvent(DailyTaskEvent.EditedSubTask(index, subTask))
+                    viewModel.onEvent(DailyTaskEvent.EditSubTask(index, subTask))
                 },
                 onRemoveSubTask = {
                     viewModel.onEvent(DailyTaskEvent.RemoveSubTask(it))

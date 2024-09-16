@@ -62,7 +62,7 @@ fun AddEditNoteAppBar(
         // Back Button
         IconButton(onClick = onBackClick) {
             Icon(
-                Icons.Default.Close,
+                imageVector = Icons.Default.Close,
                 contentDescription = "Back",
                 tint = MaterialTheme.colorScheme.surface
             )

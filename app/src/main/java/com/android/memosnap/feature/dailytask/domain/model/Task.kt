@@ -9,8 +9,9 @@ import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TaskPrior
 data class Task(
     val name: String,
     val priority: TaskPriority,
-    @ColumnInfo(name = "categoryId") val categoryId: Int?,
     val isCompleted: Boolean = false,
+    val taskNote: String? = null,
+    @ColumnInfo(name = "categoryId") val categoryId: Int?,
     @ColumnInfo(name = "sub_tasks") val subTasks: List<SubTask>,
-    @PrimaryKey(autoGenerate = true) val id: Int? = null
+    @PrimaryKey val id: Int? = null
 )

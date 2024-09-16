@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation.shared
+package com.android.memosnap.feature.dailytask.presentation.shared.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

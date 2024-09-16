@@ -8,6 +8,6 @@ data class NewTaskState(
     val category: String = "No Category",
     val isCompleted: Boolean = false,
     val priority: TaskPriority = TaskPriority.NONE,
-    val notes: String = "",
+    val taskNote: String? = null,
     val taskId: Int? = null
 )

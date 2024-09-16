@@ -56,7 +56,7 @@ class DailyTaskViewModel @Inject constructor(
                 }
             }
 
-            is DailyTaskEvent.EditedSubTask -> {
+            is DailyTaskEvent.EditSubTask -> {
                 editedSubTask(event.index, event.subTask)
             }
 

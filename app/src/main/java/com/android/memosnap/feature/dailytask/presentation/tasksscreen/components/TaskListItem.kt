@@ -28,7 +28,7 @@ import com.android.memosnap.core.theme.BlueColor
 import com.android.memosnap.core.theme.GrayColor
 import com.android.memosnap.core.theme.GreenColor
 import com.android.memosnap.core.theme.RedColor
-import com.android.memosnap.feature.dailytask.presentation.shared.CustomRoundedCheckbox
+import com.android.memosnap.feature.dailytask.presentation.shared.component.CustomRoundedCheckbox
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TaskPriority
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Regular

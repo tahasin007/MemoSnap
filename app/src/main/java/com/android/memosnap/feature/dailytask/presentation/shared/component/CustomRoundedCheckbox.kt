@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation.shared
+package com.android.memosnap.feature.dailytask.presentation.shared.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

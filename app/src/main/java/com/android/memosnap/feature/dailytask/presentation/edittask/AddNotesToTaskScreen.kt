@@ -10,13 +10,13 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.android.memosnap.core.screens.Screen
 import com.android.memosnap.feature.dailytask.presentation.edittask.component.EditTaskAppBar
 
 @Composable
@@ -25,8 +25,11 @@ fun AddNotesToTaskScreen(
     viewModel: EditTaskViewModel,
     taskId: Int?
 ) {
-    viewModel.loadTask(taskId)
     val editTask = viewModel.editTaskState.value
+
+    LaunchedEffect(taskId) {
+        viewModel.loadTask(taskId)
+    }
 
     Column(
         modifier = Modifier
@@ -37,7 +40,7 @@ fun AddNotesToTaskScreen(
             onClickBack = {
                 navController.popBackStack()
             },
-            label = Screen.EditTask.label
+            isAddNoteScreen = true
         )
 
         Column(
@@ -52,9 +55,9 @@ fun AddNotesToTaskScreen(
                 contentAlignment = Alignment.CenterStart
             ) {
                 BasicTextField(
-                    value = editTask.notes,
+                    value = editTask.taskNote ?: "",
                     onValueChange = {
-
+                        viewModel.onEvent(EditTaskEvent.ChangeTaskNote(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -66,7 +69,7 @@ fun AddNotesToTaskScreen(
                     )
                 )
 
-                if (editTask.notes.isBlank()) {
+                if (editTask.taskNote.isNullOrEmpty()) {
                     Text(
                         text = "Add Notes",
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
