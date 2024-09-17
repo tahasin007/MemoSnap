@@ -14,14 +14,14 @@ class CategoryRepositoryImpl(
         return categoryDao.insertCategory(category)
     }
 
-    override suspend fun deleteCategory(category: Category) {
+    override suspend fun deleteCategory(categoryId: Int?) {
         // Delete associated tasks first
-        category.id?.let { categoryId ->
-            taskDao.deleteTasksByCategoryId(categoryId)
+        categoryId?.let {
+            taskDao.deleteTasksByCategoryId(it)
         }
         // Then delete the category itself
-        category.id?.let { categoryId ->
-            categoryDao.deleteCategoryById(categoryId)
+        categoryId?.let {
+            categoryDao.deleteCategoryById(it)
         }
     }
 

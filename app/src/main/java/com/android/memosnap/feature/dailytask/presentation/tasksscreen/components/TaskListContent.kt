@@ -23,6 +23,7 @@ fun TaskListContent(
             TaskListItem(
                 taskName = task.name,
                 isTaskCompleted = task.isCompleted,
+                hasNote = !task.taskNote.isNullOrEmpty(),
                 hasSubTasks = task.subTasks.isNotEmpty(),
                 onTaskCheckedChange = { checked -> onTaskCheckedChange(index, checked) },
                 taskPriority = task.priority,

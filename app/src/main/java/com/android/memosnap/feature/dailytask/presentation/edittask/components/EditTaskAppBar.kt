@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation.edittask.component
+package com.android.memosnap.feature.dailytask.presentation.edittask.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

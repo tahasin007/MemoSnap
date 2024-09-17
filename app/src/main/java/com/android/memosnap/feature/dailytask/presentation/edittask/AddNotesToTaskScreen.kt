@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.android.memosnap.feature.dailytask.presentation.edittask.component.EditTaskAppBar
+import com.android.memosnap.feature.dailytask.presentation.edittask.components.EditTaskAppBar
 
 @Composable
 fun AddNotesToTaskScreen(
@@ -46,7 +46,7 @@ fun AddNotesToTaskScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 16.dp, end = 16.dp)
+                .padding(horizontal = 16.dp)
         ) {
             Box(
                 modifier = Modifier

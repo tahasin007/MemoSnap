@@ -23,11 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.android.memosnap.core.screens.Screen
 import com.android.memosnap.feature.note.presentation.notes.components.HomeScreenAppBar
 import com.android.memosnap.feature.note.presentation.notes.components.NoteCard
-import com.android.memosnap.feature.note.presentation.notes.components.PulsarIconButton
-import com.android.memosnap.core.component.AppFloatingActionButton
-import com.android.memosnap.core.screens.Screen
+import com.android.memosnap.core.component.PulsarIconButton
 
 @Composable
 fun HomeScreen(
@@ -39,7 +38,7 @@ fun HomeScreen(
     Scaffold(
         floatingActionButton = {
             if (noteState.notes.isEmpty().not()) {
-                AppFloatingActionButton(onClick = {
+                PulsarIconButton(onClick = {
                     navController.navigate(Screen.AddEditNote.route)
                 })
             }

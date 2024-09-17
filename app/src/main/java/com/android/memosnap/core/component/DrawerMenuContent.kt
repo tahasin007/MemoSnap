@@ -10,7 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight.Companion.W900
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun DrawerMenuContent(onItemSelected: (String) -> Unit) {
@@ -23,9 +25,12 @@ fun DrawerMenuContent(onItemSelected: (String) -> Unit) {
     ) {
         Text(
             text = "MemoSnap",
-            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 32.sp,
+            fontWeight = W900,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(top = 32.dp)
                 .clickable { onItemSelected("Item 1") }
         )
     }

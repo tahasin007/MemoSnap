@@ -37,12 +37,13 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 fun AddCategoryPopup(
-    textSize: TextUnit = 16.sp,
     categories: List<String>,
     onDismiss: () -> Unit,
     addNewCategory: (String) -> Unit,
+    textSize: TextUnit = 16.sp,
+    value: String = ""
 ) {
-    var category by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf(value) }
     val maxCharLimit = 100 // Max character limit
 
     Dialog(onDismissRequest = onDismiss) {

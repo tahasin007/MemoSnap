@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.memosnap.core.theme.BlueColor
@@ -31,14 +33,15 @@ import com.android.memosnap.core.theme.RedColor
 import com.android.memosnap.feature.dailytask.presentation.shared.component.CustomRoundedCheckbox
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TaskPriority
 import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.regular.Flag
 import compose.icons.fontawesomeicons.solid.CodeBranch
+import compose.icons.fontawesomeicons.solid.Flag
+import compose.icons.fontawesomeicons.solid.StickyNote
 
 @Composable
 fun TaskListItem(
     taskName: String,
+    hasNote: Boolean,
     isTaskCompleted: Boolean,
     hasSubTasks: Boolean,
     taskPriority: TaskPriority,
@@ -48,7 +51,7 @@ fun TaskListItem(
 ) {
     Column(
         modifier = modifier
-            .padding(vertical = 2.dp, horizontal = 12.dp)
+            .padding(vertical = 4.dp, horizontal = 12.dp)
             .clip(RoundedCornerShape(12.dp))
             .clickable(
                 onClick = onItemClicked,
@@ -60,10 +63,10 @@ fun TaskListItem(
                 interactionSource = remember { MutableInteractionSource() }
             )
             .background(
-                color = MaterialTheme.colorScheme.secondary.copy(alpha = .1f),
+                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.05f),
                 shape = RoundedCornerShape(12.dp)
             )
-            .padding(vertical = 16.dp, horizontal = 8.dp)
+            .padding(vertical = 16.dp, horizontal = 12.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -79,34 +82,51 @@ fun TaskListItem(
                     onCheckedChange = onTaskCheckedChange
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(12.dp))
 
                 Column {
                     Text(
                         text = taskName,
-                        fontSize = 16.sp,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.W300,
+                        color = if (isTaskCompleted) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        else MaterialTheme.colorScheme.onSurface
                     )
 
-                    if (hasSubTasks) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (hasSubTasks) {
                             Icon(
                                 modifier = Modifier
-                                    .size(20.dp)
+                                    .size(16.dp)
                                     .rotate(90f),
                                 imageVector = FontAwesomeIcons.Solid.CodeBranch,
                                 contentDescription = "Has Subtask",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
+
+                        if (hasNote) {
+                            Spacer(modifier = Modifier.width(12.dp))
+
+                            Icon(
+                                modifier = Modifier.size(16.dp),
+                                imageVector = FontAwesomeIcons.Solid.StickyNote,
+                                contentDescription = "Has Note",
+                                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                            )
+                        }
                     }
                 }
             }
 
+            // Task Priority Icon
             Icon(
                 modifier = Modifier
-                    .size(20.dp)
-                    .padding(end = 5.dp),
-                imageVector = FontAwesomeIcons.Regular.Flag,
+                    .size(24.dp)
+                    .padding(end = 4.dp),
+                imageVector = FontAwesomeIcons.Solid.Flag,
                 contentDescription = "Priority",
                 tint = when (taskPriority) {
                     TaskPriority.HIGH -> RedColor

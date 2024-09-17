@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.note.presentation.notes.components
+package com.android.memosnap.core.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box

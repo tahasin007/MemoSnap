@@ -5,14 +5,14 @@ import androidx.compose.ui.graphics.Color
 val PrimaryLight = Color(0xFF0097A7)
 val OnPrimaryLight = Color(0xFFFFFFFF)
 val SecondaryLight = Color(0xFF78909C)
-val OnSecondaryLight = Color(0xFF000000)
+val OnSecondaryLight = Color(0xFF5E5E5E)
 val SurfaceLight = Color(0xFFFFFFFF)
 val OnSurfaceLight = Color(0xFF000000)
 
 val PrimaryDark = Color(0xFF004941)
 val OnPrimaryDark = Color(0xFFFFFFFF)
 val SecondaryDark = Color(0xFF455A64)
-val OnSecondaryDark = Color(0xFFECEFF1)
+val OnSecondaryDark = Color(0xFFA4A4A5)
 val SurfaceDark = Color(0xFF000000)
 val OnSurfaceDark = Color(0xFFFFFFFF)
 

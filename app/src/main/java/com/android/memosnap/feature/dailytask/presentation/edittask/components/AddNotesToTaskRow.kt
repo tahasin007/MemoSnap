@@ -1,4 +1,4 @@
-package com.android.memosnap.feature.dailytask.presentation.edittask.component
+package com.android.memosnap.feature.dailytask.presentation.edittask.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Note
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.StickyNote
 
 @Composable
 fun AddNotesToTaskRow(
@@ -40,7 +41,7 @@ fun AddNotesToTaskRow(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Outlined.Note,
+                    imageVector = FontAwesomeIcons.Solid.StickyNote,
                     contentDescription = "Notes",
                     modifier = Modifier.size(24.dp),
                     tint = MaterialTheme.colorScheme.secondary

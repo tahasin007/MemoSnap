@@ -14,4 +14,6 @@ sealed class EditTaskEvent {
     class ChangeTaskNote(val note: String) : EditTaskEvent()
     data object SaveTask : EditTaskEvent()
     data object DeleteTask : EditTaskEvent()
+    class ChangeAddCategoryPopupVisibility(val isVisible: Boolean) : EditTaskEvent()
+    class SelectedCategory(val category: String) : EditTaskEvent()
 }

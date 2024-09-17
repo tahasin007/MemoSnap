@@ -29,6 +29,9 @@ class EditTaskViewModel @Inject constructor(
     private val _categoriesState = mutableStateOf(CategoryState())
     val categoriesState: State<CategoryState> = _categoriesState
 
+    private val _editTaskUiState = mutableStateOf(EditTaskUiState())
+    val editTaskUiState: State<EditTaskUiState> = _editTaskUiState
+
     private var getCategoriesJob: Job? = null
 
     fun loadTask(taskId: Int?) {
@@ -89,8 +92,20 @@ class EditTaskViewModel @Inject constructor(
             }
 
             is EditTaskEvent.SaveTask -> saveTask()
-
             is EditTaskEvent.DeleteTask -> deleteTask()
+            is EditTaskEvent.ChangeAddCategoryPopupVisibility -> {
+                if (event.isVisible != _editTaskUiState.value.isAddCategoryPopupVisible) {
+                    _editTaskUiState.value = _editTaskUiState.value.copy(
+                        isAddCategoryPopupVisible = event.isVisible
+                    )
+                }
+            }
+
+            is EditTaskEvent.SelectedCategory -> {
+                if (event.category != _editTaskState.value.category) {
+                    _editTaskState.value = _editTaskState.value.copy(category = event.category)
+                }
+            }
         }
     }
 

@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.android.memosnap.core.screens.Screen
 import com.android.memosnap.core.screens.SearchScreen
+import com.android.memosnap.feature.dailytask.presentation.managecategory.TaskCategoryScreen
 import com.android.memosnap.feature.dailytask.presentation.edittask.AddNotesToTaskScreen
 import com.android.memosnap.feature.dailytask.presentation.edittask.EditTaskScreen
 import com.android.memosnap.feature.dailytask.presentation.edittask.EditTaskViewModel
@@ -53,11 +54,6 @@ fun MyAppNavHost(navController: NavHostController) {
             enterTransition = { enterTransition() },
             exitTransition = { exitTransition() },
         ) { SearchScreen() }
-        composable(
-            route = Screen.DailyTask.route,
-            enterTransition = { enterTransition() },
-            exitTransition = { exitTransition() },
-        ) { DailyTaskScreen(navController) }
 
         composable(
             route = Screen.NoteTags.route + "?showAddTagPopup={showAddTagPopup}",
@@ -96,6 +92,12 @@ fun MyAppNavHost(navController: NavHostController) {
         }
 
         composable(
+            route = Screen.DailyTask.route,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() },
+        ) { DailyTaskScreen(navController) }
+
+        composable(
             route = Screen.EditTask.route + "?taskId={taskId}",
             enterTransition = { enterTransition() },
             exitTransition = { exitTransition() },
@@ -118,6 +120,12 @@ fun MyAppNavHost(navController: NavHostController) {
             val taskId = backStackEntry.arguments?.getInt("taskId")
             AddNotesToTaskScreen(navController, editTaskViewModel, taskId)
         }
+
+        composable(
+            route = Screen.TaskCategory.route,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() },
+        ) { TaskCategoryScreen(navController) }
     }
 }
 

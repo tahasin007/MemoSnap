@@ -25,8 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.android.memosnap.core.screens.Screen
-import com.android.memosnap.feature.dailytask.presentation.edittask.component.AddNotesToTaskRow
-import com.android.memosnap.feature.dailytask.presentation.edittask.component.EditTaskAppBar
+import com.android.memosnap.feature.dailytask.presentation.edittask.components.AddNotesToTaskRow
+import com.android.memosnap.feature.dailytask.presentation.edittask.components.EditTaskAppBar
+import com.android.memosnap.feature.dailytask.presentation.shared.component.AddCategoryPopup
 import com.android.memosnap.feature.dailytask.presentation.shared.component.SubTaskListView
 import com.android.memosnap.feature.dailytask.presentation.shared.component.TaskCategoryDropdown
 import com.android.memosnap.feature.dailytask.presentation.shared.component.TaskPriorityDropdown
@@ -39,6 +40,7 @@ fun EditTaskScreen(
 ) {
     val categoriesState = viewModel.categoriesState.value
     val editTask = viewModel.editTaskState.value
+    val uiState = viewModel.editTaskUiState.value
 
     LaunchedEffect(taskId) {
         viewModel.loadTask(taskId)
@@ -56,6 +58,10 @@ fun EditTaskScreen(
             onClickSave = {
                 navController.popBackStack()
                 viewModel.onEvent(EditTaskEvent.SaveTask)
+            },
+            onClickDelete = {
+                navController.popBackStack()
+                viewModel.onEvent(EditTaskEvent.DeleteTask)
             }
         )
 
@@ -74,10 +80,10 @@ fun EditTaskScreen(
                     categories = categoriesState.categories.map { it.name },
                     selectedCategory = editTask.category,
                     onCategoryChange = {
-                        viewModel.onEvent(EditTaskEvent.AddCategory(it))
+                        viewModel.onEvent(EditTaskEvent.SelectedCategory(it))
                     },
                     onClickAddNewCategory = {
-
+                        viewModel.onEvent(EditTaskEvent.ChangeAddCategoryPopupVisibility(true))
                     }
                 )
 
@@ -141,5 +147,19 @@ fun EditTaskScreen(
                 taskNote = editTask.taskNote ?: ""
             )
         }
+    }
+
+    if (uiState.isAddCategoryPopupVisible) {
+        AddCategoryPopup(
+            categories = categoriesState.categories.map { it.name },
+            onDismiss = {
+                viewModel.onEvent(
+                    EditTaskEvent.ChangeAddCategoryPopupVisibility(false)
+                )
+            },
+            addNewCategory = {
+                viewModel.onEvent(EditTaskEvent.AddCategory(it))
+            }
+        )
     }
 }
