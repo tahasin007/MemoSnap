@@ -1,6 +1,7 @@
 package com.android.memosnap.feature.dailytask.presentation.edittask
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -123,7 +124,11 @@ fun EditTaskScreen(
                 minHeight = 200.dp
             )
 
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    viewModel.onEvent(EditTaskEvent.AddSubTask)
+                }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Back",

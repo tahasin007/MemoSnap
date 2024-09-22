@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.memosnap.core.theme.BlueColor
@@ -63,7 +64,10 @@ fun TaskListItem(
                 interactionSource = remember { MutableInteractionSource() }
             )
             .background(
-                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.05f),
+                color = MaterialTheme.colorScheme.secondary.copy(
+                    alpha = if (isTaskCompleted) 0.1f
+                    else 0.05f
+                ),
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(vertical = 16.dp, horizontal = 12.dp)
@@ -90,7 +94,12 @@ fun TaskListItem(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.W300,
                         color = if (isTaskCompleted) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                        else MaterialTheme.colorScheme.onSurface
+                        else MaterialTheme.colorScheme.onSurface,
+                        textDecoration = if (isTaskCompleted) {
+                            TextDecoration.LineThrough
+                        } else {
+                            TextDecoration.None
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))

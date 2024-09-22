@@ -102,6 +102,11 @@ class DailyTaskViewModel @Inject constructor(
             }
 
             is DailyTaskEvent.LoadTasksByCategory -> loadTasksByCategory(event.category)
+            is DailyTaskEvent.ChangeTaskCompleted -> {
+                viewModelScope.launch {
+                    taskUseCases.insertTask(event.task)
+                }
+            }
         }
     }
 

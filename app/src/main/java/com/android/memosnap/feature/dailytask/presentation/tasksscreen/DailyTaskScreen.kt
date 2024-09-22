@@ -137,7 +137,9 @@ fun DailyTaskScreen(
             ) {
                 TaskListContent(
                     tasks = tasksState.tasks,
-                    onTaskCheckedChange = { _, _ -> },
+                    onTaskCheckedChange = {
+                        viewModel.onEvent(DailyTaskEvent.ChangeTaskCompleted(it))
+                    },
                     onTaskClick = {
                         val taskId = tasksState.tasks[it].id
                         navController.navigate(Screen.EditTask.route + "?taskId=$taskId")
