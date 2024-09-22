@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.android.memosnap.feature.dailytask.domain.model.Category
 import com.android.memosnap.feature.dailytask.presentation.managecategory.components.TaskCategoryAppBar
 import com.android.memosnap.feature.dailytask.presentation.managecategory.components.TaskCategoryItem
 import com.android.memosnap.feature.dailytask.presentation.shared.component.AddCategoryPopup
@@ -37,6 +38,7 @@ fun TaskCategoryScreen(
     val categoriesState = viewModel.categoriesState.value
     val taskState = viewModel.tasksState.value
     val uiState = viewModel.uiState.value
+    val editCategoryState = viewModel.editCategoryState.value
 
     Column(
         modifier = Modifier
@@ -69,6 +71,7 @@ fun TaskCategoryScreen(
                     onEditClick = {
                         viewModel.onEvent(ManageCategoryEvent.ChangeAddCategoryPopupVisibility(true))
                         viewModel.onEvent(ManageCategoryEvent.UpdateAddCategoryPopup(category.name))
+                        viewModel.onEvent(ManageCategoryEvent.UpdateEditCategory(category.id))
                     }
                 )
             }
@@ -79,7 +82,6 @@ fun TaskCategoryScreen(
                 .fillMaxWidth()
                 .padding(all = 16.dp)
                 .clickable {
-                    viewModel.onEvent(ManageCategoryEvent.UpdateAddCategoryPopup(""))
                     viewModel.onEvent(ManageCategoryEvent.ChangeAddCategoryPopupVisibility(true))
                 },
             verticalAlignment = Alignment.CenterVertically,
@@ -111,9 +113,15 @@ fun TaskCategoryScreen(
                 )
             },
             addNewCategory = {
-                viewModel.onEvent(ManageCategoryEvent.AddEditCategory(it))
+                viewModel.onEvent(
+                    ManageCategoryEvent.AddEditCategory(
+                        category = Category(name = it, id = editCategoryState.id)
+                    )
+                )
+                viewModel.onEvent(ManageCategoryEvent.UpdateAddCategoryPopup(""))
+                viewModel.onEvent(ManageCategoryEvent.UpdateEditCategory(null))
             },
-            value = uiState.addCategoryPopupText
+            value = editCategoryState.name
         )
     }
 }

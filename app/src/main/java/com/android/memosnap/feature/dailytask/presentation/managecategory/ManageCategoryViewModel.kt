@@ -4,7 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.memosnap.feature.dailytask.domain.model.Category
 import com.android.memosnap.feature.dailytask.domain.usecase.category.CategoryUseCases
 import com.android.memosnap.feature.dailytask.domain.usecase.task.TaskUseCases
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.CategoryState
@@ -26,6 +25,9 @@ class ManageCategoryViewModel @Inject constructor(
 
     private val _tasksState = mutableStateOf(TasksState())
     val tasksState: State<TasksState> = _tasksState
+
+    private val _editCategoryState = mutableStateOf(EditCategoryState())
+    val editCategoryState: State<EditCategoryState> = _editCategoryState
 
     private val _uiState = mutableStateOf(ManageCategoryUiState())
     val uiState: State<ManageCategoryUiState> = _uiState
@@ -62,12 +64,7 @@ class ManageCategoryViewModel @Inject constructor(
 
             is ManageCategoryEvent.AddEditCategory -> {
                 viewModelScope.launch {
-                    val id =
-                        _categoriesState.value.categories.find { it.name == event.category }?.id
-
-                    categoryUseCases.insertCategory(
-                        Category(name = event.category, id = id)
-                    )
+                    categoryUseCases.insertCategory(event.category)
                 }
             }
 
@@ -78,10 +75,15 @@ class ManageCategoryViewModel @Inject constructor(
                 }
             }
 
+            is ManageCategoryEvent.UpdateEditCategory -> {
+                if (event.categoryId != _editCategoryState.value.id) {
+                    _editCategoryState.value = _editCategoryState.value.copy(id = event.categoryId)
+                }
+            }
+
             is ManageCategoryEvent.UpdateAddCategoryPopup -> {
-                if (event.category != _uiState.value.addCategoryPopupText) {
-                    _uiState.value =
-                        _uiState.value.copy(addCategoryPopupText = event.category)
+                if (event.categoryName != _editCategoryState.value.name) {
+                    _editCategoryState.value = _editCategoryState.value.copy(name = event.categoryName)
                 }
             }
         }
