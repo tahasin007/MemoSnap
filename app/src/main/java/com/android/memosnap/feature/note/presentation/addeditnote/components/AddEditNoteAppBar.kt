@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.outlined.Palette
@@ -35,6 +36,7 @@ fun AddEditNoteAppBar(
     onBackClick: () -> Unit,
     onSaveNoteClick: () -> Unit,
     onPaletteClick: () -> Unit,
+    onImageClick: () -> Unit,
     onPinNoteClick: () -> Unit,
     onArchiveClick: () -> Unit,
     onDeleteNoteClick: () -> Unit,
@@ -87,6 +89,15 @@ fun AddEditNoteAppBar(
                 Icon(
                     imageVector = Icons.Outlined.Palette,
                     contentDescription = "Palette",
+                    tint = MaterialTheme.colorScheme.surface
+                )
+            }
+
+            // Image Button
+            IconButton(onClick = onImageClick) {
+                Icon(
+                    imageVector = Icons.Filled.Image,
+                    contentDescription = "Add Image",
                     tint = MaterialTheme.colorScheme.surface
                 )
             }

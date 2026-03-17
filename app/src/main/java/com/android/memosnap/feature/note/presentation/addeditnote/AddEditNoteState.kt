@@ -10,5 +10,6 @@ data class AddEditNoteState(
     val color: Int = DodgerBlue.toArgb(),
     val isPinned: Boolean = false,
     val isArchived: Boolean = false,
+    val imageData: ByteArray? = null,
     val id: Int? = null
 )

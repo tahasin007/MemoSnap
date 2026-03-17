@@ -15,7 +15,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,7 +25,6 @@ import com.android.memosnap.core.screens.SearchScreen
 import com.android.memosnap.feature.dailytask.presentation.managecategory.TaskCategoryScreen
 import com.android.memosnap.feature.dailytask.presentation.edittask.AddNotesToTaskScreen
 import com.android.memosnap.feature.dailytask.presentation.edittask.EditTaskScreen
-import com.android.memosnap.feature.dailytask.presentation.edittask.EditTaskViewModel
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.DailyTaskScreen
 import com.android.memosnap.feature.note.presentation.addeditnote.AddEditNoteScreen
 import com.android.memosnap.feature.note.presentation.archivednotes.ArchivedNotesScreen
@@ -36,8 +34,6 @@ import com.android.memosnap.feature.note.presentation.tags.NoteTagScreen
 
 @Composable
 fun MyAppNavHost(navController: NavHostController) {
-    val editTaskViewModel: EditTaskViewModel = hiltViewModel()
-
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(
             route = Screen.ArchivedNotes.route,
@@ -106,7 +102,7 @@ fun MyAppNavHost(navController: NavHostController) {
             })
         ) { backStackEntry ->
             val taskId = backStackEntry.arguments?.getInt("taskId")
-            EditTaskScreen(navController, editTaskViewModel, taskId)
+            EditTaskScreen(navController, taskId)
         }
 
         composable(
@@ -118,7 +114,7 @@ fun MyAppNavHost(navController: NavHostController) {
             })
         ) { backStackEntry ->
             val taskId = backStackEntry.arguments?.getInt("taskId")
-            AddNotesToTaskScreen(navController, editTaskViewModel, taskId)
+            AddNotesToTaskScreen(navController, taskId)
         }
 
         composable(

@@ -16,14 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.android.memosnap.feature.dailytask.presentation.edittask.components.EditTaskAppBar
 
 @Composable
 fun AddNotesToTaskScreen(
     navController: NavController,
-    viewModel: EditTaskViewModel,
-    taskId: Int?
+    taskId: Int?,
+    viewModel: EditTaskViewModel = hiltViewModel()
 ) {
     val editTask = viewModel.editTaskState.value
 

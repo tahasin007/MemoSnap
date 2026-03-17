@@ -91,4 +91,7 @@ dependencies {
 
     // Gso
     implementation(libs.gson)
+
+    // Coil
+    implementation(libs.coil.compose)
 }

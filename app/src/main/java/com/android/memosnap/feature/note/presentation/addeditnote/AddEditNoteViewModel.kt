@@ -64,6 +64,7 @@ class AddEditNoteViewModel @Inject constructor(
 
             is AddEditNoteEvent.ChangePinnedStatus -> changePinnedStatus(event.isPinned)
             is AddEditNoteEvent.ChangeArchiveStatus -> changeArchiveStatus(event.isArchived)
+            is AddEditNoteEvent.SelectImage -> selectImage(event.imageData)
             is AddEditNoteEvent.DeleteNote -> deleteNote()
             is AddEditNoteEvent.AddTagToNote -> addTagToNote(event.tags)
         }
@@ -79,11 +80,18 @@ class AddEditNoteViewModel @Inject constructor(
                     !currentTags.containsAll(originalTags) ||
                     !originalTags.containsAll(currentTags)
 
+            val imageEdited = when {
+                it.imageData == null && _noteState.value.imageData == null -> false
+                it.imageData == null || _noteState.value.imageData == null -> true
+                else -> !it.imageData.contentEquals(_noteState.value.imageData)
+            }
+
             it.title != _noteState.value.title ||
                     it.content != _noteState.value.content ||
                     it.color != _noteState.value.color ||
                     it.isPinned != _noteState.value.isPinned ||
                     it.isArchived != _noteState.value.isArchived ||
+                    imageEdited ||
                     tagsEdited
         } ?: _noteState.value.title.isNotBlank() && _noteState.value.content.isNotBlank()
     }
@@ -109,6 +117,7 @@ class AddEditNoteViewModel @Inject constructor(
                     color = _noteState.value.color,
                     isPinned = _noteState.value.isPinned,
                     isArchived = _noteState.value.isArchived,
+                    imageData = _noteState.value.imageData,
                     id = _noteState.value.id
                 )
 
@@ -139,6 +148,18 @@ class AddEditNoteViewModel @Inject constructor(
     private fun changeBottomSheetVisibility(isVisible: Boolean) {
         if (isVisible != _uiState.value.isBottomSheetOpen) {
             _uiState.value = _uiState.value.copy(isBottomSheetOpen = isVisible)
+        }
+    }
+
+    private fun selectImage(imageData: ByteArray?) {
+        val isDifferent = when {
+            imageData == null && _noteState.value.imageData == null -> false
+            imageData == null || _noteState.value.imageData == null -> true
+            else -> !imageData.contentEquals(_noteState.value.imageData)
+        }
+
+        if (isDifferent) {
+            _noteState.value = _noteState.value.copy(imageData = imageData)
         }
     }
 
@@ -177,6 +198,7 @@ class AddEditNoteViewModel @Inject constructor(
                         color = _noteState.value.color,
                         isPinned = _noteState.value.isPinned,
                         isArchived = _noteState.value.isArchived,
+                        imageData = _noteState.value.imageData,
                         id = _noteState.value.id
                     )
                 )
@@ -196,6 +218,7 @@ class AddEditNoteViewModel @Inject constructor(
                         dateCreated = note.dateCreated,
                         color = note.color,
                         isPinned = note.isPinned,
+                        imageData = note.imageData,
                         id = noteId
                     )
                 }

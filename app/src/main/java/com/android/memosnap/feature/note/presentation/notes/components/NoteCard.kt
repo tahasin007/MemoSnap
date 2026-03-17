@@ -1,5 +1,6 @@
 package com.android.memosnap.feature.note.presentation.notes.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,12 +20,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -71,6 +75,24 @@ fun NoteCard(
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
+
+                note.imageData?.let { bytes ->
+                    val bitmap = remember(bytes) {
+                        android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    }
+                    bitmap?.let {
+                        Image(
+                            bitmap = it.asImageBitmap(),
+                            contentDescription = "Note Image",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(150.dp)
+                                .clip(MaterialTheme.shapes.medium),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
 
                 Text(
                     text = note.content,

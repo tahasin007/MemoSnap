@@ -9,6 +9,7 @@ sealed class AddEditNoteEvent {
     data class ChangeBottomSheetVisibility(val isVisible: Boolean) : AddEditNoteEvent()
     data class ChangePinnedStatus(val isPinned: Boolean) : AddEditNoteEvent()
     data class ChangeArchiveStatus(val isArchived: Boolean) : AddEditNoteEvent()
+    data class SelectImage(val imageData: ByteArray?) : AddEditNoteEvent()
     data object DeleteNote : AddEditNoteEvent()
     data object SaveNote : AddEditNoteEvent()
     data class AddTagToNote(val tags: List<NoteTag>) : AddEditNoteEvent()

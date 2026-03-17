@@ -1,7 +1,10 @@
 package com.android.memosnap.feature.note.presentation.addeditnote
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,14 +15,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.Dispatchers
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,6 +41,10 @@ import com.android.memosnap.feature.note.presentation.addeditnote.components.Edi
 import com.android.memosnap.feature.note.presentation.addeditnote.components.TagListView
 import com.android.memosnap.core.screens.Screen
 import com.android.memosnap.feature.note.util.NoteUtils
+import kotlinx.coroutines.launch
+import androidx.core.graphics.scale
+
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun AddEditNoteScreen(
@@ -49,6 +63,43 @@ fun AddEditNoteScreen(
         animationSpec = tween(durationMillis = 500), label = ""
     )
 
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let {
+            coroutineScope.launch(Dispatchers.IO) {
+                val bytes = context.contentResolver.openInputStream(it)?.use { stream ->
+                    val originalBitmap = android.graphics.BitmapFactory.decodeStream(stream)
+                    originalBitmap?.let { bitmap ->
+                        val maxDimension = 1024
+                        val scaledBitmap = if (bitmap.width > maxDimension || bitmap.height > maxDimension) {
+                            val scale = (maxDimension.toFloat() / maxOf(bitmap.width, bitmap.height))
+                            bitmap.scale(
+                                (bitmap.width * scale).toInt(),
+                                (bitmap.height * scale).toInt()
+                            )
+                        } else {
+                            bitmap
+                        }
+
+                        java.io.ByteArrayOutputStream().use { outputStream ->
+                            scaledBitmap.compress(
+                                android.graphics.Bitmap.CompressFormat.JPEG,
+                                80,
+                                outputStream
+                            )
+                            outputStream.toByteArray()
+                        }
+                    }
+                }
+                viewModel.onEvent(AddEditNoteEvent.SelectImage(bytes))
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,6 +117,9 @@ fun AddEditNoteScreen(
                         uiState.isBottomSheetOpen.not()
                     )
                 )
+            },
+            onImageClick = {
+                imagePickerLauncher.launch("image/*")
             },
             onPinNoteClick = {
                 viewModel.onEvent(AddEditNoteEvent.ChangePinnedStatus(note.isPinned.not()))
@@ -100,7 +154,9 @@ fun AddEditNoteScreen(
         ) {
             // Wrap TextField and TagList in Column so they adjust relative to each other
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 140.dp)
             ) {
                 EditeNoteTextField(
                     text = note.title,
@@ -154,6 +210,23 @@ fun AddEditNoteScreen(
                 )
 
                 TagListView(tags = tagsByNoteId.tags)
+            }
+
+            note.imageData?.let { bytes ->
+                val bitmap = remember(bytes) {
+                    android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                }
+                bitmap?.let {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = "Selected image",
+                        modifier = Modifier
+                            .size(96.dp)
+                            .align(Alignment.BottomEnd)
+                            .padding(12.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                }
             }
 
             BottomSheetContainer(

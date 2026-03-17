@@ -53,7 +53,10 @@ object AppModule {
             app,
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME
-        ).addCallback(AppDatabase.getCallback(app)).build()
+        )
+            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
+            .addCallback(AppDatabase.getCallback(app))
+            .build()
     }
 
     @Provides
