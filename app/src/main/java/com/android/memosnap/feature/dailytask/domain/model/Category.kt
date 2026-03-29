@@ -1,10 +1,7 @@
+// This file has been moved to feature/note/domain/model/Category.kt
+// This typealias is kept temporarily so any remaining task-domain references still compile.
+// Remove this file in Phase 4 when task domain is fully retired.
 package com.android.memosnap.feature.dailytask.domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+typealias Category = com.android.memosnap.feature.note.domain.model.Category
 
-@Entity
-data class Category(
-    @PrimaryKey val id: Int? = null,
-    val name: String
-)

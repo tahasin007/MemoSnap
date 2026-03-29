@@ -1,6 +1,6 @@
 package com.android.memosnap.feature.dailytask.presentation.managecategory
 
-import com.android.memosnap.feature.dailytask.domain.model.Category
+import com.android.memosnap.feature.note.domain.model.Category
 
 sealed class ManageCategoryEvent {
     data class AddEditCategory(val category: Category) : ManageCategoryEvent()

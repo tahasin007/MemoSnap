@@ -17,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.android.memosnap.core.component.EmptyNoteView
 import com.android.memosnap.feature.note.presentation.notes.components.NoteCard
 import com.android.memosnap.feature.note.presentation.notesbytag.component.NotesByTagAppBar
-import com.android.memosnap.core.component.EmptyNoteView
 
 @Composable
 fun NotesByTagScreen(

@@ -83,7 +83,8 @@ class ManageCategoryViewModel @Inject constructor(
 
             is ManageCategoryEvent.UpdateAddCategoryPopup -> {
                 if (event.categoryName != _editCategoryState.value.name) {
-                    _editCategoryState.value = _editCategoryState.value.copy(name = event.categoryName)
+                    _editCategoryState.value =
+                        _editCategoryState.value.copy(name = event.categoryName)
                 }
             }
         }

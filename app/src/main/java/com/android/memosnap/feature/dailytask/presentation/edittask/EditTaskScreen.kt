@@ -125,11 +125,12 @@ fun EditTaskScreen(
                 minHeight = 200.dp
             )
 
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    viewModel.onEvent(EditTaskEvent.AddSubTask)
-                }) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        viewModel.onEvent(EditTaskEvent.AddSubTask)
+                    }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Back",

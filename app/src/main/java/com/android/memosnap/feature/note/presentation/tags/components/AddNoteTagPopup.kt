@@ -51,13 +51,14 @@ fun AddNoteTagPopup(
                 .clickable(onClick = onDismiss), // Handle outside click to dismiss
             contentAlignment = Alignment.Center
         ) {
-            Card(modifier = Modifier
-                .fillMaxWidth()
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }) {
-                    // Do nothing, to prevent dismissing when clicking on the Card
-                }, colors = CardDefaults.cardColors(
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }) {
+                        // Do nothing, to prevent dismissing when clicking on the Card
+                    }, colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
             ), elevation = CardDefaults.cardElevation(2.dp), shape = RoundedCornerShape(16.dp)
             ) {

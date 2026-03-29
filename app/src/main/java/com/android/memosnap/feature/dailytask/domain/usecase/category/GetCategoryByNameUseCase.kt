@@ -1,7 +1,7 @@
 package com.android.memosnap.feature.dailytask.domain.usecase.category
 
-import com.android.memosnap.feature.dailytask.domain.model.Category
 import com.android.memosnap.feature.dailytask.domain.repository.CategoryRepository
+import com.android.memosnap.feature.note.domain.model.Category
 
 class GetCategoryByNameUseCase(
     private val categoryRepository: CategoryRepository

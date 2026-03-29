@@ -25,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.Dispatchers
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -33,18 +32,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.scale
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.android.memosnap.core.screens.Screen
 import com.android.memosnap.feature.note.presentation.addeditnote.components.AddEditNoteAppBar
 import com.android.memosnap.feature.note.presentation.addeditnote.components.BottomSheetContainer
 import com.android.memosnap.feature.note.presentation.addeditnote.components.EditeNoteTextField
 import com.android.memosnap.feature.note.presentation.addeditnote.components.TagListView
-import com.android.memosnap.core.screens.Screen
 import com.android.memosnap.feature.note.util.NoteUtils
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import androidx.core.graphics.scale
-
-import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun AddEditNoteScreen(
@@ -75,15 +73,17 @@ fun AddEditNoteScreen(
                     val originalBitmap = android.graphics.BitmapFactory.decodeStream(stream)
                     originalBitmap?.let { bitmap ->
                         val maxDimension = 1024
-                        val scaledBitmap = if (bitmap.width > maxDimension || bitmap.height > maxDimension) {
-                            val scale = (maxDimension.toFloat() / maxOf(bitmap.width, bitmap.height))
-                            bitmap.scale(
-                                (bitmap.width * scale).toInt(),
-                                (bitmap.height * scale).toInt()
-                            )
-                        } else {
-                            bitmap
-                        }
+                        val scaledBitmap =
+                            if (bitmap.width > maxDimension || bitmap.height > maxDimension) {
+                                val scale =
+                                    (maxDimension.toFloat() / maxOf(bitmap.width, bitmap.height))
+                                bitmap.scale(
+                                    (bitmap.width * scale).toInt(),
+                                    (bitmap.height * scale).toInt()
+                                )
+                            } else {
+                                bitmap
+                            }
 
                         java.io.ByteArrayOutputStream().use { outputStream ->
                             scaledBitmap.compress(

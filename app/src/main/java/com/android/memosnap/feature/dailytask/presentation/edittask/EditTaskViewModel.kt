@@ -4,13 +4,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.memosnap.feature.dailytask.domain.model.Category
 import com.android.memosnap.feature.dailytask.domain.model.SubTask
 import com.android.memosnap.feature.dailytask.domain.model.Task
 import com.android.memosnap.feature.dailytask.domain.usecase.category.CategoryUseCases
 import com.android.memosnap.feature.dailytask.domain.usecase.task.TaskUseCases
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.CategoryState
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.NewTaskState
+import com.android.memosnap.feature.note.domain.model.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn

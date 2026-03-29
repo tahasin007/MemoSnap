@@ -2,8 +2,8 @@ package com.android.memosnap.feature.dailytask.data.repository
 
 import com.android.memosnap.feature.dailytask.data.source.CategoryDao
 import com.android.memosnap.feature.dailytask.data.source.TaskDao
-import com.android.memosnap.feature.dailytask.domain.model.Category
 import com.android.memosnap.feature.dailytask.domain.repository.CategoryRepository
+import com.android.memosnap.feature.note.domain.model.Category
 import kotlinx.coroutines.flow.Flow
 
 class CategoryRepositoryImpl(

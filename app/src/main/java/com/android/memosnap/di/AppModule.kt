@@ -6,17 +6,17 @@ import com.android.memosnap.feature.dailytask.data.repository.CategoryRepository
 import com.android.memosnap.feature.dailytask.data.repository.TaskRepositoryImpl
 import com.android.memosnap.feature.dailytask.domain.repository.CategoryRepository
 import com.android.memosnap.feature.dailytask.domain.repository.TaskRepository
-import com.android.memosnap.feature.dailytask.domain.usecase.task.DeleteTaskUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.task.GetAllTasksUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.task.GetTaskUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.task.InsertTaskUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.task.TaskUseCases
 import com.android.memosnap.feature.dailytask.domain.usecase.category.CategoryUseCases
 import com.android.memosnap.feature.dailytask.domain.usecase.category.DeleteCategoryUseCase
 import com.android.memosnap.feature.dailytask.domain.usecase.category.GetCategoriesUseCase
 import com.android.memosnap.feature.dailytask.domain.usecase.category.GetCategoryByIdUseCase
 import com.android.memosnap.feature.dailytask.domain.usecase.category.GetCategoryByNameUseCase
 import com.android.memosnap.feature.dailytask.domain.usecase.category.InsertCategoryUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.task.DeleteTaskUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.task.GetAllTasksUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.task.GetTaskUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.task.InsertTaskUseCase
+import com.android.memosnap.feature.dailytask.domain.usecase.task.TaskUseCases
 import com.android.memosnap.feature.data.source.AppDatabase
 import com.android.memosnap.feature.note.data.repository.NoteRepositoryImpl
 import com.android.memosnap.feature.note.data.repository.NoteTagRepositoryImpl
@@ -54,7 +54,12 @@ object AppModule {
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME
         )
-            .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
+            .addMigrations(
+                AppDatabase.MIGRATION_1_2,
+                AppDatabase.MIGRATION_2_3,
+                AppDatabase.MIGRATION_3_4
+                // MIGRATION_4_5 registered in Phase 4 when task table is removed
+            )
             .addCallback(AppDatabase.getCallback(app))
             .build()
     }

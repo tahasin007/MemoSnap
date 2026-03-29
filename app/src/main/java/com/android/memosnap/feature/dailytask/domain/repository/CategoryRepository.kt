@@ -1,6 +1,6 @@
 package com.android.memosnap.feature.dailytask.domain.repository
 
-import com.android.memosnap.feature.dailytask.domain.model.Category
+import com.android.memosnap.feature.note.domain.model.Category
 import kotlinx.coroutines.flow.Flow
 
 interface CategoryRepository {

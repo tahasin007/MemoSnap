@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.android.memosnap.feature.dailytask.domain.model.Category
 import com.android.memosnap.feature.dailytask.presentation.managecategory.components.TaskCategoryAppBar
 import com.android.memosnap.feature.dailytask.presentation.managecategory.components.TaskCategoryItem
 import com.android.memosnap.feature.dailytask.presentation.shared.component.AddCategoryPopup
+import com.android.memosnap.feature.note.domain.model.Category
 
 @Composable
 fun TaskCategoryScreen(
