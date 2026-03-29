@@ -4,10 +4,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.memosnap.feature.dailytask.data.source.TaskDao
 import com.android.memosnap.feature.dailytask.domain.model.SubTask
 import com.android.memosnap.feature.dailytask.domain.model.Task
-import com.android.memosnap.feature.dailytask.domain.usecase.category.CategoryUseCases
-import com.android.memosnap.feature.dailytask.domain.usecase.task.TaskUseCases
+import com.android.memosnap.feature.note.domain.usecase.category.CategoryUseCases
 import com.android.memosnap.feature.note.domain.model.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DailyTaskViewModel @Inject constructor(
-    private val taskUseCases: TaskUseCases,
+    private val taskDao: TaskDao,
     private val categoryUseCases: CategoryUseCases
 ) : ViewModel() {
     private val _uiState = mutableStateOf(DailyTaskUiState())
@@ -104,7 +104,7 @@ class DailyTaskViewModel @Inject constructor(
             is DailyTaskEvent.LoadTasksByCategory -> loadTasksByCategory(event.category)
             is DailyTaskEvent.ChangeTaskCompleted -> {
                 viewModelScope.launch {
-                    taskUseCases.insertTask(event.task)
+                    taskDao.insertTask(event.task)
                 }
             }
         }
@@ -138,7 +138,7 @@ class DailyTaskViewModel @Inject constructor(
                 isCompleted = _newTaskState.value.isCompleted,
                 subTasks = _newTaskState.value.subTasks
             )
-            taskUseCases.insertTask(newTask)
+            taskDao.insertTask(newTask)
             _newTaskState.value = _newTaskState.value.copy(
                 taskName = "",
                 category = "No Category",
@@ -151,7 +151,7 @@ class DailyTaskViewModel @Inject constructor(
 
     private fun getTasks() {
         getTasksJob?.cancel()
-        getTasksJob = taskUseCases.getAllTasks().onEach { tasks ->
+        getTasksJob = taskDao.getAllTasks().onEach { tasks ->
             _tasksState.value = _tasksState.value.copy(tasks = tasks)
         }.launchIn(viewModelScope)
     }
@@ -169,7 +169,7 @@ class DailyTaskViewModel @Inject constructor(
             val categories = categoriesState.value.categories
 
             // Fetch tasks from the flow if tasksState is empty
-            val tasks = taskUseCases.getAllTasks().first()
+            val tasks = taskDao.getAllTasks().first()
 
             // Filter tasks based on the selected category
             val filteredTasks = if (categoryName == null || categoryName == "All") {

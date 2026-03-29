@@ -9,6 +9,12 @@ import androidx.room.Transaction
 import com.android.memosnap.feature.dailytask.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * @deprecated Task data has been migrated into the unified Note table (MIGRATION_3_4).
+ * This DAO and the underlying `task` table will be dropped in MIGRATION_4_5.
+ * Remove this file in Phase 4 when all task-domain UI and use cases are retired.
+ */
+@Deprecated("Task table will be dropped in MIGRATION_4_5. Use NoteDao instead.")
 @Dao
 interface TaskDao {
     @Transaction

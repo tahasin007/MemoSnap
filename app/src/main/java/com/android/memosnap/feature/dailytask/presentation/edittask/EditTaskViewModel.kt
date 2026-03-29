@@ -4,10 +4,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.memosnap.feature.dailytask.data.source.TaskDao
 import com.android.memosnap.feature.dailytask.domain.model.SubTask
 import com.android.memosnap.feature.dailytask.domain.model.Task
-import com.android.memosnap.feature.dailytask.domain.usecase.category.CategoryUseCases
-import com.android.memosnap.feature.dailytask.domain.usecase.task.TaskUseCases
+import com.android.memosnap.feature.note.domain.usecase.category.CategoryUseCases
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.CategoryState
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.NewTaskState
 import com.android.memosnap.feature.note.domain.model.Category
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditTaskViewModel @Inject constructor(
-    private val taskUseCases: TaskUseCases,
+    private val taskDao: TaskDao,
     private val categoryUseCases: CategoryUseCases
 ) : ViewModel() {
     private val _editTaskState = mutableStateOf(NewTaskState())
@@ -124,7 +124,7 @@ class EditTaskViewModel @Inject constructor(
 
     private fun getTask(taskId: Int) {
         viewModelScope.launch {
-            val task = taskUseCases.getTask(taskId)
+            val task = taskDao.getTask(taskId)
             val category = if (task?.categoryId != null) {
                 categoryUseCases.getCategoryById(task.categoryId)
             } else {
@@ -158,7 +158,7 @@ class EditTaskViewModel @Inject constructor(
                 taskNote = _editTaskState.value.taskNote,
                 id = _editTaskState.value.taskId
             )
-            taskUseCases.insertTask(newTask)
+            taskDao.insertTask(newTask)
         }
     }
 
@@ -169,7 +169,7 @@ class EditTaskViewModel @Inject constructor(
                     categoryUseCases.getCategoryByName(_editTaskState.value.category)
                 val categoryId = selectedCategory?.id
 
-                taskUseCases.deleteTask(
+                taskDao.deleteTask(
                     Task(
                         name = _editTaskState.value.taskName,
                         categoryId = categoryId,

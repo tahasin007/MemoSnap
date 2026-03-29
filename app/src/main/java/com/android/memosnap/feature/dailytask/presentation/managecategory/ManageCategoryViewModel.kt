@@ -4,8 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.memosnap.feature.dailytask.domain.usecase.category.CategoryUseCases
-import com.android.memosnap.feature.dailytask.domain.usecase.task.TaskUseCases
+import com.android.memosnap.feature.dailytask.data.source.TaskDao
+import com.android.memosnap.feature.note.domain.usecase.category.CategoryUseCases
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.CategoryState
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TasksState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ManageCategoryViewModel @Inject constructor(
-    private val taskUseCases: TaskUseCases,
+    private val taskDao: TaskDao,
     private val categoryUseCases: CategoryUseCases
 ) : ViewModel() {
     private val _categoriesState = mutableStateOf(CategoryState())
@@ -42,7 +42,7 @@ class ManageCategoryViewModel @Inject constructor(
 
     private fun getTasks() {
         getTasksJob?.cancel()
-        getTasksJob = taskUseCases.getAllTasks().onEach { tasks ->
+        getTasksJob = taskDao.getAllTasks().onEach { tasks ->
             _tasksState.value = _tasksState.value.copy(tasks = tasks)
         }.launchIn(viewModelScope)
     }

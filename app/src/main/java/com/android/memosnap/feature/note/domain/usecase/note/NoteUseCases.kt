@@ -5,7 +5,16 @@ data class NoteUseCases(
     val deleteNote: DeleteNote,
     val addNote: AddNote,
     val getNote: GetNote,
+    val getNotesByCategory: GetNotesByCategory,
     val getTagsByNoteId: GetTagsByNoteId,
     val addTagToNote: AddTagToNote,
-    val removeTagFromNote: RemoveTagFromNote
+    val removeTagFromNote: RemoveTagFromNote,
+    val getChecklistItems: GetChecklistItems,
+    val insertChecklistItem: InsertChecklistItem,
+    val deleteChecklistItem: DeleteChecklistItem,
+    val toggleNoteCompletion: ToggleNoteCompletion,
+    val updateNotePriority: UpdateNotePriority,
+    val setNoteDueDate: SetNoteDueDate,
+    val setNoteCategory: SetNoteCategory,
+    val convertNoteType: ConvertNoteType
 )

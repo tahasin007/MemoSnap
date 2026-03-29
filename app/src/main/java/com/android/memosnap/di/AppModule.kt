@@ -3,33 +3,20 @@ package com.android.memosnap.di
 import android.app.Application
 import androidx.room.Room
 import com.android.memosnap.feature.dailytask.data.repository.CategoryRepositoryImpl
-import com.android.memosnap.feature.dailytask.data.repository.TaskRepositoryImpl
-import com.android.memosnap.feature.dailytask.domain.repository.CategoryRepository
-import com.android.memosnap.feature.dailytask.domain.repository.TaskRepository
-import com.android.memosnap.feature.dailytask.domain.usecase.category.CategoryUseCases
-import com.android.memosnap.feature.dailytask.domain.usecase.category.DeleteCategoryUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.category.GetCategoriesUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.category.GetCategoryByIdUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.category.GetCategoryByNameUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.category.InsertCategoryUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.task.DeleteTaskUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.task.GetAllTasksUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.task.GetTaskUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.task.InsertTaskUseCase
-import com.android.memosnap.feature.dailytask.domain.usecase.task.TaskUseCases
+import com.android.memosnap.feature.dailytask.data.source.TaskDao
 import com.android.memosnap.feature.data.source.AppDatabase
 import com.android.memosnap.feature.note.data.repository.NoteRepositoryImpl
 import com.android.memosnap.feature.note.data.repository.NoteTagRepositoryImpl
+import com.android.memosnap.feature.note.domain.repository.CategoryRepository
 import com.android.memosnap.feature.note.domain.repository.NoteRepository
 import com.android.memosnap.feature.note.domain.repository.NoteTagRepository
-import com.android.memosnap.feature.note.domain.usecase.note.AddNote
-import com.android.memosnap.feature.note.domain.usecase.note.AddTagToNote
-import com.android.memosnap.feature.note.domain.usecase.note.DeleteNote
-import com.android.memosnap.feature.note.domain.usecase.note.GetNote
-import com.android.memosnap.feature.note.domain.usecase.note.GetNotes
-import com.android.memosnap.feature.note.domain.usecase.note.GetTagsByNoteId
-import com.android.memosnap.feature.note.domain.usecase.note.NoteUseCases
-import com.android.memosnap.feature.note.domain.usecase.note.RemoveTagFromNote
+import com.android.memosnap.feature.note.domain.usecase.category.CategoryUseCases
+import com.android.memosnap.feature.note.domain.usecase.category.DeleteCategoryUseCase
+import com.android.memosnap.feature.note.domain.usecase.category.GetCategoriesUseCase
+import com.android.memosnap.feature.note.domain.usecase.category.GetCategoryByIdUseCase
+import com.android.memosnap.feature.note.domain.usecase.category.GetCategoryByNameUseCase
+import com.android.memosnap.feature.note.domain.usecase.category.InsertCategoryUseCase
+import com.android.memosnap.feature.note.domain.usecase.note.*
 import com.android.memosnap.feature.note.domain.usecase.notetag.AddNoteTag
 import com.android.memosnap.feature.note.domain.usecase.notetag.DeleteNoteTag
 import com.android.memosnap.feature.note.domain.usecase.notetag.GetNoteTag
@@ -66,8 +53,14 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideTaskDao(db: AppDatabase): TaskDao {
+        return db.taskDao
+    }
+
+    @Provides
+    @Singleton
     fun provideNoteRepository(db: AppDatabase): NoteRepository {
-        return NoteRepositoryImpl(db.noteDao)
+        return NoteRepositoryImpl(db.noteDao, db.checklistItemDao)
     }
 
     @Provides
@@ -78,9 +71,18 @@ object AppModule {
             deleteNote = DeleteNote(repository),
             addNote = AddNote(repository),
             getNote = GetNote(repository),
+            getNotesByCategory = GetNotesByCategory(repository),
             getTagsByNoteId = GetTagsByNoteId(repository),
             addTagToNote = AddTagToNote(repository),
-            removeTagFromNote = RemoveTagFromNote(repository)
+            removeTagFromNote = RemoveTagFromNote(repository),
+            getChecklistItems = GetChecklistItems(repository),
+            insertChecklistItem = InsertChecklistItem(repository),
+            deleteChecklistItem = DeleteChecklistItem(repository),
+            toggleNoteCompletion = ToggleNoteCompletion(repository),
+            updateNotePriority = UpdateNotePriority(repository),
+            setNoteDueDate = SetNoteDueDate(repository),
+            setNoteCategory = SetNoteCategory(repository),
+            convertNoteType = ConvertNoteType(repository)
         )
     }
 
@@ -102,27 +104,11 @@ object AppModule {
         )
     }
 
-    @Provides
-    @Singleton
-    fun provideTaskRepository(db: AppDatabase): TaskRepository {
-        return TaskRepositoryImpl(db.taskDao)
-    }
-
-    @Provides
-    @Singleton
-    fun provideTaskUseCases(repository: TaskRepository): TaskUseCases {
-        return TaskUseCases(
-            getAllTasks = GetAllTasksUseCase(repository),
-            getTask = GetTaskUseCase(repository),
-            insertTask = InsertTaskUseCase(repository),
-            deleteTask = DeleteTaskUseCase(repository),
-        )
-    }
 
     @Provides
     @Singleton
     fun provideCategoryRepository(db: AppDatabase): CategoryRepository {
-        return CategoryRepositoryImpl(db.categoryDao, db.taskDao)
+        return CategoryRepositoryImpl(db.categoryDao, db.noteDao)
     }
 
     @Provides

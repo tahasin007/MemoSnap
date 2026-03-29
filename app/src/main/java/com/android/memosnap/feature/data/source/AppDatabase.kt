@@ -10,13 +10,14 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.android.memosnap.core.theme.DodgerBlue
 import com.android.memosnap.feature.dailytask.data.Converters
-import com.android.memosnap.feature.dailytask.data.source.CategoryDao
 import com.android.memosnap.feature.dailytask.data.source.TaskDao
 import com.android.memosnap.feature.dailytask.domain.model.Task
 import com.android.memosnap.feature.dailytask.presentation.tasksscreen.TaskCategory
 import com.android.memosnap.feature.note.data.NoteConverters
 import com.android.memosnap.feature.note.data.source.NoteDao
 import com.android.memosnap.feature.note.data.source.NoteTagDao
+import com.android.memosnap.feature.note.data.source.CategoryDao
+import com.android.memosnap.feature.note.data.source.ChecklistItemDao
 import com.android.memosnap.feature.note.domain.model.Category
 import com.android.memosnap.feature.note.domain.model.ChecklistItem
 import com.android.memosnap.feature.note.domain.model.Note
@@ -46,6 +47,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract val noteTagDao: NoteTagDao
     abstract val taskDao: TaskDao
     abstract val categoryDao: CategoryDao
+    abstract val checklistItemDao: ChecklistItemDao
 
     companion object {
         const val DATABASE_NAME = "notes_db"
