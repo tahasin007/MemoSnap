@@ -31,10 +31,8 @@ fun FluidBottomNavigationBar(
 ) {
     val tabs = listOf(
         BottomBarTab.Drawer,
-//        BottomBarTab.Archived,
         BottomBarTab.Home,
-//        BottomBarTab.Search,
-        BottomBarTab.DailyTask
+        BottomBarTab.Search
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

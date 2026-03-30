@@ -6,23 +6,23 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.android.memosnap.feature.note.domain.model.ChecklistItem
+import com.android.memosnap.feature.note.data.model.ChecklistItemEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ChecklistItemDao {
 
     @Query("SELECT * FROM checklist_item WHERE noteId = :noteId ORDER BY sortOrder ASC")
-    fun getItemsByNoteId(noteId: Int): Flow<List<ChecklistItem>>
+    fun getItemsByNoteId(noteId: Int): Flow<List<ChecklistItemEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertItem(item: ChecklistItem): Long
+    suspend fun insertItem(item: ChecklistItemEntity): Long
 
     @Update
-    suspend fun updateItem(item: ChecklistItem)
+    suspend fun updateItem(item: ChecklistItemEntity)
 
     @Delete
-    suspend fun deleteItem(item: ChecklistItem)
+    suspend fun deleteItem(item: ChecklistItemEntity)
 
     @Query("DELETE FROM checklist_item WHERE noteId = :noteId")
     suspend fun deleteItemsByNoteId(noteId: Int)

@@ -2,6 +2,9 @@ package com.android.memosnap.feature.note.domain.usecase.note
 
 data class NoteUseCases(
     val getNotes: GetNotes,
+    val getFilteredNotes: GetFilteredNotes,
+    val getTagLinksForNotes: GetTagLinksForNotes,
+    val getChecklistProgressForNotes: GetChecklistProgressForNotes,
     val deleteNote: DeleteNote,
     val addNote: AddNote,
     val getNote: GetNote,

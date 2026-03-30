@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
@@ -26,7 +27,6 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun HomeScreenAppBar(
-    onTagsClick: () -> Unit,
     onArchiveClick: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -34,16 +34,17 @@ fun HomeScreenAppBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(75.dp)
+            .statusBarsPadding()
+            .height(60.dp)
             .background(MaterialTheme.colorScheme.surface)
-            .padding(top = 16.dp, bottom = 16.dp, start = 24.dp, end = 16.dp),
+            .padding(start = 16.dp, end = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = "MemoSnap",
             color = MaterialTheme.colorScheme.primary,
-            fontSize = 32.sp,
+            fontSize = 26.sp,
             fontWeight = W900,
             style = MaterialTheme.typography.titleLarge
         )
@@ -70,7 +71,6 @@ fun HomeScreenAppBar(
                 HomeScreenOptionsMenu(
                     onDismissed = { expanded = false },
                     onArchiveClick = onArchiveClick,
-                    onTagsClick = onTagsClick,
                     expanded = expanded
                 )
             }

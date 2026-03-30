@@ -2,5 +2,8 @@ package com.android.memosnap.feature.note.presentation.addeditnote
 
 data class AddEditNoteUIState(
     val isBottomSheetOpen: Boolean = false,
-    val isTagListVisible: Boolean = false,
+    val openImagePickerOnStart: Boolean = false,
+    val isSaving: Boolean = false,
+    val shouldCloseScreen: Boolean = false,
+    val userMessage: String? = null,
 )

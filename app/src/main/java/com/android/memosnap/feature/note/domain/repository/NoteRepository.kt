@@ -1,15 +1,29 @@
 package com.android.memosnap.feature.note.domain.repository
 
 import com.android.memosnap.feature.note.domain.model.ChecklistItem
+import com.android.memosnap.feature.note.domain.model.ChecklistProgress
 import com.android.memosnap.feature.note.domain.model.Note
 import com.android.memosnap.feature.note.domain.model.NotePriority
 import com.android.memosnap.feature.note.domain.model.NoteTag
+import com.android.memosnap.feature.note.domain.model.NoteTagLink
 import com.android.memosnap.feature.note.domain.model.NoteType
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
 
     fun getNotes(): Flow<List<Note>>
+
+    fun getFilteredNotes(
+        categoryId: Int?,
+        noteType: NoteType?,
+        isCompleted: Boolean?,
+        tagId: Int?,
+        pinnedOnly: Boolean
+    ): Flow<List<Note>>
+
+    fun getTagLinksForNotes(noteIds: List<Int>): Flow<List<NoteTagLink>>
+
+    fun getChecklistProgressForNotes(noteIds: List<Int>): Flow<List<ChecklistProgress>>
 
     fun getNotesByCategory(categoryId: Int): Flow<List<Note>>
 

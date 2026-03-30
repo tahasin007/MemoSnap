@@ -1,48 +1,48 @@
 package com.android.memosnap.feature.note.presentation.addeditnote
 
+import android.app.DatePickerDialog
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.scale
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.android.memosnap.core.screens.Screen
+import com.android.memosnap.feature.note.domain.model.NoteType
 import com.android.memosnap.feature.note.presentation.addeditnote.components.AddEditNoteAppBar
 import com.android.memosnap.feature.note.presentation.addeditnote.components.BottomSheetContainer
+import com.android.memosnap.feature.note.presentation.addeditnote.components.ChecklistEditorSection
 import com.android.memosnap.feature.note.presentation.addeditnote.components.EditeNoteTextField
+import com.android.memosnap.feature.note.presentation.addeditnote.components.EditorShortcutPanel
+import com.android.memosnap.feature.note.presentation.addeditnote.components.NoteMetadataRow
+import com.android.memosnap.feature.note.presentation.addeditnote.components.SelectedImagePreview
 import com.android.memosnap.feature.note.presentation.addeditnote.components.TagListView
 import com.android.memosnap.feature.note.util.NoteUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 @Composable
 fun AddEditNoteScreen(
@@ -50,9 +50,11 @@ fun AddEditNoteScreen(
     viewModel: AddEditNoteViewModel = hiltViewModel()
 ) {
     val note = viewModel.noteState.value
+    val categories = viewModel.categories.value
     val tags = viewModel.tagsState.value
     val tagsByNoteId = viewModel.tagsByNoteId.value
     val uiState = viewModel.uiState.value
+    val isExistingNote = note.id != null
 
     val isSaveEnabled = viewModel.isNoteEdited()
 
@@ -100,6 +102,27 @@ fun AddEditNoteScreen(
         }
     }
 
+    LaunchedEffect(uiState.openImagePickerOnStart) {
+        if (uiState.openImagePickerOnStart) {
+            imagePickerLauncher.launch("image/*")
+            viewModel.consumeOpenImagePickerRequest()
+        }
+    }
+
+    LaunchedEffect(uiState.shouldCloseScreen) {
+        if (uiState.shouldCloseScreen) {
+            navController.popBackStack()
+            viewModel.consumeCloseScreenRequest()
+        }
+    }
+
+    LaunchedEffect(uiState.userMessage) {
+        uiState.userMessage?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            viewModel.consumeUserMessage()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -109,7 +132,6 @@ fun AddEditNoteScreen(
             onBackClick = { navController.popBackStack() },
             onSaveNoteClick = {
                 viewModel.onEvent(AddEditNoteEvent.SaveNote)
-                navController.popBackStack()
             },
             onPaletteClick = {
                 viewModel.onEvent(
@@ -121,6 +143,18 @@ fun AddEditNoteScreen(
             onImageClick = {
                 imagePickerLauncher.launch("image/*")
             },
+            onDueDateClick = {
+                showDatePicker(context = context) {
+                    viewModel.onEvent(AddEditNoteEvent.SetDueDate(it))
+                }
+            },
+            onAddChecklistClick = {
+                if (note.noteType == NoteType.CHECKLIST) {
+                    viewModel.onEvent(AddEditNoteEvent.ConvertNoteType(NoteType.REGULAR))
+                } else {
+                    viewModel.onEvent(AddEditNoteEvent.ConvertNoteType(NoteType.CHECKLIST))
+                }
+            },
             onPinNoteClick = {
                 viewModel.onEvent(AddEditNoteEvent.ChangePinnedStatus(note.isPinned.not()))
             },
@@ -131,8 +165,11 @@ fun AddEditNoteScreen(
                 viewModel.onEvent(AddEditNoteEvent.DeleteNote)
                 navController.popBackStack()
             },
-            addNewTag = {
-                navController.navigate(Screen.NoteTags.route + "?showAddTagPopup=true")
+            onCreateTag = { name ->
+                viewModel.onEvent(AddEditNoteEvent.CreateTag(name))
+            },
+            onDeleteTag = { tag ->
+                viewModel.onEvent(AddEditNoteEvent.DeleteTag(tag))
             },
             onClickAddTag = {
                 viewModel.onEvent(AddEditNoteEvent.AddTagToNote(it))
@@ -140,8 +177,18 @@ fun AddEditNoteScreen(
             backgroundColor = backgroundColor,
             isPinned = note.isPinned,
             isArchived = note.isArchived,
-            isSaveEnabled = isSaveEnabled,
-            isTagListVisible = uiState.isTagListVisible,
+            showAddChecklistAction = true,
+            showArchiveDeleteActions = isExistingNote,
+            priority = note.priority,
+            isSaveEnabled = isSaveEnabled && !uiState.isSaving,
+            categories = categories,
+            selectedCategoryId = note.categoryId,
+            onCategorySelected = {
+                viewModel.onEvent(AddEditNoteEvent.SetCategory(it))
+            },
+            onPrioritySelected = {
+                viewModel.onEvent(AddEditNoteEvent.SetPriority(it))
+            },
             tagList = tags.tags,
             initiallySelectedTags = tagsByNoteId.tags
         )
@@ -156,8 +203,9 @@ fun AddEditNoteScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 140.dp)
+                    .padding(bottom = 190.dp)
             ) {
+
                 EditeNoteTextField(
                     text = note.title,
                     hint = "Title",
@@ -170,26 +218,10 @@ fun AddEditNoteScreen(
 
                 Spacer(modifier = Modifier.height(5.dp))
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Text(
-                        text = note.dateCreated,
-                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-                        fontSize = 14.sp,
-                        fontStyle = FontStyle.Italic,
-                    )
-
-                    Text(
-                        text = "  |  ${NoteUtils.getTotalCharacters(note.content)} characters",
-                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-                        fontSize = 14.sp
-                    )
-                }
+                NoteMetadataRow(
+                    dateCreated = note.dateCreated,
+                    contentLength = NoteUtils.getTotalCharacters(note.content)
+                )
 
                 Spacer(modifier = Modifier.height(5.dp))
 
@@ -209,25 +241,64 @@ fun AddEditNoteScreen(
                     textSize = 16.sp
                 )
 
-                TagListView(tags = tagsByNoteId.tags)
+                if (note.noteType == NoteType.CHECKLIST) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ChecklistEditorSection(
+                        checklistItems = note.checklistItems,
+                        onAddItem = { viewModel.onEvent(AddEditNoteEvent.AddChecklistItem()) },
+                        onEditItem = { index, item ->
+                            viewModel.onEvent(AddEditNoteEvent.EditChecklistItem(index, item))
+                        },
+                        onMoveItemUp = { index ->
+                            viewModel.onEvent(
+                                AddEditNoteEvent.MoveChecklistItem(
+                                    fromIndex = index,
+                                    toIndex = index - 1
+                                )
+                            )
+                        },
+                        onMoveItemDown = { index ->
+                            viewModel.onEvent(
+                                AddEditNoteEvent.MoveChecklistItem(
+                                    fromIndex = index,
+                                    toIndex = index + 1
+                                )
+                            )
+                        },
+                        onRemoveItem = { index ->
+                            viewModel.onEvent(AddEditNoteEvent.RemoveChecklistItem(index))
+                        }
+                    )
+                }
+
+                TagListView(
+                    tags = tagsByNoteId.tags,
+                    onRemoveTag = { tag ->
+                        val updatedTags = tagsByNoteId.tags.filterNot { selected ->
+                            selected.id?.let { selectedId -> selectedId == tag.id }
+                                ?: (selected.name == tag.name)
+                        }
+                        viewModel.onEvent(AddEditNoteEvent.AddTagToNote(updatedTags))
+                    }
+                )
             }
 
             note.imageData?.let { bytes ->
-                val bitmap = remember(bytes) {
-                    android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                }
-                bitmap?.let {
-                    Image(
-                        bitmap = it.asImageBitmap(),
-                        contentDescription = "Selected image",
-                        modifier = Modifier
-                            .size(96.dp)
-                            .align(Alignment.BottomEnd)
-                            .padding(12.dp),
-                        contentScale = ContentScale.Crop
-                    )
-                }
+                SelectedImagePreview(
+                    imageData = bytes,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .navigationBarsPadding()
+                        .padding(end = 12.dp, bottom = 120.dp)
+                )
             }
+
+            EditorShortcutPanel(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+            )
 
             BottomSheetContainer(
                 isBottomSheetOpen = uiState.isBottomSheetOpen,
@@ -241,4 +312,25 @@ fun AddEditNoteScreen(
             )
         }
     }
+}
+
+private fun showDatePicker(context: android.content.Context, onDateSelected: (Long) -> Unit) {
+    val now = Calendar.getInstance()
+    DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            val selected = Calendar.getInstance().apply {
+                set(Calendar.YEAR, year)
+                set(Calendar.MONTH, month)
+                set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                set(Calendar.HOUR_OF_DAY, 9)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+            }
+            onDateSelected(selected.timeInMillis)
+        },
+        now.get(Calendar.YEAR),
+        now.get(Calendar.MONTH),
+        now.get(Calendar.DAY_OF_MONTH)
+    ).show()
 }

@@ -21,16 +21,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.android.memosnap.core.screens.Screen
-import com.android.memosnap.core.screens.SearchScreen
-import com.android.memosnap.feature.dailytask.presentation.edittask.AddNotesToTaskScreen
-import com.android.memosnap.feature.dailytask.presentation.edittask.EditTaskScreen
-import com.android.memosnap.feature.dailytask.presentation.managecategory.TaskCategoryScreen
-import com.android.memosnap.feature.dailytask.presentation.tasksscreen.DailyTaskScreen
 import com.android.memosnap.feature.note.presentation.addeditnote.AddEditNoteScreen
 import com.android.memosnap.feature.note.presentation.archivednotes.ArchivedNotesScreen
 import com.android.memosnap.feature.note.presentation.notes.HomeScreen
-import com.android.memosnap.feature.note.presentation.notesbytag.NotesByTagScreen
-import com.android.memosnap.feature.note.presentation.tags.NoteTagScreen
 
 @Composable
 fun MyAppNavHost(navController: NavHostController) {
@@ -45,83 +38,25 @@ fun MyAppNavHost(navController: NavHostController) {
             enterTransition = { enterTransition() },
             exitTransition = { exitTransition() },
         ) { HomeScreen(navController) }
-        composable(
-            route = Screen.Search.route,
-            enterTransition = { enterTransition() },
-            exitTransition = { exitTransition() },
-        ) { SearchScreen() }
 
         composable(
-            route = Screen.NoteTags.route + "?showAddTagPopup={showAddTagPopup}",
-            enterTransition = { enterTransition() },
-            exitTransition = { exitTransition() },
-            arguments = listOf(navArgument("showAddTagPopup") {
-                type = NavType.BoolType; defaultValue = false
-            })
-        ) { NoteTagScreen(navController) }
-
-        composable(
-            route = Screen.NotesByTags.route + "?tagId={tagId}",
-            enterTransition = { enterTransition() },
-            exitTransition = { exitTransition() },
-            arguments = listOf(navArgument("tagId") {
-                type = NavType.IntType; defaultValue = -1
-            })
-        ) {
-            NotesByTagScreen(navController = navController)
-        }
-
-        composable(
-            route = Screen.AddEditNote.route + "?noteId={noteId}&showTagListPopup={showTagListPopup}",
+            route = Screen.AddEditNote.route + "?noteId={noteId}&noteType={noteType}&createMode={createMode}",
             enterTransition = { enterTransition() },
             exitTransition = { exitTransition() },
             arguments = listOf(
                 navArgument("noteId") {
                     type = NavType.IntType; defaultValue = -1
                 },
-                navArgument("showTagListPopup") {
-                    type = NavType.BoolType; defaultValue = false
+                navArgument("noteType") {
+                    type = NavType.StringType; defaultValue = "REGULAR"
+                },
+                navArgument("createMode") {
+                    type = NavType.StringType; defaultValue = "NOTE"
                 }
             )
         ) {
             AddEditNoteScreen(navController = navController)
         }
-
-        composable(
-            route = Screen.DailyTask.route,
-            enterTransition = { enterTransition() },
-            exitTransition = { exitTransition() },
-        ) { DailyTaskScreen(navController) }
-
-        composable(
-            route = Screen.EditTask.route + "?taskId={taskId}",
-            enterTransition = { enterTransition() },
-            exitTransition = { exitTransition() },
-            arguments = listOf(navArgument("taskId") {
-                type = NavType.IntType; defaultValue = -1
-            })
-        ) { backStackEntry ->
-            val taskId = backStackEntry.arguments?.getInt("taskId")
-            EditTaskScreen(navController, taskId)
-        }
-
-        composable(
-            route = Screen.AddNotesToTask.route + "?taskId={taskId}",
-            enterTransition = { enterTransition() },
-            exitTransition = { exitTransition() },
-            arguments = listOf(navArgument("taskId") {
-                type = NavType.IntType; defaultValue = -1
-            })
-        ) { backStackEntry ->
-            val taskId = backStackEntry.arguments?.getInt("taskId")
-            AddNotesToTaskScreen(navController, taskId)
-        }
-
-        composable(
-            route = Screen.TaskCategory.route,
-            enterTransition = { enterTransition() },
-            exitTransition = { exitTransition() },
-        ) { TaskCategoryScreen(navController) }
     }
 }
 

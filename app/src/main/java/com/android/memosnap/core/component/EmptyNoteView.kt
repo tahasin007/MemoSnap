@@ -22,10 +22,11 @@ import com.android.memosnap.R
 fun EmptyNoteView(
     title: String,
     description: String,
-    drawableId: Int = R.drawable.ic_note
+    drawableId: Int = R.drawable.ic_note,
+    modifier: Modifier = Modifier.fillMaxSize()
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
